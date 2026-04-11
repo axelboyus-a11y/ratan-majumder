@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | VIP Portal Final</title>
+    <title>Ratan Bro | Ultimate VIP Portal</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -50,7 +50,7 @@
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
         .social-btn { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 18px; }
 
-        /* --- PORTFOLIO RESULT CARD --- */
+        /* --- RESULT CARD --- */
         .result-card { background: #000; border: 2px solid var(--pink-main); padding: 25px; border-radius: 35px; width: 100%; max-width: 350px; text-align: center; position: relative; }
     </style>
 </head>
@@ -101,6 +101,12 @@
                 <div id="alert-dot" style="position:absolute; top:12px; right:12px; width:8px; height:8px; background:red; border-radius:50%; display:none;"></div>
                 <i class="fas fa-bullhorn"></i><p>নোটিশ বোর্ড</p>
             </div>
+            <a href="https://ratan.bro.bd" target="_blank" class="nav-card">
+                <i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p>
+            </a>
+            <a href="https://pinzodrs.com" target="_blank" class="nav-card">
+                <i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p>
+            </a>
             <div class="nav-card" onclick="document.getElementById('p-maker-modal').style.display='flex'">
                 <i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p>
             </div>
@@ -159,7 +165,6 @@
         let userPhoto = '';
         let currentMsg = null;
 
-        // --- TRAIL FOR MOUSE & TOUCH ---
         const createTrail = (x, y) => {
             const p = document.createElement('i');
             p.className = Math.random() > 0.5 ? 'fas fa-heart trail-particle' : 'fas fa-star trail-particle';
@@ -171,7 +176,6 @@
         window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
         window.addEventListener('touchmove', (e) => createTrail(e.touches[0].clientX, e.touches[0].clientY));
 
-        // --- BD TIME GREETINGS ---
         function setBDWish(name) {
             const hour = new Date().getHours();
             let msg = "";
@@ -184,14 +188,12 @@
             document.getElementById('u-wish').innerText = msg;
         }
 
-        // --- PORTFOLIO MAKER ---
         window.createPortfolio = () => {
             const name = document.getElementById('p-name').value;
             const title = document.getElementById('p-title').value;
             const phone = document.getElementById('p-phone').value;
             const fb = document.getElementById('p-fb').value;
             const wa = document.getElementById('p-wa').value;
-
             if(!name || !title) return alert("নাম আর টাইটেল তো দে ভাই!");
 
             const result = document.getElementById('p-result-area');
@@ -218,7 +220,6 @@
             document.getElementById('portfolio-modal').style.display = 'flex';
         };
 
-        // --- CORE AUTH & LOGIC ---
         window.login = () => signInWithPopup(auth, provider);
         window.logout = () => signOut(auth).then(() => location.reload());
 
