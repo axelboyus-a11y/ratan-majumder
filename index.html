@@ -18,7 +18,17 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; touch-action: none; }
+        
+        /* SCROLL FIX: touch-action auto and overflow-y auto for mobile scrolling */
+        body { 
+            background: var(--bg-dark); 
+            color: white; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            touch-action: auto; 
+            -webkit-overflow-scrolling: touch;
+        }
 
         /* --- BACKGROUND MESH --- */
         .login-bg-mesh { position: fixed; inset: 0; z-index: -2; background: linear-gradient(45deg, #020617, #1a0821, #020617); background-size: 400% 400%; animation: meshMove 12s ease infinite; }
@@ -179,13 +189,13 @@
             setTimeout(() => p.remove(), 800);
         };
 
-        // Desktop
         window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
-        // Mobile/Touch
+        
+        // Touch move trail with passive scroll compatibility
         window.addEventListener('touchmove', (e) => {
             const touch = e.touches[0];
             createTrail(touch.clientX, touch.clientY);
-        });
+        }, { passive: true });
 
         window.login = () => signInWithPopup(auth, provider);
         window.logout = () => signOut(auth).then(() => location.reload());
