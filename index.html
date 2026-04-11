@@ -30,7 +30,7 @@
 
         /* --- HEADER RAIN FIXED --- */
         .header-love-wrap { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; border-radius: 40px; }
-        .header-heart { position: absolute; color: var(--pink-main); font-size: 14px; top: -20px; animation: hRain 3s linear forwards; opacity: 0; }
+        .header-heart { position: absolute; color: var(--pink-main); font-size: 14px; top: -20px; animation: hRain linear forwards; opacity: 0; }
         @keyframes hRain { 
             0% { transform: translateY(0) rotate(0deg); opacity: 0; } 
             20% { opacity: 0.8; } 
@@ -97,7 +97,6 @@
 
         <header class="main-header">
             <div id="header-rain" class="header-love-wrap"></div>
-            
             <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px; position: relative; z-index: 5;">
                 <img src="ratan.jpg" class="hd-avatar" style="width:100px; height:100px; border:3px solid var(--pink-main);">
                 <img id="u-photo" src="" class="hd-avatar" style="width:80px; height:80px; border:3px solid white; margin-left:-25px; z-index:6;">
@@ -121,6 +120,39 @@
             <a href="testpaper.html" class="nav-card"><i class="fas fa-graduation-cap"></i><p>নোটস / ফাইল</p></a>
             <a href="https://numberlookup.pro.bd/" target="_blank" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস</p></a>
         </main>
+
+        <section style="max-width: 500px; margin: 0 auto 50px; padding: 0 20px;">
+            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 30px; border: 1px solid rgba(255,77,148,0.1);">
+                <div id="chat-content" style="height: 100px; overflow-y: auto; font-size: 13px; margin-bottom: 10px;"></div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="ai-msg" placeholder="AI কে কিছু জিজ্ঞেস করো..." style="flex:1; background:#000; border:1px solid #333; color:#fff; padding:10px 15px; border-radius:50px; outline:none; font-size:13px;">
+                    <button onclick="askAI()" class="btn-premium" style="width:auto; padding:0 15px;">পাঠাও</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="p-maker-modal" class="modal">
+        <div style="background: #000; width: 100%; max-width: 380px; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center;">
+            <h3 style="color: var(--pink-main); margin-bottom: 20px;">মেক পোর্টফোলিও</h3>
+            <input type="text" id="p-name" placeholder="আপনার পূর্ণ নাম" class="p-input">
+            <input type="text" id="p-title" placeholder="টাইটেল" class="p-input">
+            <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="p-input">
+            <input type="text" id="p-fb" placeholder="ফেসবুক লিঙ্ক" class="p-input">
+            <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ" class="p-input">
+            <button class="btn-premium" onclick="createPortfolio()">জেনারেট করুন</button>
+            <button onclick="document.getElementById('p-maker-modal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#555;">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <div id="portfolio-modal" class="modal"><div id="p-result-area"></div></div>
+
+    <div id="notice-modal" class="modal">
+        <div style="background: #000; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center; max-width: 350px;">
+            <i class="fas fa-envelope-open-text" style="font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px;"></i>
+            <p id="notice-body" style="color: #ccc; margin-bottom: 20px;"></p>
+            <button class="btn-premium" onclick="document.getElementById('notice-modal').style.display='none'">বুঝেছি</button>
+        </div>
     </div>
 
     <script type="module">
@@ -133,6 +165,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        const AI_API = "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";
+
+        let currentMsg = null;
 
         const createTrail = (x, y) => {
             const p = document.createElement('i');
@@ -148,9 +183,8 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const userPhotoHD = user.photoURL.replace('s96-c', 's400-c');
                 document.getElementById('u-name').innerText = user.displayName;
-                document.getElementById('u-photo').src = userPhotoHD;
+                document.getElementById('u-photo').src = user.photoURL.replace('s96-c', 's400-c');
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('audio-gate-modal').style.display = 'flex';
                 setBDWish(user.displayName);
@@ -161,8 +195,7 @@
         window.enterDashboard = () => {
             document.getElementById('audio-gate-modal').style.display = 'none';
             document.getElementById('dashboard-ui').style.display = 'block';
-            const audio = document.getElementById('snd-open');
-            audio.play().catch(e => console.log("Audio play failed"));
+            document.getElementById('snd-open').play().catch(e => console.log("Audio play failed"));
         };
 
         function setBDWish(name) {
@@ -171,20 +204,68 @@
             document.getElementById('u-wish').innerText = `${msg}, ${name}! কি খবর?`;
         }
 
-        // HEART RAIN FUNCTION
+        // --- RAIN LOGIC UPDATED ---
         function startRain() {
             const wrap = document.getElementById('header-rain');
             setInterval(() => {
                 const h = document.createElement('i');
                 h.className = 'fas fa-heart header-heart';
                 h.style.left = Math.random() * 100 + '%';
-                // Randomly vary size and duration for realism
-                h.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                // Random size and speed for natural look
+                h.style.fontSize = (Math.random() * 10 + 8) + 'px';
                 h.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                
                 wrap.appendChild(h);
-                setTimeout(() => h.remove(), 3000);
-            }, 400);
+                setTimeout(() => h.remove(), 4000);
+            }, 300); // Frequency: 300ms
+        }
+
+        window.askAI = async () => {
+            const inp = document.getElementById('ai-msg');
+            const log = document.getElementById('chat-content');
+            if(!inp.value) return;
+            const val = inp.value;
+            log.innerHTML += `<div style="text-align:right; color:var(--pink-main); margin-bottom:5px;"><b>You:</b> ${val}</div>`;
+            inp.value = "চিন্তা করছি...";
+            try {
+                const r = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method:"POST",
+                    headers:{"Content-Type":"application/json", "Authorization":`Bearer ${AI_API}`},
+                    body: JSON.stringify({model:"gpt-4o-mini", messages:[{role:"user", content:val}]})
+                });
+                const d = await r.json();
+                log.innerHTML += `<div style="margin-bottom:10px;"><b>AI:</b> ${d.choices[0].message.content}</div>`;
+            } catch(e){ log.innerHTML += `<div style="color:red;">Error!</div>`; }
+            inp.value = "";
+            log.scrollTop = log.scrollHeight;
+        };
+
+        onSnapshot(doc(db, "system", "updates"), (s) => {
+            if(s.exists()){
+                currentMsg = s.data();
+                if(currentMsg.hasNew) document.getElementById('alert-dot').style.display='block';
+            }
+        });
+
+        window.openNotice = () => {
+            if(currentMsg){
+                document.getElementById('notice-body').innerText = currentMsg.message;
+                document.getElementById('notice-modal').style.display = 'flex';
+                document.getElementById('alert-dot').style.display = 'none';
+            }
+        };
+
+        window.createPortfolio = () => {
+            const name = document.getElementById('p-name').value;
+            const title = document.getElementById('p-title').value;
+            if(!name || !title) return alert("দয়া করে নাম ও টাইটেল দিন");
+            document.getElementById('p-result-area').innerHTML = `
+                <div class="result-card">
+                    <h3 style="color:var(--pink-main)">${name}</h3>
+                    <p>${title}</p>
+                    <button class="btn-premium" style="margin-top:15px" onclick="document.getElementById('portfolio-modal').style.display='none'">বন্ধ করুন</button>
+                </div>`;
+            document.getElementById('p-maker-modal').style.display = 'none';
+            document.getElementById('portfolio-modal').style.display = 'flex';
         }
     </script>
 </body>
