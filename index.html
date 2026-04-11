@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | VIP Portal Final V3</title>
+    <title>Ratan Bro | VIP Portal Ultimate Final</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,13 +29,14 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            overscroll-behavior: none;
         }
 
         /* --- BACKGROUND MESH --- */
         .login-bg-mesh {
             position: fixed;
             inset: 0;
-            z-index: -1;
+            z-index: -2;
             background: linear-gradient(45deg, #020617, #1a0821, #020617);
             background-size: 400% 400%;
             animation: meshMove 12s ease infinite;
@@ -47,17 +48,27 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- BIGGER LOVE RAIN --- */
+        /* --- MOUSE TRAIL PARTICLE --- */
+        .trail-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            color: var(--pink-main);
+            filter: drop-shadow(0 0 5px var(--pink-glow));
+            animation: particleFade 1s forwards ease-out;
+            opacity: 1;
+        }
+
+        @keyframes particleFade {
+            to { transform: translate(0, 20px) scale(0); opacity: 0; }
+        }
+
+        /* --- HEADER LOVE RAIN --- */
         .header-love-wrap {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-            border-radius: 40px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+            overflow: hidden; border-radius: 40px;
         }
 
         .header-heart {
@@ -65,6 +76,7 @@
             color: var(--pink-main);
             animation: hRain linear forwards;
             opacity: 0;
+            filter: drop-shadow(0 0 5px var(--pink-glow));
         }
 
         @keyframes hRain {
@@ -73,94 +85,14 @@
             100% { transform: translateY(350px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- LOGIN CARD --- */
-        .login-box {
-            background: var(--glass);
-            padding: 50px 30px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 77, 148, 0.3);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
-            position: relative;
-        }
-
-        .avatar-container {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .spinning-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top: 3px solid var(--pink-main);
-            border-bottom: 3px solid var(--pink-main);
-            animation: ringRotate 4s linear infinite;
-        }
-
-        @keyframes ringRotate { to { transform: rotate(360deg); } }
-
-        .stable-img {
-            width: 115px; height: 115px;
-            border-radius: 50%;
-            object-fit: cover;
-            z-index: 5;
-            border: 3px solid rgba(255,255,255,0.1);
-        }
-
-        .btn-premium {
-            background: linear-gradient(90deg, var(--pink-main), #cc0052);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 50px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 10px 25px rgba(255, 77, 148, 0.3);
-        }
-
-        .btn-premium:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.5);
-        }
-
-        /* --- DASHBOARD HEADER --- */
-        .main-header {
-            margin: 20px;
-            padding: 65px 20px;
-            border-radius: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(255, 77, 148, 0.16), rgba(255, 255, 255, 0.05), rgba(255, 77, 148, 0.10));
-            border: 1px solid rgba(255, 120, 180, 0.26);
-            backdrop-filter: blur(26px);
-            box-shadow: 0 0 35px rgba(255, 77, 148, 0.10), 0 20px 60px rgba(0,0,0,0.35);
-        }
-
+        /* --- NAME & HEART BEAT --- */
         .name-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 10px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin-top: 10px; position: relative; z-index: 10;
         }
 
         .side-heart {
-            color: var(--pink-main);
-            font-size: 20px;
+            color: var(--pink-main); font-size: 20px;
             animation: heartBeat 1.2s infinite ease-in-out;
             filter: drop-shadow(0 0 8px var(--pink-glow));
         }
@@ -171,102 +103,72 @@
         }
 
         .user-name-glow {
-            font-size: 32px;
-            font-weight: 900;
+            font-size: 32px; font-weight: 900;
             background: linear-gradient(90deg, #fff, var(--pink-main), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
+            background-size: 200% auto; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shine 3s linear infinite;
         }
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        .dashboard-photo-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 10;
+        /* --- LOGIN & UI BOXES --- */
+        .login-box {
+            background: var(--glass); padding: 40px 30px; border-radius: 50px;
+            border: 1px solid rgba(255, 77, 148, 0.3); text-align: center;
+            width: 90%; max-width: 400px; backdrop-filter: blur(20px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7); position: relative;
         }
 
-        .owner-photo {
-            width: 118px; height: 118px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--pink-main);
-            box-shadow: 0 0 30px rgba(255, 77, 148, 0.45);
+        .btn-premium {
+            background: linear-gradient(90deg, var(--pink-main), #cc0052);
+            color: white; border: none; padding: 15px 25px; border-radius: 50px;
+            font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(255, 77, 148, 0.3);
         }
 
-        .user-photo {
-            width: 98px; height: 98px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            margin-left: -35px;
-            z-index: 2;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+        .btn-premium:hover { transform: scale(1.03); box-shadow: 0 15px 35px rgba(255, 77, 148, 0.5); }
+
+        .main-header {
+            margin: 20px; padding: 60px 20px; border-radius: 40px;
+            background: linear-gradient(135deg, rgba(255, 77, 148, 0.16), rgba(255, 255, 255, 0.05), rgba(255, 77, 148, 0.10));
+            border: 1px solid rgba(255, 120, 180, 0.26);
+            backdrop-filter: blur(26px);
+            box-shadow: 0 0 35px rgba(255, 77, 148, 0.10), 0 20px 60px rgba(0,0,0,0.35); position: relative;
         }
 
-        /* --- CARDS WITH AUTO-BARI & HOVER ANIMATION --- */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            padding: 0 20px 40px;
-            max-width: 600px;
-            margin: 0 auto;
+        /* --- PORTFOLIO INPUT STYLE --- */
+        .p-input { 
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #333; 
+            color: white; padding: 12px 20px; border-radius: 50px; outline: none; 
+            margin-bottom: 12px; font-size: 13px; transition: 0.3s;
         }
+        .p-input:focus { border-color: var(--pink-main); box-shadow: 0 0 10px rgba(255,77,148,0.2); }
 
+        /* --- DASHBOARD ELEMENTS --- */
+        .dashboard-photo-wrap { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; position: relative; z-index: 10; }
+        .owner-photo { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--pink-main); box-shadow: 0 0 30px rgba(255, 77, 148, 0.45); object-fit: cover; }
+        .user-photo { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; margin-left: -30px; z-index: 2; object-fit: cover; }
+
+        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 0 20px 40px; max-width: 600px; margin: 0 auto; }
         .nav-card {
-            background: var(--glass);
-            border-radius: 35px;
-            padding: 35px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            animation: autoBari 4s infinite ease-in-out; /* Auto Pink Glow */
+            background: var(--glass); border-radius: 35px; padding: 30px 20px;
+            text-align: center; text-decoration: none; color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05); position: relative;
+            animation: autoBari 4s infinite ease-in-out;
         }
+        .nav-card:hover { transform: translateY(-5px); border-color: var(--pink-main); }
+        @keyframes autoBari { 0%, 100% { border-color: rgba(255,255,255,0.05); } 50% { border-color: var(--pink-main); } }
 
-        /* Hover Animation: Scale up */
-        .nav-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--pink-main);
-            box-shadow: 0 15px 30px rgba(255, 77, 148, 0.25);
+        .nav-card i { font-size: 2.5rem; color: var(--pink-main); margin-bottom: 10px; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
+
+        /* --- PORTFOLIO CARD RESULT --- */
+        .result-card {
+            background: linear-gradient(135deg, #111, #000);
+            border: 2px solid var(--pink-main); padding: 30px; border-radius: 40px;
+            width: 100%; max-width: 380px; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-
-        /* Shine effect on Hover */
-        .nav-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -150%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.6s;
-            transform: skewX(-20deg);
-        }
-        .nav-card:hover::after { left: 150%; }
-
-        /* Auto Bari Animation */
-        @keyframes autoBari {
-            0%, 100% { border-color: rgba(255,255,255,0.05); box-shadow: none; }
-            50% { border-color: var(--pink-main); box-shadow: 0 0 15px rgba(255, 77, 148, 0.2); }
-        }
-
-        .nav-card i { font-size: 2.8rem; color: var(--pink-main); margin-bottom: 12px; }
-        .wide-card { grid-column: span 2; display: flex; justify-content: center; gap: 15px; }
-
-        /* --- MODAL & CHAT --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; }
-        .chat-ui { background: rgba(0,0,0,0.6); border-radius: 35px; border: 1px solid rgba(255,77,148,0.2); padding: 25px; }
-        #chat-content { height: 140px; overflow-y: auto; margin-bottom: 15px; }
-        .chat-input-row { display: flex; gap: 10px; }
-        .chat-input-row input { flex: 1; background: #0d1117; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 50px; outline: none; }
     </style>
 </head>
 
@@ -278,22 +180,19 @@
 
     <div id="login-screen" class="modal" style="display: flex;">
         <div class="login-box">
-            <div class="avatar-container">
-                <div class="spinning-ring"></div>
-                <img src="ratan.jpg" class="stable-img">
-            </div>
+            <img src="ratan.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--pink-main); margin-bottom:20px;">
             <h2>RATAN BRO</h2>
-            <p style="color: #666; font-size: 13px; margin-bottom: 30px;">SECURE DASHBOARD ACCESS</p>
+            <p style="color: #666; font-size: 13px; margin-bottom: 25px;">SECURE DASHBOARD ACCESS</p>
             <button class="btn-premium" onclick="login()">LOGIN WITH GOOGLE</button>
         </div>
     </div>
 
     <div id="dashboard-ui" style="display: none;">
-        <div style="display: flex; justify-content: flex-end; padding: 15px 25px; gap: 12px;">
-            <div style="background: rgba(255, 77, 148, 0.1); border: 1px solid var(--pink-main); color: var(--pink-main); padding: 5px 15px; border-radius: 50px; font-size: 13px; font-weight: 700;">
+        <div style="display: flex; justify-content: space-between; padding: 15px 25px; align-items: center;">
+            <div style="background: rgba(255, 77, 148, 0.1); border: 1px solid var(--pink-main); color: var(--pink-main); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: 700;">
                 <i class="fas fa-eye"></i> <span id="v-count">200</span>
             </div>
-            <button onclick="logout()" style="background: none; border: 1px solid #333; color: #555; padding: 6px 15px; border-radius: 50px; cursor: pointer;">Sign Out</button>
+            <button onclick="logout()" style="background: none; border: 1px solid #333; color: #555; padding: 5px 15px; border-radius: 50px; cursor: pointer;">Sign Out</button>
         </div>
 
         <header class="main-header">
@@ -307,42 +206,58 @@
                 <span id="u-name" class="user-name-glow">...</span>
                 <i class="fas fa-heart side-heart"></i>
             </div>
+            <p id="u-wish" style="font-size: 13px; color: #aaa; margin-top: 5px; position: relative; z-index: 10;">Scanning...</p>
         </header>
 
         <main class="grid-layout">
             <div class="nav-card" onclick="openNotice()">
-                <div id="alert-dot" style="position:absolute; top:15px; right:15px; width:12px; height:12px; background:red; border-radius:50%; display:none;"></div>
-                <i class="fas fa-bell"></i><p>Notification</p>
+                <div id="alert-dot" style="position:absolute; top:15px; right:15px; width:10px; height:10px; background:red; border-radius:50%; display:none;"></div>
+                <i class="fas fa-bell"></i><p>Notice</p>
             </div>
-            <a href="testpaper.html" class="nav-card"><i class="fas fa-file-pdf"></i><p>Test Papers</p></a>
-            <a href="business.html" class="nav-card"><i class="fas fa-briefcase"></i><p>Business</p></a>
-            <a href="portfolio.html" class="nav-card"><i class="fas fa-user-circle"></i><p>Portfolio</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="nav-card wide-card"><i class="fas fa-shield-virus"></i><p>Advanced Identity Lookup</p></a>
+            <a href="testpaper.html" class="nav-card"><i class="fas fa-book"></i><p>Notes</p></a>
+            <a href="business.html" class="nav-card"><i class="fas fa-rocket"></i><p>Business</p></a>
+            <a href="portfolio.html" class="nav-card"><i class="fas fa-id-badge"></i><p>About Me</p></a>
         </main>
 
-        <section style="max-width:500px; margin:0 auto 50px; padding:0 20px;">
-            <div class="chat-ui">
-                <div id="chat-content"><b>AI Assistant:</b> পোর্টালে স্বাগতম।</div>
-                <div class="chat-input-row">
-                    <input type="text" id="ai-msg" placeholder="Type here...">
-                    <button onclick="askAI()" class="btn-premium" style="width: auto; padding: 10px 20px;">SEND</button>
+        <section style="max-width: 500px; margin: 0 auto 30px; padding: 0 20px;">
+            <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 40px; border: 1px solid rgba(255,77,148,0.2);">
+                <h3 style="color: var(--pink-main); margin-bottom: 20px; text-align: center;"><i class="fas fa-magic"></i> Portfolio Maker</h3>
+                <input type="text" id="p-name" placeholder="Full Name" class="p-input">
+                <input type="text" id="p-title" placeholder="Title (e.g. Graphic Designer)" class="p-input">
+                <input type="text" id="p-phone" placeholder="Phone Number" class="p-input">
+                <input type="text" id="p-fb" placeholder="Facebook Profile Link" class="p-input">
+                <input type="text" id="p-wa" placeholder="WhatsApp Number" class="p-input">
+                <button onclick="createPortfolio()" class="btn-premium" style="margin-top: 10px;">Generate Website Card</button>
+            </div>
+        </section>
+
+        <section style="max-width: 500px; margin: 0 auto 50px; padding: 0 20px;">
+            <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 35px; border: 1px solid rgba(255,77,148,0.1);">
+                <div id="chat-content" style="height: 120px; overflow-y: auto; font-size: 14px; margin-bottom: 15px;"></div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="ai-msg" placeholder="Ask AI..." style="flex:1; background:#000; border:1px solid #333; color:#fff; padding:12px 20px; border-radius:50px; outline:none;">
+                    <button onclick="askAI()" class="btn-premium" style="width:auto; padding: 10px 20px;">SEND</button>
                 </div>
             </div>
         </section>
     </div>
 
+    <div id="portfolio-modal" class="modal">
+        <div id="p-result-area"></div>
+    </div>
+
     <div id="notice-modal" class="modal">
         <div class="login-box">
-            <i class="fas fa-envelope-open" style="font-size: 3rem; color: var(--pink-main);"></i>
-            <p id="notice-body" style="margin: 20px 0; color: #ccc;"></p>
-            <button class="btn-premium" onclick="closeNotice()">GOT IT</button>
+            <i class="fas fa-envelope-open-text" style="font-size: 3rem; color: var(--pink-main); margin-bottom: 15px;"></i>
+            <p id="notice-body" style="color: #ccc; margin-bottom: 25px;"></p>
+            <button class="btn-premium" onclick="closeNotice()">CLOSE</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
@@ -359,77 +274,126 @@
         const provider = new GoogleAuthProvider();
         const AI_API = "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";
 
+        let userImg = '';
         let currentMsg = null;
 
-        function startHeaderRain() {
-            const hWrap = document.getElementById('header-rain');
-            setInterval(() => {
-                const heart = document.createElement('i');
-                heart.className = 'fas fa-heart header-heart';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                hWrap.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
-            }, 500);
+        // 1. MOUSE TRAIL
+        window.addEventListener('mousemove', (e) => {
+            const p = document.createElement('i');
+            p.className = Math.random() > 0.5 ? 'fas fa-heart trail-particle' : 'fas fa-star trail-particle';
+            p.style.left = e.clientX + 'px';
+            p.style.top = e.clientY + 'px';
+            p.style.fontSize = (Math.random() * 10 + 5) + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        });
+
+        // 2. SMART WISH
+        function setWish(name) {
+            const h = new Date().getHours();
+            let msg = '';
+            if(h < 12) msg = `☕ Good Morning, ${name}! Start your day with coffee.`;
+            else if(h < 17) msg = `☀️ Good Afternoon, ${name}! Keep working hard.`;
+            else if(h < 21) msg = `🌆 Good Evening, ${name}! Time for a break.`;
+            else msg = `😴 It's late, ${name}. You should take some rest.`;
+            document.getElementById('u-wish').innerText = msg;
         }
 
+        // 3. PORTFOLIO MAKER
+        window.createPortfolio = () => {
+            const name = document.getElementById('p-name').value;
+            const title = document.getElementById('p-title').value;
+            const phone = document.getElementById('p-phone').value;
+            const fb = document.getElementById('p-fb').value;
+            const wa = document.getElementById('p-wa').value;
+
+            if(!name || !title) return alert("Please fill Name and Title!");
+
+            const result = document.getElementById('p-result-area');
+            result.innerHTML = `
+                <div class="result-card">
+                    <button onclick="document.getElementById('portfolio-modal').style.display='none'" style="position:absolute; top:20px; right:20px; color:#555; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <img src="${userImg}" style="width:90px; height:90px; border-radius:50%; border:3px solid var(--pink-main); object-fit:cover;">
+                        <h2 style="margin-top:10px; font-size:22px;">${name}</h2>
+                        <p style="color:var(--pink-main); font-size:14px; font-weight:600;">${title}</p>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:15px; font-size:13px;"><i class="fas fa-phone" style="color:var(--pink-main); margin-right:10px;"></i> ${phone || 'N/A'}</div>
+                        <a href="${fb}" target="_blank" style="background:rgba(255,255,255,0.05); padding:12px; border-radius:15px; font-size:13px; color:#fff; text-decoration:none;"><i class="fab fa-facebook" style="color:#1877f2; margin-right:10px;"></i> Facebook Profile</a>
+                        <a href="https://wa.me/${wa}" target="_blank" style="background:rgba(255,255,255,0.05); padding:12px; border-radius:15px; font-size:13px; color:#fff; text-decoration:none;"><i class="fab fa-whatsapp" style="color:#25d366; margin-right:10px;"></i> WhatsApp Chat</a>
+                    </div>
+                    <p style="text-align:center; font-size:10px; color:#444; margin-top:20px;">DESIGNED BY RATAN BRO PORTAL</p>
+                </div>
+            `;
+            document.getElementById('portfolio-modal').style.display = 'flex';
+        };
+
+        // FIREBASE & OTHERS
         window.login = () => signInWithPopup(auth, provider);
         window.logout = () => signOut(auth).then(() => location.reload());
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
+                userImg = user.photoURL;
                 document.getElementById('u-name').innerText = user.displayName;
-                document.getElementById('u-photo').src = user.photoURL;
+                document.getElementById('u-photo').src = userImg;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-ui').style.display = 'block';
-                startHeaderRain();
-                try { document.getElementById('snd-open').play(); } catch(e){}
-            } else {
-                document.getElementById('login-screen').style.display = 'flex';
-                document.getElementById('dashboard-ui').style.display = 'none';
+                setWish(user.displayName);
+                startRain();
+                try{ document.getElementById('snd-open').play(); } catch(e){}
             }
         });
+
+        function startRain() {
+            const wrap = document.getElementById('header-rain');
+            setInterval(() => {
+                const h = document.createElement('i');
+                h.className = 'fas fa-heart header-heart';
+                h.style.left = Math.random() * 100 + '%';
+                h.style.fontSize = (Math.random()*15 + 15) + 'px';
+                h.style.animationDuration = (Math.random()*2 + 2) + 's';
+                wrap.appendChild(h);
+                setTimeout(() => h.remove(), 4000);
+            }, 600);
+        }
 
         window.askAI = async () => {
             const inp = document.getElementById('ai-msg');
             const log = document.getElementById('chat-content');
-            if (!inp.value) return;
-            const msg = inp.value;
-            log.innerHTML += `<div style="text-align:right; color:var(--pink-main); margin-top:8px;"><b>You:</b> ${msg}</div>`;
+            if(!inp.value) return;
+            const val = inp.value;
+            log.innerHTML += `<div style="text-align:right; color:var(--pink-main);"><b>You:</b> ${val}</div>`;
             inp.value = "Thinking...";
             try {
-                const res = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${AI_API}` },
-                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: msg }] })
+                const r = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method:"POST",
+                    headers:{"Content-Type":"application/json", "Authorization":`Bearer ${AI_API}`},
+                    body: JSON.stringify({model:"gpt-4o-mini", messages:[{role:"user", content:val}]})
                 });
-                const data = await res.json();
-                log.innerHTML += `<div style="margin-top:5px;"><b>AI:</b> ${data.choices[0].message.content}</div>`;
-            } catch (e) { log.innerHTML += `<div style="color:red;">API Error!</div>`; }
+                const d = await r.json();
+                log.innerHTML += `<div><b>AI:</b> ${d.choices[0].message.content}</div>`;
+            } catch(e){ log.innerHTML += `<div style="color:red;">API Error!</div>`; }
             inp.value = "";
             log.scrollTop = log.scrollHeight;
         };
 
-        onSnapshot(doc(db, "system", "updates"), (snap) => {
-            if (snap.exists()) {
-                currentMsg = snap.data();
-                if (currentMsg.hasNew) {
-                    document.getElementById('alert-dot').style.display = 'block';
-                    try { document.getElementById('snd-notif').play(); } catch(e){}
-                }
+        onSnapshot(doc(db, "system", "updates"), (s) => {
+            if(s.exists()){
+                currentMsg = s.data();
+                if(currentMsg.hasNew) document.getElementById('alert-dot').style.display='block';
             }
         });
 
         window.openNotice = () => {
-            if (currentMsg) {
+            if(currentMsg){
                 document.getElementById('notice-body').innerText = currentMsg.message;
                 document.getElementById('notice-modal').style.display = 'flex';
                 document.getElementById('alert-dot').style.display = 'none';
             }
         };
-
-        window.closeNotice = () => { document.getElementById('notice-modal').style.display = 'none'; };
+        window.closeNotice = () => document.getElementById('notice-modal').style.display='none';
     </script>
 </body>
 </html>
