@@ -31,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* --- DYNAMIC LOGIN BACKGROUND --- */
+        /* --- DYNAMIC BACKGROUND --- */
         .login-bg-mesh {
             position: fixed;
             inset: 0;
@@ -47,7 +47,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- HEADER SPECIFIC LOVE RAIN --- */
+        /* --- BIGGER LOVE RAIN --- */
         .header-love-wrap {
             position: absolute;
             top: 0;
@@ -63,18 +63,41 @@
         .header-heart {
             position: absolute;
             color: var(--pink-main);
-            font-size: 12px;
             animation: hRain linear forwards;
             opacity: 0;
+            filter: drop-shadow(0 0 5px var(--pink-glow));
         }
 
         @keyframes hRain {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.7; }
-            100% { transform: translateY(250px) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(350px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- LOGIN CARD STYLES --- */
+        /* --- NAME WITH HEART ANIMATION --- */
+        .name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            z-index: 10;
+            margin-top: 10px;
+        }
+
+        .side-heart {
+            color: var(--pink-main);
+            font-size: 24px;
+            animation: heartBeat 1.2s infinite ease-in-out;
+            filter: drop-shadow(0 0 8px var(--pink-glow));
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* --- EXISTING STYLES --- */
         .login-box {
             background: var(--glass);
             padding: 50px 30px;
@@ -109,9 +132,7 @@
             animation: ringRotate 4s linear infinite;
         }
 
-        @keyframes ringRotate {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes ringRotate { to { transform: rotate(360deg); } }
 
         .stable-img {
             width: 115px;
@@ -140,7 +161,6 @@
             box-shadow: 0 15px 35px rgba(255, 77, 148, 0.5);
         }
 
-        /* --- DASHBOARD HEADER UPDATED --- */
         .main-header {
             margin: 20px;
             padding: 65px 20px;
@@ -151,23 +171,7 @@
             background: linear-gradient(135deg, rgba(255, 77, 148, 0.16), rgba(255, 255, 255, 0.05), rgba(255, 77, 148, 0.10));
             border: 1px solid rgba(255, 120, 180, 0.26);
             backdrop-filter: blur(26px);
-            -webkit-backdrop-filter: blur(26px);
-            box-shadow:
-                0 0 35px rgba(255, 77, 148, 0.10),
-                inset 0 1px 0 rgba(255,255,255,0.10),
-                0 20px 60px rgba(0,0,0,0.35);
-        }
-
-        .main-header::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at top left, rgba(255, 77, 148, 0.20), transparent 35%),
-                radial-gradient(circle at top right, rgba(255, 160, 210, 0.14), transparent 30%),
-                radial-gradient(circle at bottom center, rgba(255, 77, 148, 0.10), transparent 35%);
-            z-index: 0;
-            pointer-events: none;
+            box-shadow: 0 0 35px rgba(255, 77, 148, 0.10), 0 20px 60px rgba(0,0,0,0.35);
         }
 
         .user-name-glow {
@@ -179,24 +183,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shine 3s linear infinite;
-            position: relative;
-            z-index: 10;
             text-shadow: 0 0 20px rgba(255, 77, 148, 0.15);
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        /* --- VISITOR & TOP BAR --- */
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 15px 25px;
-            gap: 12px;
-        }
-
+        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 15px 25px; gap: 12px; }
+        
         .eye-counter {
             background: rgba(255, 77, 148, 0.1);
             border: 1px solid var(--pink-main);
@@ -210,48 +203,32 @@
             gap: 6px;
         }
 
-        /* --- DASHBOARD IMAGE UPDATED --- */
         .dashboard-photo-wrap {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             position: relative;
             z-index: 10;
-            filter: drop-shadow(0 10px 30px rgba(255, 77, 148, 0.22));
         }
 
         .owner-photo {
-            width: 118px;
-            height: 118px;
+            width: 110px; height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid rgba(255, 77, 148, 0.95);
-            box-shadow:
-                0 0 0 5px rgba(255, 77, 148, 0.12),
-                0 0 30px rgba(255, 77, 148, 0.45),
-                inset 0 0 20px rgba(255,255,255,0.06);
-            background: linear-gradient(135deg, rgba(255,77,148,0.18), rgba(255,255,255,0.05));
-            padding: 3px;
+            border: 4px solid var(--pink-main);
+            box-shadow: 0 0 30px rgba(255, 77, 148, 0.45);
         }
 
         .user-photo {
-            width: 98px;
-            height: 98px;
+            width: 90px; height: 90px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid rgba(255,255,255,0.95);
-            margin-left: -35px;
-            background: linear-gradient(135deg, #111, #000);
-            box-shadow:
-                0 0 0 5px rgba(255,255,255,0.08),
-                0 10px 25px rgba(0,0,0,0.45),
-                0 0 18px rgba(255, 77, 148, 0.18);
-            position: relative;
+            border: 4px solid white;
+            margin-left: -30px;
             z-index: 2;
         }
 
-        /* --- CARDS & MOBILE AUTO-BARI --- */
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -270,134 +247,23 @@
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
-            overflow: hidden;
             animation: autoBari 4s infinite ease-in-out;
         }
 
         @keyframes autoBari {
-            0%, 100% {
-                border-color: rgba(255,255,255,0.05);
-                box-shadow: none;
-            }
-            50% {
-                border-color: var(--pink-main);
-                box-shadow: 0 0 15px rgba(255, 77, 148, 0.2);
-            }
+            0%, 100% { border-color: rgba(255,255,255,0.05); }
+            50% { border-color: var(--pink-main); box-shadow: 0 0 15px rgba(255, 77, 148, 0.2); }
         }
 
-        .nav-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 77, 148, 0.15), transparent);
-            transition: 0.8s;
-            transform: skewX(-20deg);
-        }
+        .nav-card i { font-size: 2.8rem; color: var(--pink-main); margin-bottom: 12px; }
+        .wide-card { grid-column: span 2; display: flex; justify-content: center; gap: 15px; }
 
-        .nav-card:hover::after {
-            left: 150%;
-        }
+        .chat-ui { background: rgba(0,0,0,0.6); border-radius: 35px; border: 1px solid rgba(255,77,148,0.2); padding: 25px; }
+        #chat-content { height: 140px; overflow-y: auto; color: #ccc; font-size: 14px; margin-bottom: 15px; }
+        .chat-input-row { display: flex; gap: 10px; }
+        .chat-input-row input { flex: 1; background: #0d1117; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 50px; outline: none; }
 
-        .nav-card i {
-            font-size: 2.8rem;
-            color: var(--pink-main);
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 8px var(--pink-glow));
-        }
-
-        .nav-card p {
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .wide-card {
-            grid-column: span 2;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            padding: 25px;
-        }
-
-        /* --- AI CHAT --- */
-        .ai-section {
-            max-width: 500px;
-            margin: 0 auto 50px;
-            padding: 0 20px;
-        }
-
-        .chat-ui {
-            background: rgba(0,0,0,0.6);
-            border-radius: 35px;
-            border: 1px solid rgba(255,77,148,0.2);
-            padding: 25px;
-        }
-
-        #chat-content {
-            height: 140px;
-            overflow-y: auto;
-            color: #ccc;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .chat-input-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input-row input {
-            flex: 1;
-            background: #0d1117;
-            border: 1px solid #333;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 50px;
-            outline: none;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-
-        @media (max-width: 480px) {
-            .main-header {
-                padding: 55px 15px;
-            }
-
-            .owner-photo {
-                width: 102px;
-                height: 102px;
-            }
-
-            .user-photo {
-                width: 85px;
-                height: 85px;
-                margin-left: -28px;
-            }
-
-            .user-name-glow {
-                font-size: 26px;
-            }
-
-            .grid-layout {
-                gap: 15px;
-                padding: 0 15px 35px;
-            }
-
-            .nav-card {
-                padding: 28px 16px;
-                border-radius: 28px;
-            }
-        }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; }
     </style>
 </head>
 
@@ -413,7 +279,6 @@
                 <div class="spinning-ring"></div>
                 <img src="ratan.jpg" class="stable-img">
             </div>
-
             <h2 style="letter-spacing: 2px; margin-bottom: 5px;">RATAN BRO</h2>
             <p style="color: #666; font-size: 13px; margin-bottom: 30px;">SECURE DASHBOARD ACCESS</p>
             <button class="btn-premium" onclick="login()">LOGIN WITH GOOGLE</button>
@@ -425,8 +290,7 @@
             <div class="eye-counter">
                 <i class="fas fa-eye"></i> <span id="v-count">200</span>
             </div>
-
-            <button onclick="logout()" style="background: none; border: 1px solid #333; color: #555; padding: 6px 15px; border-radius: 50px; cursor: pointer; font-size: 12px;">Sign Out</button>
+            <button onclick="logout()" style="background: none; border: 1px solid #333; color: #555; padding: 6px 15px; border-radius: 50px; cursor: pointer;">Sign Out</button>
         </div>
 
         <header class="main-header">
@@ -437,9 +301,13 @@
                 <img id="u-photo" src="" class="user-photo">
             </div>
 
-            <span id="u-name" class="user-name-glow">...</span>
+            <div class="name-container">
+                <i class="fas fa-heart side-heart"></i>
+                <span id="u-name" class="user-name-glow">...</span>
+                <i class="fas fa-heart side-heart"></i>
+            </div>
 
-            <p style="margin-top: 15px; color: rgba(255,255,255,0.58); font-size: 11px; position: relative; z-index: 10;">
+            <p style="margin-top: 15px; color: rgba(255,255,255,0.4); font-size: 11px;">
                 <i class="fas fa-fingerprint"></i> SESSION ENCRYPTED
             </p>
         </header>
@@ -450,32 +318,17 @@
                 <i class="fas fa-bell"></i>
                 <p>Notification</p>
             </div>
-
-            <a href="testpaper.html" class="nav-card">
-                <i class="fas fa-file-pdf"></i>
-                <p>Test Papers</p>
-            </a>
-
-            <a href="business.html" class="nav-card">
-                <i class="fas fa-briefcase"></i>
-                <p>Business</p>
-            </a>
-
-            <a href="portfolio.html" class="nav-card">
-                <i class="fas fa-user-circle"></i>
-                <p>Portfolio</p>
-            </a>
-
+            <a href="testpaper.html" class="nav-card"><i class="fas fa-file-pdf"></i><p>Test Papers</p></a>
+            <a href="business.html" class="nav-card"><i class="fas fa-briefcase"></i><p>Business</p></a>
+            <a href="portfolio.html" class="nav-card"><i class="fas fa-user-circle"></i><p>Portfolio</p></a>
             <a href="https://numberlookup.pro.bd/" target="_blank" class="nav-card wide-card">
-                <i class="fas fa-shield-virus"></i>
-                <p>Advanced Identity Lookup</p>
+                <i class="fas fa-shield-virus"></i><p>Advanced Identity Lookup</p>
             </a>
         </main>
 
-        <section class="ai-section">
+        <section style="max-width:500px; margin:0 auto 50px; padding:0 20px;">
             <div class="chat-ui">
                 <div id="chat-content"><b>AI Assistant:</b> পোর্টালে স্বাগতম। আপনি কি কোনো সাহায্য চান?</div>
-
                 <div class="chat-input-row">
                     <input type="text" id="ai-msg" placeholder="Type your query...">
                     <button onclick="askAI()" class="btn-premium" style="width: auto; padding: 10px 20px;">SEND</button>
@@ -485,10 +338,10 @@
     </div>
 
     <div id="notice-modal" class="modal">
-        <div class="login-box" style="border-color: #fff3;">
+        <div class="login-box">
             <i class="fas fa-envelope-open" style="font-size: 3rem; color: var(--pink-main); margin-bottom: 20px;"></i>
             <h3>ADMIN MESSAGE</h3>
-            <p id="notice-body" style="margin: 20px 0; color: #ccc; line-height: 1.6;"></p>
+            <p id="notice-body" style="margin: 20px 0; color: #ccc;"></p>
             <button class="btn-premium" onclick="closeNotice()">GOT IT</button>
         </div>
     </div>
@@ -515,18 +368,20 @@
 
         let currentMsg = null;
 
+        // --- UPDATED RAIN FUNCTION (BIGGER HEARTS) ---
         function startHeaderRain() {
             const hWrap = document.getElementById('header-rain');
-
             setInterval(() => {
                 const heart = document.createElement('i');
                 heart.className = 'fas fa-heart header-heart';
                 heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 6 + 8) + 'px';
-                heart.style.animationDuration = (Math.random() * 1 + 2) + 's';
+                // সাইজ বাড়িয়ে ১৫ থেকে ৩০ পিক্সেল করা হয়েছে
+                const size = Math.random() * 15 + 15; 
+                heart.style.fontSize = size + 'px';
+                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 hWrap.appendChild(heart);
-                setTimeout(() => heart.remove(), 3000);
-            }, 500);
+                setTimeout(() => heart.remove(), 4000);
+            }, 400); // হার্ট পড়ার গতি সামান্য বাড়ানো হয়েছে
         }
 
         function updateCounter() {
@@ -545,7 +400,8 @@
                 document.getElementById('u-photo').src = user.photoURL;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-ui').style.display = 'block';
-                document.getElementById('snd-open').play();
+                
+                try { document.getElementById('snd-open').play(); } catch(e){}
 
                 updateCounter();
                 startHeaderRain();
@@ -553,7 +409,8 @@
                 const path = user.email.replace(/\./g, '_');
                 await setDoc(doc(db, "users", path), {
                     last_seen: new Date().toLocaleString(),
-                    name: user.displayName
+                    name: user.displayName,
+                    photo: user.photoURL
                 }, { merge: true });
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -564,32 +421,19 @@
         window.askAI = async () => {
             const inp = document.getElementById('ai-msg');
             const log = document.getElementById('chat-content');
-
             if (!inp.value) return;
-
             const msg = inp.value;
             log.innerHTML += `<div style="text-align:right; color:var(--pink-main); margin-top:8px;"><b>You:</b> ${msg}</div>`;
             inp.value = "Thinking...";
-
             try {
                 const res = await fetch("https://api.openai.com/v1/chat/completions", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${AI_API}`
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: msg }]
-                    })
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${AI_API}` },
+                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: msg }] })
                 });
-
                 const data = await res.json();
                 log.innerHTML += `<div style="margin-top:5px;"><b>AI:</b> ${data.choices[0].message.content}</div>`;
-            } catch (e) {
-                log.innerHTML += `<div style="color:red;">API Error!</div>`;
-            }
-
+            } catch (e) { log.innerHTML += `<div style="color:red;">API Error!</div>`; }
             inp.value = "";
             log.scrollTop = log.scrollHeight;
         };
@@ -599,7 +443,7 @@
                 currentMsg = snap.data();
                 if (currentMsg.hasNew) {
                     document.getElementById('alert-dot').style.display = 'block';
-                    document.getElementById('snd-notif').play();
+                    try { document.getElementById('snd-notif').play(); } catch(e){}
                 }
             }
         });
@@ -612,9 +456,7 @@
             }
         };
 
-        window.closeNotice = () => {
-            document.getElementById('notice-modal').style.display = 'none';
-        };
+        window.closeNotice = () => { document.getElementById('notice-modal').style.display = 'none'; };
     </script>
 </body>
 </html>
