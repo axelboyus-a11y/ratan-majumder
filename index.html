@@ -18,7 +18,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
+        body { background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; touch-action: none; }
 
         /* --- BACKGROUND MESH --- */
         .login-bg-mesh { position: fixed; inset: 0; z-index: -2; background: linear-gradient(45deg, #020617, #1a0821, #020617); background-size: 400% 400%; animation: meshMove 12s ease infinite; }
@@ -28,7 +28,7 @@
         .trail-particle { position: fixed; pointer-events: none; z-index: 10001; color: var(--pink-main); filter: drop-shadow(0 0 5px var(--pink-glow)); animation: particleFade 0.8s forwards ease-out; }
         @keyframes particleFade { to { transform: translateY(15px) scale(0); opacity: 0; } }
 
-        /* --- HEADER RAIN FIXED --- */
+        /* --- HEADER RAIN --- */
         .header-love-wrap { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; border-radius: 40px; }
         .header-heart { position: absolute; color: var(--pink-main); font-size: 14px; top: -20px; animation: hRain linear forwards; opacity: 0; }
         @keyframes hRain { 
@@ -55,8 +55,9 @@
 
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
         .social-btn { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 18px; }
-
+        
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .result-card { background: #000; border: 2px solid var(--pink-main); padding: 25px; border-radius: 35px; width: 100%; max-width: 350px; text-align: center; position: relative; }
     </style>
 </head>
 
@@ -169,6 +170,7 @@
 
         let currentMsg = null;
 
+        // --- TRAIL LOGIC (Mouse & Phone Combined) ---
         const createTrail = (x, y) => {
             const p = document.createElement('i');
             p.className = 'fas fa-heart trail-particle';
@@ -176,7 +178,14 @@
             document.body.appendChild(p);
             setTimeout(() => p.remove(), 800);
         };
+
+        // Desktop
         window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
+        // Mobile/Touch
+        window.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            createTrail(touch.clientX, touch.clientY);
+        });
 
         window.login = () => signInWithPopup(auth, provider);
         window.logout = () => signOut(auth).then(() => location.reload());
@@ -204,19 +213,17 @@
             document.getElementById('u-wish').innerText = `${msg}, ${name}! কি খবর?`;
         }
 
-        // --- RAIN LOGIC UPDATED ---
         function startRain() {
             const wrap = document.getElementById('header-rain');
             setInterval(() => {
                 const h = document.createElement('i');
                 h.className = 'fas fa-heart header-heart';
                 h.style.left = Math.random() * 100 + '%';
-                // Random size and speed for natural look
                 h.style.fontSize = (Math.random() * 10 + 8) + 'px';
                 h.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 wrap.appendChild(h);
                 setTimeout(() => h.remove(), 4000);
-            }, 300); // Frequency: 300ms
+            }, 300);
         }
 
         window.askAI = async () => {
