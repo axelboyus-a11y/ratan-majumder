@@ -20,45 +20,38 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
         body { background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
 
-        /* --- BACKGROUND MESH --- */
+        /* --- BACKGROUND & ANIMATIONS (SAME AS BEFORE) --- */
         .login-bg-mesh { position: fixed; inset: 0; z-index: -2; background: linear-gradient(45deg, #020617, #1a0821, #020617); background-size: 400% 400%; animation: meshMove 12s ease infinite; }
         @keyframes meshMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- MOUSE & TOUCH TRAIL --- */
         .trail-particle { position: fixed; pointer-events: none; z-index: 10001; color: var(--pink-main); filter: drop-shadow(0 0 5px var(--pink-glow)); animation: particleFade 0.8s forwards ease-out; }
         @keyframes particleFade { to { transform: translateY(15px) scale(0); opacity: 0; } }
 
-        /* --- HEADER RAIN --- */
         .header-love-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; border-radius: 40px; }
         .header-heart { position: absolute; color: var(--pink-main); animation: hRain linear forwards; opacity: 0; }
         @keyframes hRain { 0% { transform: translateY(-50px) rotate(0deg); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(350px) rotate(360deg); opacity: 0; } }
 
-        /* --- UI ELEMENTS --- */
         .main-header { margin: 20px; padding: 50px 20px; border-radius: 40px; background: linear-gradient(135deg, rgba(255, 77, 148, 0.1), rgba(255, 255, 255, 0.05)); border: 1px solid rgba(255, 120, 180, 0.2); backdrop-filter: blur(20px); text-align: center; position: relative; }
         .user-name-glow { font-size: 30px; font-weight: 900; background: linear-gradient(90deg, #fff, var(--pink-main), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
         
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px 30px; max-width: 600px; margin: 0 auto; }
-        .nav-card { background: var(--glass); border-radius: 30px; padding: 25px 15px; text-align: center; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.05); animation: autoBari 4s infinite; transition: 0.3s; position: relative; }
+        .nav-card { background: var(--glass); border-radius: 30px; padding: 25px 15px; text-align: center; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.05); animation: autoBari 4s infinite; transition: 0.3s; position: relative; cursor: pointer; }
         .nav-card:active { transform: scale(0.95); }
         @keyframes autoBari { 0%, 100% { border-color: rgba(255,255,255,0.05); } 50% { border-color: var(--pink-main); } }
         .nav-card i { font-size: 2.2rem; color: var(--pink-main); margin-bottom: 8px; }
 
-        .hd-avatar { object-fit: cover; border-radius: 50%; display: block; image-rendering: -webkit-optimize-contrast; }
-
+        .hd-avatar { object-fit: cover; border-radius: 50%; display: block; }
         .btn-premium { background: linear-gradient(90deg, var(--pink-main), #cc0052); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
         .p-input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 50px; outline: none; margin-bottom: 10px; }
 
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
         .social-btn { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 18px; }
-
-        .result-card { background: #000; border: 2px solid var(--pink-main); padding: 25px; border-radius: 35px; width: 100%; max-width: 350px; text-align: center; position: relative; }
     </style>
 </head>
 
 <body>
     <div class="login-bg-mesh"></div>
-
     <audio id="snd-welcome" src="open.mp3" preload="auto"></audio>
 
     <div id="login-screen" class="modal" style="display: flex;">
@@ -76,10 +69,7 @@
                 <a href="https://www.facebook.com/profile.php?id=61552305287329" class="social-btn" style="background: #1877f2;"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://wa.me/8801609160109" class="social-btn" style="background: #25d366;"><i class="fab fa-whatsapp"></i></a>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="color: var(--pink-main); font-weight: 700; font-size: 13px;"><i class="fas fa-eye"></i> <span id="v-count">200</span></div>
-                <button onclick="logout()" style="color:#666; background:none; border:1px solid #333; padding:4px 12px; border-radius:50px; font-size:11px;">Sign Out</button>
-            </div>
+            <button onclick="logout()" style="color:#666; background:none; border:1px solid #333; padding:4px 12px; border-radius:50px; font-size:11px;">Sign Out</button>
         </div>
 
         <header class="main-header">
@@ -89,9 +79,7 @@
                 <img id="u-photo" src="" class="hd-avatar" style="width:80px; height:80px; border:3px solid white; margin-left:-25px; z-index:6;">
             </div>
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fas fa-heart" style="color:var(--pink-main); animation:heartBeat 1.2s infinite;"></i>
                 <span id="u-name" class="user-name-glow">...</span>
-                <i class="fas fa-heart" style="color:var(--pink-main); animation:heartBeat 1.2s infinite;"></i>
             </div>
             <p id="u-wish" style="margin-top: 10px; font-size: 14px; color: #ccc;">লোড হচ্ছে...</p>
         </header>
@@ -101,41 +89,19 @@
                 <div id="alert-dot" style="position:absolute; top:12px; right:12px; width:8px; height:8px; background:red; border-radius:50%; display:none; box-shadow: 0 0 10px red;"></div>
                 <i class="fas fa-bullhorn"></i><p>নোটিশ বোর্ড</p>
             </div>
-            <a href="portfolio.html" class="nav-card">
-                <i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p>
-            </a>
-            <a href="business.html" class="nav-card">
-                <i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p>
-            </a>
+            <a href="portfolio.html" class="nav-card"><i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p></a>
+            <a href="business.html" class="nav-card"><i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p></a>
             <div class="nav-card" onclick="document.getElementById('p-maker-modal').style.display='flex'">
                 <i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p>
             </div>
             <a href="testpaper.html" class="nav-card"><i class="fas fa-graduation-cap"></i><p>নোটস / ফাইল</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস</p></a>
         </main>
-    </div>
-
-    <div id="p-maker-modal" class="modal">
-        <div style="background: #000; width: 100%; max-width: 380px; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center;">
-            <h3 style="color: var(--pink-main); margin-bottom: 20px;">মেক পোর্টফোলিও</h3>
-            <input type="text" id="p-name" placeholder="আপনার পূর্ণ নাম" class="p-input">
-            <input type="text" id="p-title" placeholder="টাইটেল (যেমন: স্টুডেন্ট)" class="p-input">
-            <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="p-input">
-            <input type="text" id="p-fb" placeholder="ফেসবুক আইডি লিঙ্ক" class="p-input">
-            <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ নম্বর" class="p-input">
-            <button class="btn-premium" onclick="createPortfolio()">জেনারেট করুন</button>
-            <button onclick="document.getElementById('p-maker-modal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#555; cursor:pointer;">বন্ধ করুন</button>
-        </div>
-    </div>
-
-    <div id="portfolio-modal" class="modal">
-        <div id="p-result-area"></div>
     </div>
 
     <div id="notice-modal" class="modal">
         <div style="background: #000; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center; max-width: 350px;">
             <i class="fas fa-envelope-open-text" style="font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px;"></i>
-            <p id="notice-body" style="color: #ccc; margin-bottom: 20px;"></p>
+            <p id="notice-body" style="color: #ccc; margin-bottom: 20px;">কোনো নতুন নোটিশ নেই।</p>
             <button class="btn-premium" onclick="document.getElementById('notice-modal').style.display='none'">বুঝেছি</button>
         </div>
     </div>
@@ -151,62 +117,65 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        let userPhotoHD = '';
-        let hasPlayed = false; // To prevent voice playing multiple times in one session
+        let hasPlayed = false;
+        let currentMsg = null;
 
-        // TRAIL EFFECT
+        // TRAIL & RAIN
         const createTrail = (x, y) => {
             const p = document.createElement('i');
-            p.className = Math.random() > 0.5 ? 'fas fa-heart trail-particle' : 'fas fa-star trail-particle';
+            p.className = 'fas fa-heart trail-particle';
             p.style.left = x + 'px'; p.style.top = y + 'px';
-            p.style.fontSize = (Math.random() * 10 + 5) + 'px';
             document.body.appendChild(p);
             setTimeout(() => p.remove(), 800);
         };
         window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
-        window.addEventListener('touchmove', (e) => createTrail(e.touches[0].clientX, e.touches[0].clientY));
 
         window.login = () => signInWithPopup(auth, provider);
         window.logout = () => signOut(auth).then(() => location.reload());
 
-        // MAIN AUTH LOGIC
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                userPhotoHD = user.photoURL.replace('s96-c', 's400-c');
+                document.getElementById('u-photo').src = user.photoURL.replace('s96-c', 's400-c');
                 document.getElementById('u-name').innerText = user.displayName;
-                document.getElementById('u-photo').src = userPhotoHD;
-                
-                // Hide Login and Show Dashboard
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-ui').style.display = 'block';
                 
+                // Audio Logic
+                const playAudio = () => {
+                    if (!hasPlayed) {
+                        document.getElementById('snd-welcome').play().then(() => {
+                            hasPlayed = true;
+                        }).catch(err => console.log("Click to play audio"));
+                    }
+                };
+                playAudio();
+                document.body.addEventListener('click', playAudio, { once: true });
+
                 setBDWish(user.displayName);
                 startRain();
-
-                // VOICE PLAY LOGIC: Trigger whenever Dashboard becomes visible
-                if (!hasPlayed) {
-                    const audio = document.getElementById('snd-welcome');
-                    audio.play().catch(error => {
-                        console.log("Autoplay blocked. Waiting for user interaction.");
-                        // If browser blocks it, play on the first click anywhere
-                        document.addEventListener('click', () => {
-                            if(!hasPlayed) { audio.play(); hasPlayed = true; }
-                        }, { once: true });
-                    });
-                    hasPlayed = true;
-                }
+                loadNotice();
             }
         });
 
+        function loadNotice() {
+            onSnapshot(doc(db, "system", "updates"), (s) => {
+                if(s.exists()){
+                    currentMsg = s.data();
+                    if(currentMsg.hasNew) document.getElementById('alert-dot').style.display='block';
+                    document.getElementById('notice-body').innerText = currentMsg.message;
+                }
+            });
+        }
+
+        window.openNotice = () => {
+            document.getElementById('notice-modal').style.display = 'flex';
+            document.getElementById('alert-dot').style.display = 'none';
+        };
+
         function setBDWish(name) {
             const hour = new Date().getHours();
-            let msg = "";
-            if(hour >= 5 && hour < 10) msg = `🌞 শুভ সকাল, ${name}!`;
-            else if(hour >= 10 && hour < 16) msg = `☀️ শুভ দুপুর, ${name}!`;
-            else if(hour >= 16 && hour < 19) msg = `🌇 শুভ বিকেল, ${name}!`;
-            else if(hour >= 19 && hour < 23) msg = `🌙 শুভ সন্ধ্যা, ${name}!`;
-            else msg = `😴 অনেক রাত হলো ${name}, ঘুমাও!`;
-            document.getElementById('u-wish').innerText = msg;
+            let msg = (hour < 12) ? "শুভ সকাল" : (hour < 17) ? "শুভ দুপুর" : "শুভ সন্ধ্যা";
+            document.getElementById('u-wish').innerText = `${msg}, ${name}!`;
         }
 
         function startRain() {
@@ -215,14 +184,10 @@
                 const h = document.createElement('i');
                 h.className = 'fas fa-heart header-heart';
                 h.style.left = Math.random() * 100 + '%';
-                h.style.fontSize = (Math.random()*15 + 15) + 'px';
-                h.style.animationDuration = (Math.random()*2 + 2) + 's';
                 wrap.appendChild(h);
                 setTimeout(() => h.remove(), 4000);
             }, 600);
         }
-
-        // Other functions (Portfolio, Notice etc) same as before
     </script>
 </body>
 </html>
