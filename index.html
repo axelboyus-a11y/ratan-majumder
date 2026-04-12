@@ -179,6 +179,36 @@
         #qr-output{margin:14px auto 0;display:flex;justify-content:center;}
         #qr-output canvas,#qr-output img{border-radius:12px;border:3px solid var(--pink);}
 
+        /* ── NEW: Calculator ── */
+        .calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+        .calc-btn{padding:14px 0;border-radius:16px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:.18s;}
+        .calc-btn:active{transform:scale(.92);}
+        .calc-num{background:rgba(255,255,255,.08);color:var(--text);}
+        .calc-op{background:rgba(255,77,148,.2);color:var(--pink);}
+        .calc-eq{background:linear-gradient(90deg,var(--pink),#cc0052);color:#fff;grid-column:span 2;}
+        .calc-clr{background:rgba(255,50,50,.18);color:#ff5555;}
+        .calc-disp{background:var(--input-bg);border:1px solid var(--border);border-radius:16px;padding:14px 18px;font-size:22px;font-weight:700;text-align:right;color:var(--text);min-height:56px;margin-bottom:4px;word-break:break-all;}
+
+        /* ── NEW: Unit Converter ── */
+        .conv-select{width:100%;background:var(--input-bg);border:1px solid #333;color:var(--text);padding:10px 14px;border-radius:50px;outline:none;font-family:'Hind Siliguri',sans-serif;font-size:14px;margin-bottom:10px;appearance:none;}
+
+        /* ── NEW: Note Pad ── */
+        #note-area{width:100%;min-height:180px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:14px;border-radius:18px;outline:none;font-size:14px;font-family:'Hind Siliguri',sans-serif;resize:vertical;line-height:1.7;transition:border .2s;}
+        #note-area:focus{border-color:var(--pink);}
+        .note-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+        .note-tbtn{padding:6px 14px;border-radius:50px;border:1px solid rgba(255,77,148,.3);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:.18s;}
+        .note-tbtn:hover{background:rgba(255,77,148,.15);border-color:var(--pink);color:var(--pink);}
+
+        /* ── NEW: Dice ── */
+        .dice-face{font-size:5rem;line-height:1;margin:10px 0;display:block;animation:diceAnim .3s ease;}
+        @keyframes diceAnim{0%{transform:rotate(-20deg) scale(.8);}100%{transform:rotate(0deg) scale(1);}}
+
+        /* ── NEW: Countdown ── */
+        .cd-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;}
+        .cd-box{background:rgba(255,77,148,.08);border:1px solid rgba(255,77,148,.2);border-radius:14px;padding:12px 4px;text-align:center;}
+        .cd-num{font-size:24px;font-weight:700;color:var(--pink);}
+        .cd-lbl{font-size:10px;color:var(--text2);margin-top:3px;}
+
         @media(max-width:400px){.grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 14px 14px;}.nav-card{padding:18px 10px;}.nav-card i{font-size:1.7rem;}}
     </style>
 </head>
@@ -277,6 +307,17 @@
         <div class="nav-card" onclick="show('map-modal');loadMap()"><i class="fas fa-map-marker-alt"></i><p>Visitor Map</p></div>
     </div>
 
+    <!-- NEW TOOLS -->
+    <div class="sec-label">🛠️ নতুন টুলস</div>
+    <div class="grid">
+        <div class="nav-card" onclick="show('calc-modal')"><i class="fas fa-calculator"></i><p>Calculator<span class="new-tag">new</span></p></div>
+        <div class="nav-card" onclick="show('conv-modal')"><i class="fas fa-exchange-alt"></i><p>Unit Converter<span class="new-tag">new</span></p></div>
+        <div class="nav-card" onclick="show('note-modal');loadNote()"><i class="fas fa-sticky-note"></i><p>Sticky Note<span class="new-tag">new</span></p></div>
+        <div class="nav-card" onclick="show('dice-modal')"><i class="fas fa-dice"></i><p>Dice Roller<span class="new-tag">new</span></p></div>
+        <div class="nav-card" onclick="show('cd-modal')"><i class="fas fa-hourglass-half"></i><p>Countdown<span class="new-tag">new</span></p></div>
+        <div class="nav-card" onclick="show('ai-img-modal')"><i class="fas fa-image"></i><p>AI Story Gen<span class="new-tag">AI</span></p></div>
+    </div>
+
     <!-- AI CHAT -->
     <div class="sec-label">🤖 AI চ্যাটবট (Gemini)</div>
     <div class="chat-wrap">
@@ -286,6 +327,9 @@
             <div class="chat-row">
                 <input type="text" id="ai-inp" class="ai-inp" placeholder="কিছু জিজ্ঞেস করো..." onkeydown="if(event.key==='Enter')askAI()">
                 <button onclick="askAI()" class="btn" style="width:auto;padding:0 16px;"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <div style="text-align:right;margin-top:6px;">
+                <button onclick="clearChat()" style="background:none;border:none;color:#555;font-size:11px;cursor:pointer;">🗑️ Chat Clear করো</button>
             </div>
         </div>
     </div>
@@ -304,7 +348,7 @@
         <h3 id="n-title">নোটিশ</h3>
         <img id="notice-img" src="" alt="">
         <p id="n-body" style="color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:12px;"></p>
-        <a id="n-link" href="#" target="_blank" style="color:var(--pink);font-size:13px;display:none;margin-bottom:12px;display:none;"><i class="fas fa-external-link-alt"></i> বিস্তারিত দেখুন</a>
+        <a id="n-link" href="#" target="_blank" style="color:var(--pink);font-size:13px;display:none;margin-bottom:12px;"><i class="fas fa-external-link-alt"></i> বিস্তারিত দেখুন</a>
         <button class="btn" onclick="hide('notice-modal')">বুঝেছি ✓</button>
     </div>
 </div>
@@ -448,6 +492,139 @@
     </div>
 </div>
 
+<!-- ── NEW: CALCULATOR ── -->
+<div id="calc-modal" class="modal">
+    <div class="mbox" style="max-width:360px;">
+        <i class="fas fa-calculator" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Calculator</h3>
+        <div class="calc-disp" id="calc-disp">0</div>
+        <div style="font-size:11px;color:var(--text2);text-align:right;margin-bottom:8px;min-height:16px;" id="calc-expr"></div>
+        <div class="calc-grid">
+            <button class="calc-btn calc-clr" onclick="calcClear()">C</button>
+            <button class="calc-btn calc-op" onclick="calcSign()">+/-</button>
+            <button class="calc-btn calc-op" onclick="calcPercent()">%</button>
+            <button class="calc-btn calc-op" onclick="calcOp('/')">÷</button>
+            <button class="calc-btn calc-num" onclick="calcNum('7')">7</button>
+            <button class="calc-btn calc-num" onclick="calcNum('8')">8</button>
+            <button class="calc-btn calc-num" onclick="calcNum('9')">9</button>
+            <button class="calc-btn calc-op" onclick="calcOp('*')">×</button>
+            <button class="calc-btn calc-num" onclick="calcNum('4')">4</button>
+            <button class="calc-btn calc-num" onclick="calcNum('5')">5</button>
+            <button class="calc-btn calc-num" onclick="calcNum('6')">6</button>
+            <button class="calc-btn calc-op" onclick="calcOp('-')">−</button>
+            <button class="calc-btn calc-num" onclick="calcNum('1')">1</button>
+            <button class="calc-btn calc-num" onclick="calcNum('2')">2</button>
+            <button class="calc-btn calc-num" onclick="calcNum('3')">3</button>
+            <button class="calc-btn calc-op" onclick="calcOp('+')">+</button>
+            <button class="calc-btn calc-num" onclick="calcNum('0')" style="grid-column:span 2;">0</button>
+            <button class="calc-btn calc-num" onclick="calcDot()">.</button>
+            <button class="calc-btn calc-eq" onclick="calcEquals()">=</button>
+        </div>
+        <button class="btn-ghost" onclick="hide('calc-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ── NEW: UNIT CONVERTER ── -->
+<div id="conv-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-exchange-alt" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Unit Converter</h3>
+        <select class="conv-select" id="conv-type" onchange="convSetup()">
+            <option value="length">📏 Length</option>
+            <option value="weight">⚖️ Weight</option>
+            <option value="temp">🌡️ Temperature</option>
+            <option value="area">📐 Area</option>
+            <option value="speed">💨 Speed</option>
+            <option value="bdt">💰 BDT Currency</option>
+        </select>
+        <input type="number" id="conv-from-val" class="inp" placeholder="মান লিখো..." oninput="doConvert()">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px;">
+            <select class="conv-select" id="conv-from" onchange="doConvert()" style="margin-bottom:0;"></select>
+            <button onclick="swapConv()" style="background:rgba(255,77,148,.2);border:1px solid var(--pink);color:var(--pink);padding:9px 12px;border-radius:50px;cursor:pointer;font-size:14px;">⇄</button>
+            <select class="conv-select" id="conv-to" onchange="doConvert()" style="margin-bottom:0;"></select>
+        </div>
+        <div id="conv-result" class="tool-result" style="display:none;text-align:center;font-size:20px;font-weight:700;color:var(--pink);"></div>
+        <button class="btn-ghost" onclick="hide('conv-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ── NEW: STICKY NOTE ── -->
+<div id="note-modal" class="modal">
+    <div class="mbox" style="max-width:440px;">
+        <i class="fas fa-sticky-note" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Sticky Note Pad</h3>
+        <div class="note-toolbar">
+            <button class="note-tbtn" onclick="noteSave()">💾 Save</button>
+            <button class="note-tbtn" onclick="noteClear()">🗑️ Clear</button>
+            <button class="note-tbtn" onclick="noteCopy()">📋 Copy</button>
+            <button class="note-tbtn" onclick="noteDownload()">⬇️ Download</button>
+        </div>
+        <textarea id="note-area" placeholder="এখানে যা খুশি লিখে রাখো... (auto save হয়)"></textarea>
+        <p id="note-status" style="font-size:11px;color:#888;text-align:right;margin-top:6px;"></p>
+        <button class="btn-ghost" onclick="hide('note-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ── NEW: DICE ROLLER ── -->
+<div id="dice-modal" class="modal">
+    <div class="mbox" style="max-width:320px;">
+        <i class="fas fa-dice" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Dice Roller</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">কতটা dice রোল করবে?</p>
+        <select class="conv-select" id="dice-count">
+            <option value="1">1 Dice</option>
+            <option value="2">2 Dice</option>
+            <option value="3">3 Dice</option>
+        </select>
+        <div id="dice-output" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;min-height:90px;align-items:center;"></div>
+        <div id="dice-total" style="font-size:15px;color:var(--text2);margin-bottom:12px;min-height:22px;"></div>
+        <button class="btn" onclick="rollDice()">🎲 Roll!</button>
+        <button class="btn-ghost" onclick="hide('dice-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ── NEW: COUNTDOWN ── -->
+<div id="cd-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-hourglass-half" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Event Countdown</h3>
+        <input type="text" id="cd-label" class="inp" placeholder="ইভেন্টের নাম (যেমন: Eid 2025)">
+        <input type="date" id="cd-date" class="inp">
+        <button class="btn" onclick="startCountdown()">Countdown শুরু করো</button>
+        <div id="cd-result" style="display:none;margin-top:14px;">
+            <p id="cd-event-name" style="font-weight:700;font-size:16px;color:var(--pink);margin-bottom:10px;"></p>
+            <div class="cd-boxes">
+                <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-lbl">দিন</div></div>
+                <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-lbl">ঘণ্টা</div></div>
+                <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-lbl">মিনিট</div></div>
+                <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-lbl">সেকেন্ড</div></div>
+            </div>
+        </div>
+        <button class="btn-ghost" onclick="hide('cd-modal');clearInterval(cdTimer)">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ── NEW: AI STORY GENERATOR ── -->
+<div id="ai-img-modal" class="modal">
+    <div class="mbox" style="max-width:440px;">
+        <i class="fas fa-feather-alt" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>AI Story Generator 📖</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">Gemini AI দিয়ে গল্প তৈরি করো</p>
+        <input type="text" id="story-topic" class="inp" placeholder="গল্পের বিষয় লিখো... (যেমন: একটি রোবট)">
+        <select class="conv-select" id="story-genre" style="margin-bottom:10px;">
+            <option value="রোমান্টিক">💕 রোমান্টিক</option>
+            <option value="ভৌতিক">👻 ভৌতিক</option>
+            <option value="সায়েন্স ফিকশন">🚀 সায়েন্স ফিকশন</option>
+            <option value="অ্যাডভেঞ্চার">⚔️ অ্যাডভেঞ্চার</option>
+            <option value="হাস্যরসাত্মক">😂 হাস্যরসাত্মক</option>
+        </select>
+        <button class="btn" onclick="genStory()">গল্প বানাও ✨</button>
+        <div id="story-result" class="tool-result" style="display:none;text-align:left;max-height:280px;overflow-y:auto;"></div>
+        <button id="story-copy-btn" class="btn" style="display:none;margin-top:8px;background:rgba(255,77,148,.2);color:var(--pink);border:1px solid var(--pink);" onclick="copyStory()">📋 Copy করো</button>
+        <button class="btn-ghost" onclick="hide('ai-img-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
 <!-- QR LIB -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -462,15 +639,24 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const prov = new GoogleAuthProvider();
 
-// ===== GEMINI API KEY — তোমার নিজের key দাও =====
-// https://aistudio.google.com/app/apikey থেকে free key নাও
-const GEMINI_KEY = "YOUR_GEMINI_API_KEY_HERE";
+// ✅ GEMINI API KEY — আপডেট করা হয়েছে
+const GEMINI_KEY = "AIzaSyDQnEMGBDPkLXVObuug8fAoFSGdmh-HwkE";
 
 let curUser = null, curNotice = null;
 
 // HELPERS
 window.show = (id) => { document.getElementById(id).style.display='flex'; };
 window.hide = (id) => { document.getElementById(id).style.display='none'; };
+
+async function gemini(prompt, maxTokens=800){
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens}})
+    });
+    const d = await res.json();
+    return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
 
 // TRAIL
 const trail = (x,y) => { const p=document.createElement('i'); p.className='fas fa-heart trail'; p.style.cssText=`left:${x}px;top:${y}px;`; document.body.appendChild(p); setTimeout(()=>p.remove(),800); };
@@ -580,6 +766,13 @@ function loadChat(){
     if(saved) { document.getElementById('chat-log').innerHTML=saved; document.getElementById('chat-log').scrollTop=9999; }
 }
 
+window.clearChat = ()=>{
+    if(confirm('Chat history মুছে ফেলবে?')){
+        document.getElementById('chat-log').innerHTML='<div style="text-align:center;color:#555;padding:18px 0;font-size:13px;">Gemini AI কে যেকোনো প্রশ্ন করো... 💬</div>';
+        localStorage.removeItem('rp-chat');
+    }
+};
+
 window.askAI = async()=>{
     const inp=document.getElementById('ai-inp');
     const log=document.getElementById('chat-log');
@@ -589,15 +782,9 @@ window.askAI = async()=>{
     log.innerHTML+=`<div style="text-align:right;color:var(--pink);margin-bottom:8px;"><b>তুমি:</b> ${val}</div>`;
     typ.style.display='block'; log.scrollTop=9999;
     try{
-        const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({contents:[{parts:[{text:`তুমি একটি বাংলা AI assistant। সংক্ষিপ্ত ও সহজ বাংলায় উত্তর দাও। প্রশ্ন: ${val}`}]}]})
-        });
-        const d=await res.json();
+        const reply = await gemini(`তুমি একটি বাংলা AI assistant। সংক্ষিপ্ত ও সহজ বাংলায় উত্তর দাও। প্রশ্ন: ${val}`);
         typ.style.display='none';
-        const reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'উত্তর পাওয়া যায়নি।';
-        log.innerHTML+=`<div style="margin-bottom:10px;color:var(--text);"><b style="color:#aaa;">Gemini:</b> ${reply}</div>`;
+        log.innerHTML+=`<div style="margin-bottom:10px;color:var(--text);"><b style="color:#aaa;">Gemini:</b> ${reply||'উত্তর পাওয়া যায়নি।'}</div>`;
     }catch(e){
         typ.style.display='none';
         log.innerHTML+=`<div style="color:red;margin-bottom:8px;">⚠️ Error — API key check করো!</div>`;
@@ -618,18 +805,11 @@ window.openQuiz = async()=>{
     document.getElementById('q-txt').innerText='AI প্রশ্ন তৈরি করছে...';
     document.getElementById('q-opts').innerHTML='';
     try{
-        const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({contents:[{parts:[{text:`তুমি একটি quiz generator। নিচের format এ ঠিক ৫টা MCQ প্রশ্ন তৈরি করো। Topics: Technology, Hacking/Cybersecurity, Bangladesh, General Knowledge, Science থেকে মিক্স করো। প্রতিটা প্রশ্নে ৪টা option এবং সঠিক উত্তরের index (0-3)। শুধু JSON array return করো, অন্য কিছু না:\n[{"cat":"💻 Tech","q":"প্রশ্ন","opts":["A","B","C","D"],"ans":0},...]`}]}]})
-        });
-        const d=await res.json();
-        const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||'[]';
-        const clean=raw.replace(/```json|```/g,'').trim();
+        const raw = await gemini(`তুমি একটি quiz generator। নিচের format এ ঠিক ৫টা MCQ প্রশ্ন তৈরি করো। Topics: Technology, Hacking/Cybersecurity, Bangladesh, General Knowledge, Science থেকে মিক্স করো। প্রতিটা প্রশ্নে ৪টা option এবং সঠিক উত্তরের index (0-3)। শুধু JSON array return করো, অন্য কিছু না:\n[{"cat":"💻 Tech","q":"প্রশ্ন","opts":["A","B","C","D"],"ans":0},...]`);
+        const clean=raw.replace(/\`\`\`json|\`\`\`/g,'').trim();
         qSet=JSON.parse(clean);
         showQ();
     }catch(e){
-        // fallback questions
         qSet=[
             {cat:"💻 Tech",q:"HTML এর full form কী?",opts:["HyperText Markup Language","High Tech Modern Language","HyperTransfer Markup Logic","Home Text Markup Language"],ans:0},
             {cat:"🔐 Cyber",q:"Phishing attack কীভাবে কাজ করে?",opts:["Virus দিয়ে","নকল website দিয়ে তথ্য চুরি","Password crack করে","Network jam করে"],ans:1},
@@ -695,8 +875,7 @@ window.loadLB = async()=>{
         const snap=await getDocs(q);
         if(snap.empty){document.getElementById('lb-list').innerHTML='<p style="color:#888;font-size:13px;">এখনো কেউ quiz দেয়নি!</p>';return;}
         const medals=['🥇','🥈','🥉'];
-        let html='';
-        let i=0;
+        let html=''; let i=0;
         snap.forEach(d=>{
             const dat=d.data();
             html+=`<div class="lb-row"><span style="font-size:18px;width:28px;">${medals[i]||(i+1)+'.'}</span><span class="lb-nm">${dat.name}</span><span class="lb-sc">${dat.score} pts</span></div>`;
@@ -858,12 +1037,7 @@ window.loadMap=async()=>{
         const snap=await getDocs(collection(db,'visitors'));
         const countries={};
         snap.forEach(d=>{const dat=d.data();if(dat.country) countries[dat.country]=(countries[dat.country]||0)+1;});
-        // Simple world map dots
-        disp.innerHTML=`<svg viewBox="0 0 800 400" style="width:100%;height:100%;">
-            <rect width="800" height="400" fill="#060d1f"/>
-            <text x="400" y="200" text-anchor="middle" fill="#333" font-size="14">🌍 World Visitor Map</text>
-        </svg>`;
-        // Show country list
+        disp.innerHTML=`<svg viewBox="0 0 800 400" style="width:100%;height:100%;"><rect width="800" height="400" fill="#060d1f"/><text x="400" y="200" text-anchor="middle" fill="#333" font-size="14">🌍 World Visitor Map</text></svg>`;
         const sorted=Object.entries(countries).sort((a,b)=>b[1]-a[1]);
         if(sorted.length===0){ctry.innerHTML='<p style="color:#888;font-size:13px;text-align:center;">এখনো visitor data নেই</p>';return;}
         let html='<div style="font-size:13px;">';
@@ -896,6 +1070,180 @@ window.makePort=()=>{
         </div>`;
     hide('p-modal'); show('port-modal');
 };
+
+// =============================================
+// ── NEW FEATURES ──
+// =============================================
+
+// ── CALCULATOR ──
+let calcCurrent='0', calcPrev='', calcOperator='', calcNewNum=true;
+
+function calcUpdate(){ document.getElementById('calc-disp').innerText=calcCurrent; }
+window.calcNum=(n)=>{
+    if(calcNewNum){ calcCurrent=n; calcNewNum=false; }
+    else calcCurrent=calcCurrent==='0'?n:calcCurrent+n;
+    calcUpdate();
+};
+window.calcDot=()=>{
+    if(calcNewNum){ calcCurrent='0.'; calcNewNum=false; }
+    else if(!calcCurrent.includes('.')) calcCurrent+='.';
+    calcUpdate();
+};
+window.calcOp=(op)=>{
+    if(calcPrev&&!calcNewNum){ calcEquals(); }
+    calcPrev=calcCurrent; calcOperator=op; calcNewNum=true;
+    document.getElementById('calc-expr').innerText=`${calcPrev} ${op}`;
+};
+window.calcEquals=()=>{
+    if(!calcOperator||calcNewNum) return;
+    const a=parseFloat(calcPrev), b=parseFloat(calcCurrent);
+    let r=0;
+    if(calcOperator==='+') r=a+b;
+    else if(calcOperator==='-') r=a-b;
+    else if(calcOperator==='*') r=a*b;
+    else if(calcOperator==='/') r=b!==0?a/b:'Error';
+    calcCurrent=String(parseFloat(r.toFixed(10)));
+    calcOperator=''; calcPrev=''; calcNewNum=true;
+    document.getElementById('calc-expr').innerText='';
+    calcUpdate();
+};
+window.calcClear=()=>{ calcCurrent='0'; calcPrev=''; calcOperator=''; calcNewNum=true; document.getElementById('calc-expr').innerText=''; calcUpdate(); };
+window.calcSign=()=>{ calcCurrent=String(parseFloat(calcCurrent)*-1); calcUpdate(); };
+window.calcPercent=()=>{ calcCurrent=String(parseFloat(calcCurrent)/100); calcUpdate(); };
+
+// ── UNIT CONVERTER ──
+const convData = {
+    length:{units:['Meter','Kilometer','Mile','Foot','Inch','Centimeter','Yard'],toBase:{Meter:1,Kilometer:1000,Mile:1609.34,Foot:0.3048,Inch:0.0254,Centimeter:0.01,Yard:0.9144}},
+    weight:{units:['Kilogram','Gram','Pound','Ounce','Ton'],toBase:{Kilogram:1,Gram:0.001,Pound:0.453592,Ounce:0.0283495,Ton:1000}},
+    temp:{units:['Celsius','Fahrenheit','Kelvin'],toBase:null},
+    area:{units:['Sq Meter','Sq Kilometer','Acre','Hectare','Sq Foot'],toBase:{'Sq Meter':1,'Sq Kilometer':1e6,Acre:4046.86,Hectare:10000,'Sq Foot':0.092903}},
+    speed:{units:['m/s','km/h','mph','knot'],toBase:{'m/s':1,'km/h':0.277778,mph:0.44704,knot:0.514444}},
+    bdt:{units:['BDT','USD','EUR','GBP','INR','SAR','AED'],toBase:{BDT:1,USD:110,EUR:120,GBP:140,INR:1.32,SAR:29.3,AED:30}}
+};
+
+window.convSetup=()=>{
+    const type=document.getElementById('conv-type').value;
+    const units=convData[type].units;
+    ['conv-from','conv-to'].forEach((id,i)=>{
+        const sel=document.getElementById(id);
+        sel.innerHTML=units.map((u,idx)=>`<option value="${u}" ${idx===(i===0?0:1)?'selected':''}>${u}</option>`).join('');
+    });
+    document.getElementById('conv-result').style.display='none';
+    doConvert();
+};
+
+window.doConvert=()=>{
+    const type=document.getElementById('conv-type').value;
+    const val=parseFloat(document.getElementById('conv-from-val').value);
+    if(isNaN(val)){document.getElementById('conv-result').style.display='none';return;}
+    const from=document.getElementById('conv-from').value;
+    const to=document.getElementById('conv-to').value;
+    let result;
+    if(type==='temp'){
+        let celsius=from==='Fahrenheit'?(val-32)/1.8:from==='Kelvin'?val-273.15:val;
+        result=to==='Fahrenheit'?celsius*1.8+32:to==='Kelvin'?celsius+273.15:celsius;
+    } else {
+        const base=convData[type].toBase;
+        result=(val*base[from])/base[to];
+    }
+    const res=document.getElementById('conv-result');
+    res.style.display='block';
+    res.innerHTML=`${val} ${from} = <span style="color:var(--pink);">${parseFloat(result.toFixed(6))}</span> ${to}`;
+};
+
+window.swapConv=()=>{
+    const f=document.getElementById('conv-from').value;
+    const t=document.getElementById('conv-to').value;
+    document.getElementById('conv-from').value=t;
+    document.getElementById('conv-to').value=f;
+    doConvert();
+};
+
+// Init converter
+setTimeout(()=>convSetup(),100);
+
+// ── STICKY NOTE ──
+window.loadNote=()=>{
+    const saved=localStorage.getItem('rp-note')||'';
+    document.getElementById('note-area').value=saved;
+    document.getElementById('note-status').innerText=saved?`Last saved • ${saved.length} chars`:'';
+};
+window.noteSave=()=>{
+    const val=document.getElementById('note-area').value;
+    localStorage.setItem('rp-note',val);
+    document.getElementById('note-status').innerText=`✅ Saved • ${val.length} chars`;
+};
+window.noteClear=()=>{ if(confirm('Note মুছবে?')){ document.getElementById('note-area').value=''; localStorage.removeItem('rp-note'); document.getElementById('note-status').innerText=''; } };
+window.noteCopy=()=>{ navigator.clipboard.writeText(document.getElementById('note-area').value).then(()=>{ document.getElementById('note-status').innerText='📋 Copied!'; }); };
+window.noteDownload=()=>{
+    const val=document.getElementById('note-area').value;
+    const a=document.createElement('a'); a.download='note.txt'; a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(val); a.click();
+};
+// Auto-save note
+document.getElementById('note-area')?.addEventListener('input',()=>{
+    localStorage.setItem('rp-note',document.getElementById('note-area').value);
+    document.getElementById('note-status').innerText=`Auto saved • ${document.getElementById('note-area').value.length} chars`;
+});
+
+// ── DICE ROLLER ──
+const diceFaces=['⚀','⚁','⚂','⚃','⚄','⚅'];
+window.rollDice=()=>{
+    const count=parseInt(document.getElementById('dice-count').value);
+    const out=document.getElementById('dice-output');
+    out.innerHTML='';
+    let total=0;
+    for(let i=0;i<count;i++){
+        const val=Math.floor(Math.random()*6)+1;
+        total+=val;
+        const span=document.createElement('span');
+        span.className='dice-face'; span.innerText=diceFaces[val-1];
+        out.appendChild(span);
+    }
+    document.getElementById('dice-total').innerText=count>1?`মোট: ${total}`:'';
+};
+
+// ── COUNTDOWN TIMER ──
+let cdTimer=null;
+window.startCountdown=()=>{
+    const dateVal=document.getElementById('cd-date').value;
+    const label=document.getElementById('cd-label').value||'ইভেন্ট';
+    if(!dateVal){alert('তারিখ দিন!');return;}
+    const target=new Date(dateVal).getTime();
+    document.getElementById('cd-result').style.display='block';
+    document.getElementById('cd-event-name').innerText=`📅 ${label}`;
+    clearInterval(cdTimer);
+    const tick=()=>{
+        const now=Date.now();
+        const diff=target-now;
+        if(diff<=0){ clearInterval(cdTimer); document.getElementById('cd-d').innerText='🎉'; document.getElementById('cd-h').innerText='0'; document.getElementById('cd-m').innerText='0'; document.getElementById('cd-s').innerText='0'; return; }
+        document.getElementById('cd-d').innerText=Math.floor(diff/86400000);
+        document.getElementById('cd-h').innerText=Math.floor((diff%86400000)/3600000);
+        document.getElementById('cd-m').innerText=Math.floor((diff%3600000)/60000);
+        document.getElementById('cd-s').innerText=Math.floor((diff%60000)/1000);
+    };
+    tick(); cdTimer=setInterval(tick,1000);
+};
+
+// ── AI STORY GENERATOR ──
+let lastStory='';
+window.genStory=async()=>{
+    const topic=document.getElementById('story-topic').value.trim()||'একটি রহস্যময় যাত্রা';
+    const genre=document.getElementById('story-genre').value;
+    const res=document.getElementById('story-result');
+    const copyBtn=document.getElementById('story-copy-btn');
+    res.style.display='block'; copyBtn.style.display='none';
+    res.innerHTML='<i class="fas fa-spinner fa-spin" style="color:var(--pink);"></i> Gemini গল্প লিখছে...';
+    try{
+        const story = await gemini(`তুমি একজন বাংলা সাহিত্যিক। "${topic}" বিষয়ে একটি সুন্দর ${genre} ছোটগল্প লিখো। গল্পটি ৮-১২ লাইনের হবে, বাংলায় লিখবে, আকর্ষণীয় শুরু ও সুন্দর শেষ থাকবে।`, 600);
+        lastStory=story;
+        res.innerHTML=story.replace(/\n/g,'<br>');
+        copyBtn.style.display='block';
+    }catch(e){
+        res.innerHTML='<span style="color:red;">❌ Error — API key check করো</span>';
+    }
+};
+window.copyStory=()=>{ navigator.clipboard.writeText(lastStory).then(()=>alert('Story copied!')); };
+
 </script>
 </body>
 </html>
