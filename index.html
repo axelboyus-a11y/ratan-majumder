@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,850 +8,894 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --pink-main: #ff4d94;
+            --pink: #ff4d94;
             --pink-glow: rgba(255,77,148,0.6);
-            --bg-dark: #020617;
-            --bg-light: #f0f4ff;
-            --glass: rgba(255,255,255,0.08);
-            --card-bg: rgba(255,255,255,0.06);
-            --text-main: #ffffff;
-            --text-sub: #cccccc;
-            --border-col: rgba(255,120,180,0.2);
-            --surface: rgba(0,0,0,0.4);
+            --bg: #020617;
+            --glass: rgba(255,255,255,0.07);
+            --card: rgba(255,255,255,0.06);
+            --text: #ffffff;
+            --text2: #aaaaaa;
+            --border: rgba(255,120,180,0.18);
+            --surface: rgba(0,0,0,0.45);
+            --input-bg: rgba(0,0,0,0.6);
+            --modal-bg: rgba(0,0,0,0.96);
         }
-        body.light-mode {
-            --bg-dark: #f0f4ff;
-            --glass: rgba(0,0,0,0.05);
-            --card-bg: rgba(255,255,255,0.9);
-            --text-main: #1a1a2e;
-            --text-sub: #444466;
-            --border-col: rgba(255,77,148,0.3);
-            --surface: rgba(255,255,255,0.85);
+        body.light {
+            --bg: #f0f4ff;
+            --glass: rgba(255,255,255,0.85);
+            --card: rgba(255,255,255,0.92);
+            --text: #1a1a2e;
+            --text2: #555577;
+            --border: rgba(255,77,148,0.25);
+            --surface: rgba(255,255,255,0.9);
+            --input-bg: rgba(240,240,255,0.9);
+            --modal-bg: rgba(240,244,255,0.97);
         }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri',sans-serif; }
-        body {
-            background: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
-            touch-action: auto;
-            -webkit-overflow-scrolling: touch;
-            transition: background 0.4s, color 0.4s;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;}
+        body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;overflow-y:auto;touch-action:auto;-webkit-overflow-scrolling:touch;transition:background .4s,color .4s;}
 
-        /* SPLASH SCREEN */
-        #splash-screen {
-            position: fixed; inset: 0; z-index: 99999;
-            background: #020617;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            animation: splashOut 0.6s ease forwards;
-            animation-delay: 2.8s;
-        }
-        @keyframes splashOut { to { opacity:0; pointer-events:none; visibility:hidden; } }
-        .splash-logo {
-            width: 110px; height: 110px; border-radius: 50%;
-            border: 3px solid var(--pink-main);
-            object-fit: cover;
-            animation: splashPop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
-            opacity: 0;
-        }
-        @keyframes splashPop { from { transform:scale(0.3); opacity:0; } to { transform:scale(1); opacity:1; } }
-        .splash-title {
-            margin-top: 18px;
-            font-size: 26px; font-weight: 700;
-            background: linear-gradient(90deg, #fff, var(--pink-main), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite, fadeUp 0.6s 0.5s ease forwards;
-            opacity: 0;
-        }
-        @keyframes fadeUp { from { transform:translateY(15px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-        .splash-dots { display:flex; gap:8px; margin-top:25px; }
-        .splash-dots span {
-            width:8px; height:8px; border-radius:50%; background:var(--pink-main);
-            animation: dotPulse 1.2s ease infinite;
-        }
-        .splash-dots span:nth-child(2) { animation-delay:0.2s; }
-        .splash-dots span:nth-child(3) { animation-delay:0.4s; }
-        @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:0.4;} 50%{transform:scale(1.4);opacity:1;} }
+        /* SPLASH */
+        #splash{position:fixed;inset:0;z-index:99999;background:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:splashOut .5s 2.8s forwards;}
+        @keyframes splashOut{to{opacity:0;pointer-events:none;visibility:hidden;}}
+        .splash-logo{width:110px;height:110px;border-radius:50%;border:3px solid var(--pink);object-fit:cover;animation:popIn .7s cubic-bezier(.34,1.56,.64,1) forwards;opacity:0;}
+        @keyframes popIn{from{transform:scale(.3);opacity:0;}to{transform:scale(1);opacity:1;}}
+        .splash-name{margin-top:16px;font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,var(--pink),#fff);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 2s linear infinite,fadeUp .5s .4s forwards;opacity:0;}
+        @keyframes fadeUp{from{transform:translateY(12px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+        @keyframes shine{to{background-position:200% center;}}
+        .splash-dots{display:flex;gap:8px;margin-top:22px;}
+        .splash-dots span{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:dotP 1.2s infinite;}
+        .splash-dots span:nth-child(2){animation-delay:.2s;}
+        .splash-dots span:nth-child(3){animation-delay:.4s;}
+        @keyframes dotP{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.5);opacity:1;}}
 
-        /* BG MESH */
-        .login-bg-mesh {
-            position: fixed; inset:0; z-index:-2;
-            background: linear-gradient(45deg, #020617, #1a0821, #020617);
-            background-size: 400% 400%;
-            animation: meshMove 12s ease infinite;
-            transition: background 0.4s;
-        }
-        body.light-mode .login-bg-mesh {
-            background: linear-gradient(45deg, #e8f0ff, #fde8f0, #e8f0ff);
-            background-size: 400% 400%;
-        }
-        @keyframes meshMove { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+        /* BG */
+        .bg-mesh{position:fixed;inset:0;z-index:-2;background:linear-gradient(45deg,#020617,#1a0821,#020617);background-size:400% 400%;animation:meshMove 12s ease infinite;transition:background .4s;}
+        body.light .bg-mesh{background:linear-gradient(45deg,#e8f0ff,#fde8f0,#e8f0ff);background-size:400% 400%;}
+        @keyframes meshMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
         /* TRAIL */
-        .trail-particle {
-            position: fixed; pointer-events:none; z-index:10001;
-            color: var(--pink-main);
-            filter: drop-shadow(0 0 5px var(--pink-glow));
-            animation: particleFade 0.8s forwards ease-out;
-        }
-        @keyframes particleFade { to { transform:translateY(15px) scale(0); opacity:0; } }
-
-        /* HEADER RAIN */
-        .header-love-wrap { position:absolute; inset:0; pointer-events:none; z-index:1; overflow:hidden; border-radius:40px; }
-        .header-heart { position:absolute; color:var(--pink-main); font-size:14px; top:-20px; animation:hRain linear forwards; opacity:0; }
-        @keyframes hRain { 0%{transform:translateY(0) rotate(0deg);opacity:0;} 20%{opacity:0.8;} 100%{transform:translateY(300px) rotate(360deg);opacity:0;} }
+        .trail{position:fixed;pointer-events:none;z-index:10001;color:var(--pink);font-size:12px;animation:trailFade .8s forwards;}
+        @keyframes trailFade{to{transform:translateY(15px) scale(0);opacity:0;}}
 
         /* TOPBAR */
-        .topbar {
-            display:flex; justify-content:space-between; align-items:center;
-            padding: 15px 20px;
-            position: sticky; top:0; z-index:1000;
-            background: rgba(2,6,23,0.7);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,77,148,0.1);
-            transition: background 0.4s;
-        }
-        body.light-mode .topbar { background: rgba(240,244,255,0.85); border-bottom-color: rgba(255,77,148,0.2); }
-        .topbar-left { display:flex; gap:10px; align-items:center; }
-        .topbar-right { display:flex; align-items:center; gap:10px; }
-        .social-btn { width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; color:white; font-size:16px; transition:transform 0.2s; }
-        .social-btn:active { transform:scale(0.9); }
+        .topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;position:sticky;top:0;z-index:1000;background:rgba(2,6,23,.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,77,148,.12);transition:background .4s;}
+        body.light .topbar{background:rgba(240,244,255,.88);}
+        .soc-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;font-size:15px;transition:transform .2s;}
+        .soc-btn:active{transform:scale(.88);}
+        .topbar-r{display:flex;align-items:center;gap:9px;}
+        .v-cnt{color:var(--pink);font-weight:700;font-size:13px;display:flex;align-items:center;gap:4px;}
+        .theme-btn{width:44px;height:24px;border-radius:50px;background:rgba(255,77,148,.25);border:1px solid var(--pink);cursor:pointer;position:relative;display:flex;align-items:center;padding:3px;}
+        .theme-ball{width:18px;height:18px;border-radius:50%;background:var(--pink);position:absolute;left:3px;transition:transform .3s;font-size:10px;display:flex;align-items:center;justify-content:center;}
+        body.light .theme-ball{transform:translateX(20px);}
+        .so-btn{color:#777;background:none;border:1px solid #444;padding:4px 11px;border-radius:50px;font-size:11px;cursor:pointer;transition:.2s;}
+        body.light .so-btn{border-color:#ccc;color:#888;}
+        .so-btn:hover{border-color:var(--pink);color:var(--pink);}
 
-        /* THEME TOGGLE */
-        .theme-toggle {
-            width:44px; height:24px; border-radius:50px;
-            background: rgba(255,77,148,0.3);
-            border:1px solid var(--pink-main);
-            cursor:pointer; position:relative;
-            transition: background 0.3s;
-            display:flex; align-items:center; padding:3px;
-        }
-        .theme-toggle-ball {
-            width:18px; height:18px; border-radius:50%;
-            background: var(--pink-main);
-            position:absolute; left:3px;
-            transition: transform 0.3s;
-            display:flex; align-items:center; justify-content:center;
-            font-size:10px;
-        }
-        body.light-mode .theme-toggle-ball { transform:translateX(20px); }
-        .v-counter { color:var(--pink-main); font-weight:700; font-size:13px; display:flex; align-items:center; gap:4px; }
-        .sign-out-btn {
-            color:#666; background:none;
-            border:1px solid #444; padding:4px 12px;
-            border-radius:50px; font-size:11px; cursor:pointer;
-            transition:0.2s;
-        }
-        body.light-mode .sign-out-btn { border-color:#ccc; color:#888; }
-        .sign-out-btn:hover { border-color:var(--pink-main); color:var(--pink-main); }
+        /* TICKER */
+        .ticker{background:linear-gradient(90deg,rgba(255,77,148,.12),rgba(255,77,148,.04));border-bottom:1px solid rgba(255,77,148,.15);padding:7px 0;overflow:hidden;display:none;}
+        .ticker-wrap{display:flex;animation:tick 22s linear infinite;white-space:nowrap;}
+        .ticker-wrap span{font-size:13px;color:var(--pink);padding:0 40px;}
+        @keyframes tick{from{transform:translateX(100vw);}to{transform:translateX(-100%);}}
 
         /* HEADER */
-        .main-header {
-            margin: 20px;
-            padding: 50px 20px;
-            border-radius: 40px;
-            background: linear-gradient(135deg, rgba(255,77,148,0.1), rgba(255,255,255,0.05));
-            border: 1px solid var(--border-col);
-            backdrop-filter: blur(20px);
-            text-align: center;
-            position: relative; overflow: hidden;
-        }
-        .user-name-glow {
-            font-size:30px; font-weight:900;
-            background: linear-gradient(90deg,#fff,var(--pink-main),#fff);
-            background-size:200% auto;
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-            animation:shine 3s linear infinite;
-        }
-        body.light-mode .user-name-glow {
-            background: linear-gradient(90deg,#1a1a2e,var(--pink-main),#1a1a2e);
-            background-size:200% auto;
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-        }
-        @keyframes shine { to{background-position:200% center;} }
-        @keyframes heartBeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
-        .hd-avatar { object-fit:cover; border-radius:50%; display:block; image-rendering:-webkit-optimize-contrast; }
+        .main-hdr{margin:18px;padding:45px 20px;border-radius:40px;background:linear-gradient(135deg,rgba(255,77,148,.1),rgba(255,255,255,.04));border:1px solid var(--border);backdrop-filter:blur(20px);text-align:center;position:relative;overflow:hidden;}
+        .name-glow{font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--text),var(--pink),var(--text));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite;}
+        .hdr-rain{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;border-radius:40px;}
+        .rain-h{position:absolute;color:var(--pink);font-size:14px;top:-20px;animation:hRain linear forwards;opacity:0;}
+        @keyframes hRain{0%{transform:translateY(0) rotate(0deg);opacity:0;}20%{opacity:.8;}100%{transform:translateY(300px) rotate(360deg);opacity:0;}}
+        @keyframes hBeat{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+        .avatar{object-fit:cover;border-radius:50%;display:block;image-rendering:-webkit-optimize-contrast;}
 
-        /* NOTICE TICKER */
-        .notice-ticker {
-            background: linear-gradient(90deg, rgba(255,77,148,0.15), rgba(255,77,148,0.05));
-            border-top: 1px solid rgba(255,77,148,0.2);
-            border-bottom: 1px solid rgba(255,77,148,0.2);
-            padding: 8px 0; overflow:hidden;
-            display: none;
-        }
-        .ticker-inner {
-            display:flex; animation: tickerMove 20s linear infinite;
-            white-space:nowrap;
-        }
-        .ticker-inner span { font-size:13px; color:var(--pink-main); padding:0 40px; }
-        @keyframes tickerMove { from{transform:translateX(100vw);} to{transform:translateX(-100%);} }
+        /* SECTION LABEL */
+        .sec-label{text-align:center;font-size:12px;font-weight:600;color:var(--pink);margin:12px 20px 10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.75;}
 
         /* GRID */
-        .grid-layout {
-            display:grid; grid-template-columns:repeat(2,1fr);
-            gap:15px; padding:0 20px 20px;
-            max-width:600px; margin:0 auto;
-        }
-        .nav-card {
-            background: var(--card-bg);
-            border-radius:30px; padding:25px 15px;
-            text-align:center; text-decoration:none; color:var(--text-main);
-            border:1px solid rgba(255,255,255,0.05);
-            animation:autoBari 4s infinite;
-            transition:0.3s; position:relative; cursor:pointer;
-            display:block;
-        }
-        .nav-card:active { transform:scale(0.95); }
-        @keyframes autoBari { 0%,100%{border-color:rgba(255,255,255,0.05);} 50%{border-color:var(--pink-main);} }
-        body.light-mode .nav-card { border-color:rgba(255,77,148,0.1); box-shadow:0 2px 15px rgba(255,77,148,0.05); }
-        .nav-card i { font-size:2.2rem; color:var(--pink-main); margin-bottom:8px; }
-        .nav-card p { font-size:14px; }
-
-        /* SECTION TITLE */
-        .section-title {
-            text-align:center; font-size:15px; font-weight:600;
-            color:var(--pink-main); margin:10px 20px 15px;
-            letter-spacing:1px; text-transform:uppercase;
-            opacity:0.8;
-        }
-
-        /* AI CHAT */
-        .chat-box {
-            max-width:500px; margin:0 auto 20px;
-            padding:0 20px;
-        }
-        .chat-inner {
-            background: var(--surface);
-            padding:20px; border-radius:30px;
-            border:1px solid rgba(255,77,148,0.1);
-        }
-        #chat-content {
-            height:150px; overflow-y:auto;
-            font-size:13px; margin-bottom:10px;
-            scrollbar-width:thin; scrollbar-color:var(--pink-main) transparent;
-            color: var(--text-main);
-        }
-        #chat-content::-webkit-scrollbar { width:4px; }
-        #chat-content::-webkit-scrollbar-thumb { background:var(--pink-main); border-radius:10px; }
-        .chat-input-row { display:flex; gap:8px; }
-        .ai-input {
-            flex:1; background:rgba(0,0,0,0.5); border:1px solid #333;
-            color:var(--text-main); padding:10px 15px; border-radius:50px;
-            outline:none; font-size:13px; font-family:'Hind Siliguri',sans-serif;
-            transition:border 0.2s;
-        }
-        body.light-mode .ai-input { background:rgba(255,255,255,0.8); border-color:#ddd; }
-        .ai-input:focus { border-color:var(--pink-main); }
-        .typing-indicator { display:none; padding:5px 0; }
-        .typing-indicator span {
-            display:inline-block; width:7px; height:7px;
-            background:var(--pink-main); border-radius:50%; margin:0 2px;
-            animation:typingBounce 1s infinite;
-        }
-        .typing-indicator span:nth-child(2){animation-delay:0.15s;}
-        .typing-indicator span:nth-child(3){animation-delay:0.3s;}
-        @keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
-
-        /* QUIZ MODAL */
-        .quiz-option {
-            width:100%; padding:12px 18px; margin-bottom:8px;
-            border-radius:50px; border:1px solid rgba(255,77,148,0.3);
-            background:rgba(255,255,255,0.05); color:var(--text-main);
-            cursor:pointer; font-size:14px; font-family:'Hind Siliguri',sans-serif;
-            transition:0.2s; text-align:left;
-        }
-        .quiz-option:hover { background:rgba(255,77,148,0.15); border-color:var(--pink-main); }
-        .quiz-option.correct { background:rgba(0,200,100,0.2); border-color:#00c864; color:#00c864; }
-        .quiz-option.wrong { background:rgba(255,50,50,0.2); border-color:#ff3232; color:#ff3232; }
+        .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;padding:0 18px 16px;max-width:600px;margin:0 auto;}
+        .nav-card{background:var(--card);border-radius:28px;padding:22px 12px;text-align:center;text-decoration:none;color:var(--text);border:1px solid rgba(255,255,255,.05);animation:cardPulse 4s infinite;transition:.25s;position:relative;cursor:pointer;display:block;}
+        .nav-card:active{transform:scale(.94);}
+        @keyframes cardPulse{0%,100%{border-color:rgba(255,255,255,.05);}50%{border-color:var(--pink);}}
+        body.light .nav-card{box-shadow:0 2px 16px rgba(255,77,148,.07);}
+        .nav-card i{font-size:2rem;color:var(--pink);margin-bottom:7px;display:block;}
+        .nav-card p{font-size:13px;line-height:1.4;}
+        .hot-tag{background:var(--pink);color:#fff;font-size:10px;padding:1px 6px;border-radius:20px;margin-left:4px;vertical-align:middle;}
+        .new-tag{background:linear-gradient(90deg,#7c3aed,var(--pink));color:#fff;font-size:10px;padding:1px 6px;border-radius:20px;margin-left:4px;vertical-align:middle;}
+        .alert-dot{position:absolute;top:11px;right:11px;width:8px;height:8px;background:red;border-radius:50%;display:none;box-shadow:0 0 8px red;}
 
         /* MODALS */
-        .modal {
-            position:fixed; inset:0; background:rgba(0,0,0,0.93);
-            display:none; align-items:center; justify-content:center;
-            z-index:10000; padding:20px; overflow-y:auto;
-        }
-        .modal-box {
-            background:#000; padding:30px; border-radius:35px;
-            border:1px solid var(--pink-main); width:100%; max-width:380px;
-            text-align:center;
-        }
-        body.light-mode .modal-box { background:#fff; }
-        body.light-mode .modal { background:rgba(240,244,255,0.96); }
+        .modal{position:fixed;inset:0;background:var(--modal-bg);display:none;align-items:center;justify-content:center;z-index:10000;padding:18px;overflow-y:auto;}
+        .mbox{background:var(--surface);padding:28px;border-radius:32px;border:1px solid var(--pink);width:100%;max-width:400px;text-align:center;max-height:90vh;overflow-y:auto;}
+        .mbox h3{color:var(--pink);margin-bottom:16px;font-size:18px;}
 
         /* BUTTONS */
-        .btn-premium {
-            background:linear-gradient(90deg,var(--pink-main),#cc0052);
-            color:white; border:none; padding:12px 20px;
-            border-radius:50px; font-weight:700; cursor:pointer;
-            width:100%; transition:0.3s; font-family:'Hind Siliguri',sans-serif;
-            font-size:14px;
-        }
-        .btn-premium:active { transform:scale(0.97); }
-        .btn-ghost {
-            margin-top:12px; background:none; border:none;
-            color:#666; font-size:13px; cursor:pointer;
-            font-family:'Hind Siliguri',sans-serif;
-        }
-        .p-input {
-            width:100%; background:#000; border:1px solid #333;
-            color:white; padding:12px 20px; border-radius:50px;
-            outline:none; margin-bottom:10px;
-            font-family:'Hind Siliguri',sans-serif;
-            transition:border 0.2s;
-        }
-        body.light-mode .p-input { background:#f5f5ff; border-color:#ddd; color:#1a1a2e; }
-        .p-input:focus { border-color:var(--pink-main); }
+        .btn{background:linear-gradient(90deg,var(--pink),#cc0052);color:#fff;border:none;padding:12px 20px;border-radius:50px;font-weight:700;cursor:pointer;width:100%;transition:.25s;font-family:'Hind Siliguri',sans-serif;font-size:14px;}
+        .btn:active{transform:scale(.97);}
+        .btn-ghost{margin-top:10px;background:none;border:none;color:#777;font-size:13px;cursor:pointer;font-family:'Hind Siliguri',sans-serif;width:100%;}
+        .inp{width:100%;background:var(--input-bg);border:1px solid #333;color:var(--text);padding:11px 18px;border-radius:50px;outline:none;margin-bottom:10px;font-family:'Hind Siliguri',sans-serif;font-size:14px;transition:border .2s;}
+        body.light .inp{border-color:#ddd;}
+        .inp:focus{border-color:var(--pink);}
+        textarea.inp{border-radius:18px;resize:none;}
 
-        /* NOTICE IMAGE */
-        #notice-img { max-width:100%; border-radius:15px; margin:10px 0; display:none; }
-        #notice-link { color:var(--pink-main); font-size:13px; text-decoration:none; display:none; margin-bottom:10px; display:inline-block; }
+        /* AI CHAT */
+        .chat-wrap{max-width:500px;margin:0 auto 16px;padding:0 18px;}
+        .chat-box{background:var(--surface);padding:18px;border-radius:28px;border:1px solid rgba(255,77,148,.1);}
+        #chat-log{height:160px;overflow-y:auto;font-size:13px;margin-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--pink) transparent;}
+        #chat-log::-webkit-scrollbar{width:3px;}
+        #chat-log::-webkit-scrollbar-thumb{background:var(--pink);border-radius:10px;}
+        .chat-row{display:flex;gap:8px;}
+        .ai-inp{flex:1;background:var(--input-bg);border:1px solid #333;color:var(--text);padding:10px 15px;border-radius:50px;outline:none;font-size:13px;font-family:'Hind Siliguri',sans-serif;transition:border .2s;}
+        body.light .ai-inp{border-color:#ddd;}
+        .ai-inp:focus{border-color:var(--pink);}
+        .typing{display:none;padding:4px 0;}
+        .typing span{display:inline-block;width:6px;height:6px;background:var(--pink);border-radius:50%;margin:0 2px;animation:typB 1s infinite;}
+        .typing span:nth-child(2){animation-delay:.15s;}
+        .typing span:nth-child(3){animation-delay:.3s;}
+        @keyframes typB{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
 
-        /* SCROLL TO TOP */
-        #scroll-top-btn {
-            position:fixed; bottom:25px; right:20px;
-            width:45px; height:45px; border-radius:50%;
-            background:linear-gradient(135deg,var(--pink-main),#cc0052);
-            color:white; border:none; font-size:18px;
-            cursor:pointer; z-index:9000;
-            display:none; align-items:center; justify-content:center;
-            box-shadow:0 4px 20px rgba(255,77,148,0.4);
-            transition:0.3s;
-        }
-        #scroll-top-btn:hover { transform:translateY(-3px); }
+        /* QUIZ */
+        .q-opt{width:100%;padding:11px 16px;margin-bottom:8px;border-radius:50px;border:1px solid rgba(255,77,148,.3);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font-size:14px;font-family:'Hind Siliguri',sans-serif;transition:.18s;text-align:left;}
+        .q-opt:hover{background:rgba(255,77,148,.15);border-color:var(--pink);}
+        .q-opt.ok{background:rgba(0,200,100,.18);border-color:#00c864;color:#00c864;}
+        .q-opt.no{background:rgba(255,50,50,.18);border-color:#ff3232;color:#ff3232;}
+        .q-prog{height:4px;border-radius:10px;background:rgba(255,77,148,.15);margin-bottom:14px;}
+        .q-prog-f{height:100%;border-radius:10px;background:var(--pink);transition:width .4s;}
+        .score-box{display:inline-block;padding:8px 20px;border-radius:50px;background:rgba(255,77,148,.18);border:1px solid var(--pink);color:var(--pink);font-weight:700;font-size:20px;margin:10px 0;}
+
+        /* TOOLS */
+        .tool-result{background:var(--input-bg);border:1px solid var(--border);border-radius:18px;padding:14px;margin-top:12px;font-size:13px;text-align:left;word-break:break-all;line-height:1.7;color:var(--text);}
+        .strength-bar{height:8px;border-radius:10px;background:#222;margin:10px 0;overflow:hidden;}
+        .strength-fill{height:100%;border-radius:10px;transition:width .4s,background .4s;}
+        .hash-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+        .hash-tab{padding:6px 14px;border-radius:50px;border:1px solid rgba(255,77,148,.3);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:.18s;}
+        .hash-tab.active{background:var(--pink);color:#fff;border-color:var(--pink);}
+        .type-area{width:100%;background:var(--input-bg);border:1px solid #333;color:var(--text);padding:14px;border-radius:18px;outline:none;font-size:15px;font-family:'Hind Siliguri',sans-serif;resize:none;line-height:1.7;transition:border .2s;}
+        body.light .type-area{border-color:#ddd;}
+        .type-area:focus{border-color:var(--pink);}
+        .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+        .stat-box{background:rgba(255,77,148,.08);border:1px solid rgba(255,77,148,.2);border-radius:16px;padding:12px 8px;text-align:center;}
+        .stat-num{font-size:22px;font-weight:700;color:var(--pink);}
+        .stat-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
 
         /* LEADERBOARD */
-        .lb-row {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:10px 15px; border-radius:15px; margin-bottom:8px;
-            background:rgba(255,77,148,0.05); border:1px solid rgba(255,77,148,0.1);
-        }
-        .lb-rank { font-size:18px; width:30px; }
-        .lb-name { flex:1; font-size:14px; margin-left:8px; color:var(--text-main); }
-        .lb-score { color:var(--pink-main); font-weight:700; font-size:14px; }
+        .lb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:14px;margin-bottom:7px;background:rgba(255,77,148,.05);border:1px solid rgba(255,77,148,.1);}
+        .lb-nm{flex:1;font-size:14px;margin-left:8px;color:var(--text);}
+        .lb-sc{color:var(--pink);font-weight:700;font-size:14px;}
 
-        /* RESULT CARD */
-        .result-card {
-            background:#000; border:2px solid var(--pink-main);
-            padding:25px; border-radius:35px;
-            width:100%; max-width:350px; text-align:center; position:relative;
-        }
-        body.light-mode .result-card { background:#fff; }
+        /* MAP */
+        #map-display{width:100%;height:200px;border-radius:18px;overflow:hidden;background:#0a0a1a;position:relative;margin-top:12px;}
+        .map-dot{position:absolute;width:10px;height:10px;background:var(--pink);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--pink);animation:mapPulse 2s infinite;}
+        @keyframes mapPulse{0%,100%{box-shadow:0 0 8px var(--pink);}50%{box-shadow:0 0 18px var(--pink),0 0 30px rgba(255,77,148,.4);}}
 
-        /* PROGRESS BAR */
-        .quiz-progress { 
-            height:4px; border-radius:10px;
-            background:rgba(255,77,148,0.15); margin-bottom:15px;
-        }
-        .quiz-progress-fill {
-            height:100%; border-radius:10px;
-            background:var(--pink-main); transition:width 0.4s;
-        }
+        /* SCROLL TOP */
+        #scr-top{position:fixed;bottom:22px;right:18px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#cc0052);color:#fff;border:none;font-size:17px;cursor:pointer;z-index:9000;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(255,77,148,.4);transition:.25s;}
+        #scr-top:hover{transform:translateY(-3px);}
 
-        /* SCORE BADGE */
-        .score-badge {
-            display:inline-block; padding:8px 20px;
-            border-radius:50px; background:rgba(255,77,148,0.2);
-            border:1px solid var(--pink-main); color:var(--pink-main);
-            font-weight:700; font-size:18px; margin:10px 0;
-        }
+        /* NOTICE */
+        #notice-img{max-width:100%;border-radius:14px;margin:10px 0;display:none;}
 
-        /* ALERT DOT */
-        .alert-dot {
-            position:absolute; top:12px; right:12px;
-            width:8px; height:8px; background:red; border-radius:50%;
-            display:none; box-shadow:0 0 10px red;
-        }
+        /* PORTFOLIO RESULT */
+        .port-card{background:var(--surface);border:2px solid var(--pink);padding:24px;border-radius:32px;width:100%;max-width:340px;text-align:center;}
+
+        /* QR */
+        #qr-output{margin:14px auto 0;display:flex;justify-content:center;}
+        #qr-output canvas,#qr-output img{border-radius:12px;border:3px solid var(--pink);}
+
+        @media(max-width:400px){.grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 14px 14px;}.nav-card{padding:18px 10px;}.nav-card i{font-size:1.7rem;}}
     </style>
 </head>
-
 <body>
-<div class="login-bg-mesh"></div>
+<div class="bg-mesh"></div>
 
-<!-- SPLASH SCREEN -->
-<div id="splash-screen">
-    <img src="ratan.jpg" class="splash-logo" alt="Red Pen">
-    <div class="splash-title">❤ Red Pen ❤</div>
+<!-- SPLASH -->
+<div id="splash">
+    <img src="ratan.jpg" class="splash-logo avatar" alt="Red Pen">
+    <div class="splash-name">❤ Red Pen ❤</div>
     <div class="splash-dots"><span></span><span></span><span></span></div>
 </div>
 
-<audio id="snd-open" src="open.mp3" preload="auto"></audio>
+<audio id="snd" src="open.mp3" preload="auto"></audio>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 <div id="login-screen" class="modal" style="display:flex;">
-    <div class="modal-box">
-        <img src="ratan.jpg" class="hd-avatar" style="width:100px;height:100px;border:3px solid var(--pink-main);margin:0 auto 15px;">
-        <h2 style="color:var(--text-main);">RED PEN</h2>
+    <div class="mbox">
+        <img src="ratan.jpg" class="avatar" style="width:95px;height:95px;border:3px solid var(--pink);margin:0 auto 14px;">
+        <h2 style="color:var(--text);margin-bottom:4px;">RED PEN</h2>
         <p style="color:#555;font-size:12px;margin-bottom:20px;">VIP PORTAL LOGIN</p>
-        <button class="btn-premium" onclick="login()"><i class="fab fa-google" style="margin-right:8px;"></i>LOGIN WITH GOOGLE</button>
+        <button class="btn" onclick="login()"><i class="fab fa-google" style="margin-right:8px;"></i>LOGIN WITH GOOGLE</button>
     </div>
 </div>
 
 <!-- AUDIO GATE -->
-<div id="audio-gate-modal" class="modal">
-    <div class="modal-box">
-        <i class="fas fa-unlock-alt" style="font-size:2.5rem;color:var(--pink-main);margin-bottom:15px;"></i>
-        <h3 style="margin-bottom:10px;color:var(--text-main);">স্বাগতম বস্!</h3>
-        <p style="font-size:14px;color:#ccc;margin-bottom:25px;">ড্যাশবোর্ড আনলক করতে নিচের বাটনে ক্লিক করুন।</p>
-        <button class="btn-premium" onclick="enterDashboard()">ENTER DASHBOARD</button>
+<div id="gate-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-unlock-alt" style="font-size:2.4rem;color:var(--pink);margin-bottom:14px;"></i>
+        <h3>স্বাগতম বস্!</h3>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:22px;">ড্যাশবোর্ড আনলক করতে ক্লিক করুন।</p>
+        <button class="btn" onclick="enterDash()">ENTER DASHBOARD ✨</button>
     </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard-ui" style="display:none;">
+<div id="dash" style="display:none;">
 
     <!-- TOPBAR -->
     <div class="topbar">
-        <div class="topbar-left">
-            <a href="https://www.facebook.com/profile.php?id=61552305287329" class="social-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://wa.me/8801609160109" class="social-btn" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        <div style="display:flex;gap:9px;align-items:center;">
+            <a href="https://www.facebook.com/profile.php?id=61552305287329" class="soc-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/8801609160109" class="soc-btn" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
         </div>
-        <div class="topbar-right">
-            <div class="v-counter"><i class="fas fa-eye"></i> <span id="v-count">0</span></div>
-            <div class="theme-toggle" onclick="toggleTheme()" title="Theme Switch">
-                <div class="theme-toggle-ball" id="theme-ball">🌙</div>
-            </div>
-            <button onclick="logout()" class="sign-out-btn">Sign Out</button>
+        <div class="topbar-r">
+            <div class="v-cnt"><i class="fas fa-eye"></i><span id="v-count">0</span></div>
+            <div class="theme-btn" onclick="toggleTheme()"><div class="theme-ball" id="t-ball">🌙</div></div>
+            <button onclick="logout()" class="so-btn">Sign Out</button>
         </div>
     </div>
 
     <!-- TICKER -->
-    <div class="notice-ticker" id="notice-ticker">
-        <div class="ticker-inner" id="ticker-text">
-            <span id="ticker-content">লোড হচ্ছে...</span>
-        </div>
+    <div class="ticker" id="ticker">
+        <div class="ticker-wrap"><span id="ticker-txt">লোড হচ্ছে...</span></div>
     </div>
 
     <!-- HEADER -->
-    <header class="main-header">
-        <div id="header-rain" class="header-love-wrap"></div>
-        <div style="display:flex;justify-content:center;align-items:center;margin-bottom:15px;position:relative;z-index:5;">
-            <img src="ratan.jpg" class="hd-avatar" style="width:100px;height:100px;border:3px solid var(--pink-main);">
-            <img id="u-photo" src="" class="hd-avatar" style="width:80px;height:80px;border:3px solid white;margin-left:-25px;z-index:6;">
+    <header class="main-hdr">
+        <div class="hdr-rain" id="hdr-rain"></div>
+        <div style="display:flex;justify-content:center;align-items:center;margin-bottom:14px;position:relative;z-index:5;">
+            <img src="ratan.jpg" class="avatar" style="width:95px;height:95px;border:3px solid var(--pink);">
+            <img id="u-photo" src="" class="avatar" style="width:75px;height:75px;border:3px solid white;margin-left:-22px;z-index:6;">
         </div>
         <div style="display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:5;">
-            <i class="fas fa-heart" style="color:var(--pink-main);animation:heartBeat 1.2s infinite;"></i>
-            <span id="u-name" class="user-name-glow">...</span>
-            <i class="fas fa-heart" style="color:var(--pink-main);animation:heartBeat 1.2s infinite;"></i>
+            <i class="fas fa-heart" style="color:var(--pink);animation:hBeat 1.2s infinite;"></i>
+            <span id="u-name" class="name-glow">...</span>
+            <i class="fas fa-heart" style="color:var(--pink);animation:hBeat 1.2s infinite;"></i>
         </div>
-        <p id="u-wish" style="margin-top:10px;font-size:14px;color:var(--text-sub);position:relative;z-index:5;">লোড হচ্ছে...</p>
+        <p id="u-wish" style="margin-top:10px;font-size:14px;color:var(--text2);position:relative;z-index:5;">লোড হচ্ছে...</p>
     </header>
 
-    <!-- MAIN NAV GRID -->
-    <div class="section-title">মেনু</div>
-    <main class="grid-layout">
+    <!-- MAIN MENU -->
+    <div class="sec-label">📋 মেনু</div>
+    <main class="grid">
         <div class="nav-card" onclick="openNotice()">
             <div class="alert-dot" id="alert-dot"></div>
             <i class="fas fa-bullhorn"></i><p>নোটিশ বোর্ড</p>
         </div>
         <a href="portfolio.html" class="nav-card"><i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p></a>
         <a href="business.html" class="nav-card"><i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p></a>
-        <div class="nav-card" onclick="document.getElementById('p-maker-modal').style.display='flex'"><i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p></div>
+        <div class="nav-card" onclick="show('p-modal')"><i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p></div>
         <a href="testpaper.html" class="nav-card"><i class="fas fa-graduation-cap"></i><p>নোটস / ফাইল</p></a>
-        <a href="number.html" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস <span style="color:var(--pink-main);font-size:11px;">(hot)</span></p></a>
-        <div class="nav-card" onclick="openQuiz()"><i class="fas fa-brain"></i><p>Daily Quiz <span style="background:var(--pink-main);color:white;font-size:10px;padding:2px 7px;border-radius:20px;margin-left:4px;">New</span></p></div>
-        <div class="nav-card" onclick="openLeaderboard()"><i class="fas fa-trophy"></i><p>Leaderboard</p></div>
+        <a href="number.html" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস<span class="hot-tag">hot</span></p></a>
+        <div class="nav-card" onclick="openQuiz()"><i class="fas fa-brain"></i><p>Daily Quiz<span class="new-tag">AI</span></p></div>
+        <div class="nav-card" onclick="show('lb-modal');loadLB()"><i class="fas fa-trophy"></i><p>Leaderboard</p></div>
     </main>
 
+    <!-- HACKING TOOLS -->
+    <div class="sec-label">🔐 হ্যাকিং টুলস</div>
+    <div class="grid">
+        <div class="nav-card" onclick="show('ip-modal')"><i class="fas fa-globe"></i><p>IP Tracker</p></div>
+        <div class="nav-card" onclick="show('pass-modal')"><i class="fas fa-lock"></i><p>Password Checker</p></div>
+        <div class="nav-card" onclick="show('hash-modal')"><i class="fas fa-hashtag"></i><p>Hash Generator</p></div>
+        <div class="nav-card" onclick="show('qr-modal')"><i class="fas fa-qrcode"></i><p>QR Generator</p></div>
+        <div class="nav-card" onclick="show('type-modal')"><i class="fas fa-keyboard"></i><p>Typing Speed</p></div>
+        <div class="nav-card" onclick="show('map-modal');loadMap()"><i class="fas fa-map-marker-alt"></i><p>Visitor Map</p></div>
+    </div>
+
     <!-- AI CHAT -->
-    <div class="section-title">AI চ্যাটবট</div>
-    <div class="chat-box">
-        <div class="chat-inner">
-            <div id="chat-content">
-                <div style="text-align:center;color:#555;padding:20px 0;font-size:13px;">AI কে যেকোনো প্রশ্ন করো... 💬</div>
-            </div>
-            <div class="typing-indicator" id="typing-indicator">
-                <span></span><span></span><span></span>
-                <span style="font-size:12px;color:#888;margin-left:5px;">AI ভাবছে...</span>
-            </div>
-            <div class="chat-input-row">
-                <input type="text" id="ai-msg" class="ai-input" placeholder="কিছু জিজ্ঞেস করো..." onkeydown="if(event.key==='Enter')askAI()">
-                <button onclick="askAI()" class="btn-premium" style="width:auto;padding:0 18px;"><i class="fas fa-paper-plane"></i></button>
+    <div class="sec-label">🤖 AI চ্যাটবট (Gemini)</div>
+    <div class="chat-wrap">
+        <div class="chat-box">
+            <div id="chat-log"><div style="text-align:center;color:#555;padding:18px 0;font-size:13px;">Gemini AI কে যেকোনো প্রশ্ন করো... 💬</div></div>
+            <div class="typing" id="typing"><span></span><span></span><span></span><span style="font-size:12px;color:#888;margin-left:5px;">AI ভাবছে...</span></div>
+            <div class="chat-row">
+                <input type="text" id="ai-inp" class="ai-inp" placeholder="কিছু জিজ্ঞেস করো..." onkeydown="if(event.key==='Enter')askAI()">
+                <button onclick="askAI()" class="btn" style="width:auto;padding:0 16px;"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
-
     <div style="height:80px;"></div>
 </div>
 
-<!-- SCROLL TO TOP -->
-<button id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <i class="fas fa-arrow-up"></i>
-</button>
+<!-- SCROLL TOP -->
+<button id="scr-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
 
-<!-- PORTFOLIO MAKER MODAL -->
-<div id="p-maker-modal" class="modal">
-    <div class="modal-box">
-        <h3 style="color:var(--pink-main);margin-bottom:20px;">মেক পোর্টফোলিও</h3>
-        <input type="text" id="p-name" placeholder="আপনার পূর্ণ নাম" class="p-input">
-        <input type="text" id="p-title" placeholder="টাইটেল / পদবি" class="p-input">
-        <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="p-input">
-        <input type="text" id="p-fb" placeholder="ফেসবুক লিঙ্ক" class="p-input">
-        <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ নম্বর" class="p-input">
-        <button class="btn-premium" onclick="createPortfolio()">জেনারেট করুন</button>
-        <button class="btn-ghost" onclick="document.getElementById('p-maker-modal').style.display='none'">বন্ধ করুন</button>
-    </div>
-</div>
+<!-- ===== MODALS ===== -->
 
-<!-- PORTFOLIO RESULT MODAL -->
-<div id="portfolio-modal" class="modal"><div id="p-result-area"></div></div>
-
-<!-- NOTICE MODAL -->
+<!-- NOTICE -->
 <div id="notice-modal" class="modal">
-    <div class="modal-box">
-        <i class="fas fa-envelope-open-text" style="font-size:2.5rem;color:var(--pink-main);margin-bottom:15px;"></i>
-        <h3 style="color:var(--text-main);margin-bottom:10px;" id="notice-title">নোটিশ</h3>
-        <img id="notice-img" src="" alt="notice image">
-        <p id="notice-body" style="color:var(--text-sub);margin-bottom:15px;font-size:14px;line-height:1.6;"></p>
-        <a id="notice-link" href="#" target="_blank"><i class="fas fa-external-link-alt"></i> বিস্তারিত দেখুন</a>
-        <br><br>
-        <button class="btn-premium" onclick="document.getElementById('notice-modal').style.display='none'">বুঝেছি ✓</button>
+    <div class="mbox">
+        <i class="fas fa-envelope-open-text" style="font-size:2.2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3 id="n-title">নোটিশ</h3>
+        <img id="notice-img" src="" alt="">
+        <p id="n-body" style="color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:12px;"></p>
+        <a id="n-link" href="#" target="_blank" style="color:var(--pink);font-size:13px;display:none;margin-bottom:12px;display:none;"><i class="fas fa-external-link-alt"></i> বিস্তারিত দেখুন</a>
+        <button class="btn" onclick="hide('notice-modal')">বুঝেছি ✓</button>
     </div>
 </div>
 
-<!-- QUIZ MODAL -->
+<!-- PORTFOLIO MAKER -->
+<div id="p-modal" class="modal">
+    <div class="mbox">
+        <h3>মেক পোর্টফোলিও</h3>
+        <input type="text" id="p-name" placeholder="পূর্ণ নাম" class="inp">
+        <input type="text" id="p-title" placeholder="টাইটেল / পদবি" class="inp">
+        <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="inp">
+        <input type="text" id="p-fb" placeholder="ফেসবুক লিঙ্ক" class="inp">
+        <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ নম্বর" class="inp">
+        <button class="btn" onclick="makePort()">জেনারেট করুন</button>
+        <button class="btn-ghost" onclick="hide('p-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- PORTFOLIO RESULT -->
+<div id="port-modal" class="modal"><div id="port-area"></div></div>
+
+<!-- QUIZ -->
 <div id="quiz-modal" class="modal">
-    <div class="modal-box" style="max-width:420px;">
-        <div id="quiz-container">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-                <span style="color:var(--pink-main);font-weight:700;font-size:13px;" id="quiz-category">📚 General</span>
-                <span style="color:var(--text-sub);font-size:13px;" id="quiz-count">প্রশ্ন ১/৫</span>
+    <div class="mbox" style="max-width:420px;">
+        <div id="quiz-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <span style="color:var(--pink);font-weight:700;font-size:12px;" id="q-cat">📚 General</span>
+                <span style="color:var(--text2);font-size:12px;" id="q-num">প্রশ্ন ১/৫</span>
             </div>
-            <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-prog" style="width:20%;"></div></div>
-            <p id="quiz-question" style="font-size:16px;font-weight:600;margin-bottom:20px;color:var(--text-main);line-height:1.5;"></p>
-            <div id="quiz-options"></div>
-            <p id="quiz-feedback" style="font-size:13px;margin-top:10px;min-height:20px;"></p>
+            <div class="q-prog"><div class="q-prog-f" id="q-prog" style="width:20%;"></div></div>
+            <p id="q-txt" style="font-size:15px;font-weight:600;margin-bottom:18px;color:var(--text);line-height:1.5;min-height:48px;"></p>
+            <div id="q-opts"></div>
+            <p id="q-fb" style="font-size:13px;margin-top:8px;min-height:18px;"></p>
         </div>
         <div id="quiz-result" style="display:none;text-align:center;">
-            <div style="font-size:3rem;margin-bottom:10px;">🎉</div>
-            <h3 style="color:var(--text-main);margin-bottom:8px;">Quiz শেষ!</h3>
-            <div class="score-badge" id="final-score">৫/৫</div>
-            <p style="color:var(--text-sub);font-size:14px;margin:10px 0;" id="score-msg"></p>
-            <button class="btn-premium" onclick="restartQuiz()" style="margin-bottom:8px;">আবার খেলো</button>
-            <button class="btn-ghost" onclick="document.getElementById('quiz-modal').style.display='none'">বন্ধ করুন</button>
+            <div style="font-size:3rem;margin-bottom:8px;">🎉</div>
+            <h3 style="color:var(--text);margin-bottom:8px;">Quiz শেষ!</h3>
+            <div class="score-box" id="final-sc">৫/৫</div>
+            <p style="color:var(--text2);font-size:14px;margin:10px 0;" id="sc-msg"></p>
+            <button class="btn" onclick="openQuiz()" style="margin-bottom:8px;">আবার খেলো 🔄</button>
+            <button class="btn-ghost" onclick="hide('quiz-modal')">বন্ধ করুন</button>
         </div>
-        <button class="btn-ghost" onclick="document.getElementById('quiz-modal').style.display='none'" id="quiz-close-btn">বন্ধ করুন</button>
+        <button class="btn-ghost" id="q-close" onclick="hide('quiz-modal')">বন্ধ করুন</button>
     </div>
 </div>
 
-<!-- LEADERBOARD MODAL -->
+<!-- LEADERBOARD -->
 <div id="lb-modal" class="modal">
-    <div class="modal-box" style="max-width:380px;">
+    <div class="mbox">
         <i class="fas fa-trophy" style="font-size:2rem;color:gold;margin-bottom:10px;"></i>
-        <h3 style="color:var(--text-main);margin-bottom:20px;">Top Players 🏆</h3>
-        <div id="lb-list">লোড হচ্ছে...</div>
-        <button class="btn-ghost" onclick="document.getElementById('lb-modal').style.display='none'">বন্ধ করুন</button>
+        <h3 style="color:var(--text);">Top Players 🏆</h3>
+        <div id="lb-list" style="margin-top:14px;">লোড হচ্ছে...</div>
+        <button class="btn-ghost" onclick="hide('lb-modal')">বন্ধ করুন</button>
     </div>
 </div>
+
+<!-- IP TRACKER -->
+<div id="ip-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-globe" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>IP Tracker Tool</h3>
+        <input type="text" id="ip-inp" class="inp" placeholder="IP address লিখো (খালি রাখলে তোমার IP)">
+        <button class="btn" onclick="trackIP()">Track করো 🔍</button>
+        <div id="ip-result" class="tool-result" style="display:none;"></div>
+        <button class="btn-ghost" onclick="hide('ip-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- PASSWORD CHECKER -->
+<div id="pass-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-lock" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Password Strength Checker</h3>
+        <div style="position:relative;">
+            <input type="password" id="pass-inp" class="inp" placeholder="Password লিখো..." oninput="checkPass(this.value)" style="padding-right:46px;">
+            <button onclick="togglePassView()" style="position:absolute;right:14px;top:50%;transform:translateY(-60%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;" id="eye-btn"><i class="fas fa-eye"></i></button>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="str-fill" style="width:0%;"></div></div>
+        <p id="str-label" style="font-size:14px;margin-bottom:10px;font-weight:600;"></p>
+        <div id="pass-result" class="tool-result" style="display:none;"></div>
+        <button class="btn-ghost" onclick="hide('pass-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- HASH GENERATOR -->
+<div id="hash-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-hashtag" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Hash Generator</h3>
+        <div class="hash-tabs">
+            <button class="hash-tab active" onclick="setHashType('SHA-256',this)">SHA-256</button>
+            <button class="hash-tab" onclick="setHashType('SHA-1',this)">SHA-1</button>
+            <button class="hash-tab" onclick="setHashType('SHA-512',this)">SHA-512</button>
+        </div>
+        <textarea class="inp" id="hash-inp" rows="3" placeholder="এখানে text লিখো..."></textarea>
+        <button class="btn" onclick="genHash()">Hash Generate করো</button>
+        <div id="hash-result" class="tool-result" style="display:none;"></div>
+        <button class="btn-ghost" onclick="hide('hash-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- QR GENERATOR -->
+<div id="qr-modal" class="modal">
+    <div class="mbox">
+        <i class="fas fa-qrcode" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>QR Code Generator</h3>
+        <input type="text" id="qr-inp" class="inp" placeholder="Link বা text লিখো...">
+        <button class="btn" onclick="genQR()">QR বানাও</button>
+        <div id="qr-output"></div>
+        <button id="qr-dl" class="btn" style="display:none;margin-top:10px;" onclick="dlQR()">Download করো ⬇️</button>
+        <button class="btn-ghost" onclick="hide('qr-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- TYPING SPEED -->
+<div id="type-modal" class="modal">
+    <div class="mbox" style="max-width:440px;">
+        <i class="fas fa-keyboard" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Typing Speed Test</h3>
+        <div id="type-txt" style="background:rgba(255,77,148,.07);border:1px solid rgba(255,77,148,.2);border-radius:16px;padding:14px;font-size:14px;line-height:1.8;color:var(--text);margin-bottom:12px;min-height:70px;letter-spacing:.3px;"></div>
+        <textarea id="type-inp" class="type-area" rows="3" placeholder="উপরের text টাইপ করো..." oninput="checkTyping()" style="display:none;"></textarea>
+        <div class="stat-row">
+            <div class="stat-box"><div class="stat-num" id="t-wpm">0</div><div class="stat-lbl">WPM</div></div>
+            <div class="stat-box"><div class="stat-num" id="t-acc">100%</div><div class="stat-lbl">Accuracy</div></div>
+            <div class="stat-box"><div class="stat-num" id="t-time">60</div><div class="stat-lbl">Seconds</div></div>
+        </div>
+        <button class="btn" id="type-btn" onclick="startTyping()">শুরু করো ▶</button>
+        <button class="btn-ghost" onclick="hide('type-modal');clearInterval(typeTimer)">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- VISITOR MAP -->
+<div id="map-modal" class="modal">
+    <div class="mbox" style="max-width:440px;">
+        <i class="fas fa-map-marker-alt" style="font-size:2rem;color:var(--pink);margin-bottom:12px;"></i>
+        <h3>Visitor World Map</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px;">কোন দেশ থেকে visitor এসেছে</p>
+        <div id="map-display"></div>
+        <div id="visitor-countries" style="margin-top:14px;"></div>
+        <button class="btn-ghost" onclick="hide('map-modal')">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- QR LIB -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot, getDoc, setDoc, updateDoc, increment, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, doc, onSnapshot, setDoc, getDoc, updateDoc, increment, collection, getDocs, orderBy, query, limit, addDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    const firebaseConfig = { apiKey:"AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo", authDomain:"ratanweab.firebaseapp.com", projectId:"ratanweab", storageBucket:"ratanweab.firebasestorage.app", messagingSenderId:"611953936063", appId:"1:611953936063:web:7e3ca24060d7478fb2a80a" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-    const AI_API = "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";
+const cfg = {apiKey:"AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",authDomain:"ratanweab.firebaseapp.com",projectId:"ratanweab",storageBucket:"ratanweab.firebasestorage.app",messagingSenderId:"611953936063",appId:"1:611953936063:web:7e3ca24060d7478fb2a80a"};
+const app = initializeApp(cfg);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const prov = new GoogleAuthProvider();
 
-    let currentMsg = null;
-    let currentUser = null;
+// ===== GEMINI API KEY — তোমার নিজের key দাও =====
+// https://aistudio.google.com/app/apikey থেকে free key নাও
+const GEMINI_KEY = "YOUR_GEMINI_API_KEY_HERE";
 
-    // TRAIL
-    const createTrail = (x, y) => {
-        const p = document.createElement('i');
-        p.className = 'fas fa-heart trail-particle';
-        p.style.cssText = `left:${x}px;top:${y}px;font-size:12px;`;
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 800);
-    };
-    window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
-    window.addEventListener('touchmove', (e) => {
-        const t = e.touches[0];
-        createTrail(t.clientX, t.clientY);
-    }, {passive:true});
+let curUser = null, curNotice = null;
 
-    // SCROLL TO TOP
-    window.addEventListener('scroll', () => {
-        const btn = document.getElementById('scroll-top-btn');
-        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
-    });
+// HELPERS
+window.show = (id) => { document.getElementById(id).style.display='flex'; };
+window.hide = (id) => { document.getElementById(id).style.display='none'; };
 
-    // THEME
-    window.toggleTheme = () => {
-        document.body.classList.toggle('light-mode');
-        const ball = document.getElementById('theme-ball');
-        ball.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-        localStorage.setItem('rp-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    };
-    if(localStorage.getItem('rp-theme') === 'light') {
-        document.body.classList.add('light-mode');
-        document.getElementById('theme-ball').textContent = '☀️';
+// TRAIL
+const trail = (x,y) => { const p=document.createElement('i'); p.className='fas fa-heart trail'; p.style.cssText=`left:${x}px;top:${y}px;`; document.body.appendChild(p); setTimeout(()=>p.remove(),800); };
+window.addEventListener('mousemove',(e)=>trail(e.clientX,e.clientY));
+window.addEventListener('touchmove',(e)=>{const t=e.touches[0];trail(t.clientX,t.clientY);},{passive:true});
+
+// SCROLL TOP
+window.addEventListener('scroll',()=>{ document.getElementById('scr-top').style.display=window.scrollY>300?'flex':'none'; });
+
+// THEME
+window.toggleTheme = ()=>{
+    document.body.classList.toggle('light');
+    const b=document.getElementById('t-ball');
+    b.textContent=document.body.classList.contains('light')?'☀️':'🌙';
+    localStorage.setItem('rp-theme',document.body.classList.contains('light')?'light':'dark');
+};
+if(localStorage.getItem('rp-theme')==='light'){document.body.classList.add('light');document.getElementById('t-ball').textContent='☀️';}
+
+// AUTH
+window.login = ()=>signInWithPopup(auth,prov);
+window.logout = ()=>signOut(auth).then(()=>location.reload());
+
+onAuthStateChanged(auth,async(user)=>{
+    if(user){
+        curUser=user;
+        document.getElementById('u-name').innerText=user.displayName;
+        document.getElementById('u-photo').src=user.photoURL.replace('s96-c','s400-c');
+        document.getElementById('login-screen').style.display='none';
+        document.getElementById('gate-modal').style.display='flex';
+        setWish(user.displayName);
+        startRain();
+        updateVisitors();
+        loadChat();
+        saveVisitorLocation();
     }
+});
 
-    // AUTH
-    window.login = () => signInWithPopup(auth, provider);
-    window.logout = () => signOut(auth).then(() => location.reload());
+window.enterDash = ()=>{
+    hide('gate-modal');
+    document.getElementById('dash').style.display='block';
+    document.getElementById('snd').play().catch(()=>{});
+};
 
-    onAuthStateChanged(auth, async (user) => {
-        if(user) {
-            currentUser = user;
-            document.getElementById('u-name').innerText = user.displayName;
-            document.getElementById('u-photo').src = user.photoURL.replace('s96-c','s400-c');
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('audio-gate-modal').style.display = 'flex';
-            setBDWish(user.displayName);
-            startRain();
-            updateVisitorCount();
-            loadChatHistory();
+// VISITOR COUNT
+async function updateVisitors(){
+    const ref=doc(db,'system','stats');
+    try{
+        await setDoc(ref,{visitors:increment(1)},{merge:true});
+        onSnapshot(ref,(s)=>{ if(s.exists()) document.getElementById('v-count').innerText=s.data().visitors||0; });
+    }catch(e){}
+}
+
+// SAVE VISITOR LOCATION
+async function saveVisitorLocation(){
+    try{
+        const r=await fetch('https://ipapi.co/json/');
+        const d=await r.json();
+        if(d.country_name){
+            await setDoc(doc(db,'visitors',curUser.uid),{country:d.country_name,city:d.city||'Unknown',ip:d.ip,country_code:d.country_code,lat:d.latitude,lon:d.longitude,name:curUser.displayName},{merge:true});
         }
-    });
+    }catch(e){}
+}
 
-    window.enterDashboard = () => {
-        document.getElementById('audio-gate-modal').style.display = 'none';
-        document.getElementById('dashboard-ui').style.display = 'block';
-        document.getElementById('snd-open').play().catch(()=>{});
-    };
+// WISH
+function setWish(name){
+    const h=new Date().getHours(), day=new Date().getDay();
+    let msg=h<12?"শুভ সকাল":h<17?"শুভ দুপুর":h<20?"শুভ সন্ধ্যা":"শুভ রাত্রি";
+    let extra=day===5?" — জুমার মুবারক! 🕌":"";
+    document.getElementById('u-wish').innerText=`${msg}, ${name}! কি খবর?${extra}`;
+}
 
-    // VISITOR COUNT (Real Firestore)
-    async function updateVisitorCount() {
-        const ref = doc(db, "system", "stats");
-        try {
-            await setDoc(ref, {visitors: increment(1)}, {merge:true});
-            onSnapshot(ref, (s) => {
-                if(s.exists()) document.getElementById('v-count').innerText = s.data().visitors || 0;
-            });
-        } catch(e) { document.getElementById('v-count').innerText = '—'; }
+// HEADER RAIN
+function startRain(){
+    const w=document.getElementById('hdr-rain');
+    setInterval(()=>{
+        const h=document.createElement('i');
+        h.className='fas fa-heart rain-h';
+        h.style.cssText=`left:${Math.random()*100}%;font-size:${Math.random()*10+8}px;animation-duration:${Math.random()*2+2}s;`;
+        w.appendChild(h); setTimeout(()=>h.remove(),4000);
+    },300);
+}
+
+// NOTICE
+onSnapshot(doc(db,'system','updates'),(s)=>{
+    if(s.exists()){
+        curNotice=s.data();
+        if(curNotice.hasNew) document.getElementById('alert-dot').style.display='block';
+        if(curNotice.message){ document.getElementById('ticker-txt').innerText='📢 '+curNotice.message+' • '; document.getElementById('ticker').style.display='block'; }
     }
+});
 
-    function setBDWish(name) {
-        const hour = new Date().getHours();
-        const day = new Date().getDay();
-        let msg = hour < 12 ? "শুভ সকাল" : hour < 17 ? "শুভ দুপুর" : hour < 20 ? "শুভ সন্ধ্যা" : "শুভ রাত্রি";
-        let extra = day === 5 ? " — আজ শুক্রবার, জুমার মুবারক! 🕌" : "";
-        document.getElementById('u-wish').innerText = `${msg}, ${name}! কি খবর?${extra}`;
-    }
+window.openNotice = ()=>{
+    if(!curNotice) return;
+    document.getElementById('n-title').innerText=curNotice.title||'নোটিশ';
+    document.getElementById('n-body').innerText=curNotice.message||'';
+    const img=document.getElementById('notice-img');
+    curNotice.imageUrl?(img.src=curNotice.imageUrl,img.style.display='block'):(img.style.display='none');
+    const lnk=document.getElementById('n-link');
+    curNotice.linkUrl?(lnk.href=curNotice.linkUrl,lnk.style.display='inline-block'):(lnk.style.display='none');
+    show('notice-modal');
+    document.getElementById('alert-dot').style.display='none';
+};
 
-    function startRain() {
-        const wrap = document.getElementById('header-rain');
-        setInterval(() => {
-            const h = document.createElement('i');
-            h.className = 'fas fa-heart header-heart';
-            h.style.cssText = `left:${Math.random()*100}%;font-size:${Math.random()*10+8}px;animation-duration:${Math.random()*2+2}s;`;
-            wrap.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
-        }, 300);
-    }
+// ===== AI CHAT (GEMINI) =====
+function loadChat(){
+    const saved=localStorage.getItem('rp-chat');
+    if(saved) { document.getElementById('chat-log').innerHTML=saved; document.getElementById('chat-log').scrollTop=9999; }
+}
 
-    // NOTICE (upgraded with image + link + ticker)
-    onSnapshot(doc(db, "system", "updates"), (s) => {
-        if(s.exists()) {
-            currentMsg = s.data();
-            if(currentMsg.hasNew) document.getElementById('alert-dot').style.display = 'block';
-            // ticker
-            if(currentMsg.message) {
-                document.getElementById('ticker-content').innerText = '📢 ' + currentMsg.message + '  •  ';
-                document.getElementById('notice-ticker').style.display = 'block';
-            }
-        }
-    });
-
-    window.openNotice = () => {
-        if(!currentMsg) return;
-        document.getElementById('notice-title').innerText = currentMsg.title || 'নোটিশ';
-        document.getElementById('notice-body').innerText = currentMsg.message || '';
-
-        const img = document.getElementById('notice-img');
-        if(currentMsg.imageUrl) { img.src = currentMsg.imageUrl; img.style.display = 'block'; }
-        else { img.style.display = 'none'; }
-
-        const link = document.getElementById('notice-link');
-        if(currentMsg.linkUrl) { link.href = currentMsg.linkUrl; link.style.display = 'inline-block'; }
-        else { link.style.display = 'none'; }
-
-        document.getElementById('notice-modal').style.display = 'flex';
-        document.getElementById('alert-dot').style.display = 'none';
-    };
-
-    // AI CHAT with history
-    function loadChatHistory() {
-        const log = document.getElementById('chat-content');
-        const saved = localStorage.getItem('rp-chat-history');
-        if(saved) {
-            log.innerHTML = saved;
-            log.scrollTop = log.scrollHeight;
-        }
-    }
-
-    window.askAI = async () => {
-        const inp = document.getElementById('ai-msg');
-        const log = document.getElementById('chat-content');
-        const typing = document.getElementById('typing-indicator');
-        if(!inp.value.trim()) return;
-        const val = inp.value.trim();
-
-        const userBubble = `<div style="text-align:right;color:var(--pink-main);margin-bottom:8px;"><b>তুমি:</b> ${val}</div>`;
-        log.innerHTML += userBubble;
-        inp.value = '';
-        typing.style.display = 'block';
-        log.scrollTop = log.scrollHeight;
-
-        try {
-            const r = await fetch("https://api.openai.com/v1/chat/completions", {
-                method:"POST",
-                headers:{"Content-Type":"application/json","Authorization":`Bearer ${AI_API}`},
-                body: JSON.stringify({model:"gpt-4o-mini", messages:[{role:"system",content:"তুমি একটি বাংলা AI assistant। সংক্ষিপ্ত ও সহজ বাংলায় উত্তর দাও।"},{role:"user",content:val}]})
-            });
-            const d = await r.json();
-            typing.style.display = 'none';
-            const aiBubble = `<div style="margin-bottom:10px;color:var(--text-main);"><b style="color:#aaa;">AI:</b> ${d.choices[0].message.content}</div>`;
-            log.innerHTML += aiBubble;
-        } catch(e) {
-            typing.style.display = 'none';
-            log.innerHTML += `<div style="color:red;margin-bottom:8px;">⚠️ Error হয়েছে, আবার চেষ্টা করো।</div>`;
-        }
-        log.scrollTop = log.scrollHeight;
-        localStorage.setItem('rp-chat-history', log.innerHTML);
-    };
-
-    // PORTFOLIO
-    window.createPortfolio = () => {
-        const name = document.getElementById('p-name').value;
-        const title = document.getElementById('p-title').value;
-        const phone = document.getElementById('p-phone').value;
-        const fb = document.getElementById('p-fb').value;
-        const wa = document.getElementById('p-wa').value;
-        if(!name || !title) return alert("দয়া করে নাম ও টাইটেল দিন");
-        document.getElementById('p-result-area').innerHTML = `
-            <div class="result-card">
-                <div style="font-size:3rem;margin-bottom:10px;">👤</div>
-                <h3 style="color:var(--pink-main);font-size:22px;">${name}</h3>
-                <p style="color:var(--text-sub);margin:5px 0 15px;">${title}</p>
-                ${phone ? `<p style="font-size:14px;color:var(--text-main);margin:5px 0;"><i class="fas fa-phone" style="color:var(--pink-main);margin-right:8px;"></i>${phone}</p>` : ''}
-                ${fb ? `<p style="font-size:14px;margin:5px 0;"><a href="${fb}" target="_blank" style="color:#1877f2;"><i class="fab fa-facebook"></i> Facebook</a></p>` : ''}
-                ${wa ? `<p style="font-size:14px;margin:5px 0;"><a href="https://wa.me/${wa}" target="_blank" style="color:#25d366;"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>` : ''}
-                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-                    <button class="btn-premium" style="width:auto;padding:10px 20px;" onclick="document.getElementById('portfolio-modal').style.display='none'">বন্ধ করুন</button>
-                </div>
-            </div>`;
-        document.getElementById('p-maker-modal').style.display = 'none';
-        document.getElementById('portfolio-modal').style.display = 'flex';
-    };
-
-    // QUIZ DATA
-    const quizData = [
-        { cat:"💻 Tech", q:"HTML এর full form কী?", opts:["HyperText Markup Language","High Tech Modern Language","HyperTransfer Markup Logic","None"], ans:0 },
-        { cat:"🔐 Hacking", q:"Phishing attack কী?", opts:["Virus দিয়ে attack","নকল website দিয়ে তথ্য চুরি","Password crack করা","Network down করা"], ans:1 },
-        { cat:"📚 General", q:"বাংলাদেশের রাজধানী কোথায়?", opts:["চট্টগ্রাম","সিলেট","ঢাকা","খুলনা"], ans:2 },
-        { cat:"💻 Tech", q:"CSS মানে কী?", opts:["Cascading Style Sheets","Computer Style System","Creative Sheet Software","None"], ans:0 },
-        { cat:"🔐 Hacking", q:"VPN কীসের জন্য ব্যবহার হয়?", opts:["Internet দ্রুত করতে","Privacy ও location লুকাতে","Virus দূর করতে","Storage বাড়াতে"], ans:1 },
-        { cat:"📚 General", q:"JavaScript এ console.log() কী করে?", opts:["Page reload করে","Browser console এ output দেখায়","CSS যোগ করে","Element delete করে"], ans:1 },
-        { cat:"💻 Tech", q:"Firebase কোন company এর product?", opts:["Facebook","Amazon","Google","Microsoft"], ans:2 },
-        { cat:"🔐 Hacking", q:"SQL Injection কী?", opts:["Database এ malicious query inject করা","Image upload করা","CSS hack করা","Server restart করা"], ans:0 },
-    ];
-
-    let currentQ = 0, score = 0, answered = false, quizSet = [];
-
-    window.openQuiz = () => {
-        quizSet = [...quizData].sort(() => Math.random() - 0.5).slice(0, 5);
-        currentQ = 0; score = 0; answered = false;
-        document.getElementById('quiz-result').style.display = 'none';
-        document.getElementById('quiz-container').style.display = 'block';
-        document.getElementById('quiz-close-btn').style.display = 'block';
-        document.getElementById('quiz-modal').style.display = 'flex';
-        showQuestion();
-    };
-
-    function showQuestion() {
-        if(currentQ >= quizSet.length) { showQuizResult(); return; }
-        answered = false;
-        const q = quizSet[currentQ];
-        document.getElementById('quiz-category').innerText = q.cat;
-        document.getElementById('quiz-count').innerText = `প্রশ্ন ${currentQ+1}/${quizSet.length}`;
-        document.getElementById('quiz-prog').style.width = `${((currentQ+1)/quizSet.length)*100}%`;
-        document.getElementById('quiz-question').innerText = q.q;
-        document.getElementById('quiz-feedback').innerText = '';
-        const opts = document.getElementById('quiz-options');
-        opts.innerHTML = '';
-        q.opts.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-option';
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(i, btn);
-            opts.appendChild(btn);
+window.askAI = async()=>{
+    const inp=document.getElementById('ai-inp');
+    const log=document.getElementById('chat-log');
+    const typ=document.getElementById('typing');
+    if(!inp.value.trim()) return;
+    const val=inp.value.trim(); inp.value='';
+    log.innerHTML+=`<div style="text-align:right;color:var(--pink);margin-bottom:8px;"><b>তুমি:</b> ${val}</div>`;
+    typ.style.display='block'; log.scrollTop=9999;
+    try{
+        const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:`তুমি একটি বাংলা AI assistant। সংক্ষিপ্ত ও সহজ বাংলায় উত্তর দাও। প্রশ্ন: ${val}`}]}]})
         });
+        const d=await res.json();
+        typ.style.display='none';
+        const reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'উত্তর পাওয়া যায়নি।';
+        log.innerHTML+=`<div style="margin-bottom:10px;color:var(--text);"><b style="color:#aaa;">Gemini:</b> ${reply}</div>`;
+    }catch(e){
+        typ.style.display='none';
+        log.innerHTML+=`<div style="color:red;margin-bottom:8px;">⚠️ Error — API key check করো!</div>`;
     }
+    log.scrollTop=9999;
+    localStorage.setItem('rp-chat',log.innerHTML);
+};
 
-    function checkAnswer(i, btn) {
-        if(answered) return;
-        answered = true;
-        const q = quizSet[currentQ];
-        const allBtns = document.querySelectorAll('.quiz-option');
-        allBtns.forEach(b => b.style.pointerEvents = 'none');
-        if(i === q.ans) {
-            btn.classList.add('correct');
-            document.getElementById('quiz-feedback').innerHTML = '<span style="color:#00c864;">✓ সঠিক উত্তর!</span>';
-            score++;
-        } else {
-            btn.classList.add('wrong');
-            allBtns[q.ans].classList.add('correct');
-            document.getElementById('quiz-feedback').innerHTML = '<span style="color:#ff3232;">✗ ভুল হয়েছে</span>';
+// ===== QUIZ (AI Generated) =====
+let qSet=[], qIdx=0, qScore=0, qAnswered=false;
+
+window.openQuiz = async()=>{
+    qIdx=0; qScore=0; qAnswered=false;
+    document.getElementById('quiz-body').style.display='block';
+    document.getElementById('q-close').style.display='block';
+    document.getElementById('quiz-result').style.display='none';
+    show('quiz-modal');
+    document.getElementById('q-txt').innerText='AI প্রশ্ন তৈরি করছে...';
+    document.getElementById('q-opts').innerHTML='';
+    try{
+        const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:`তুমি একটি quiz generator। নিচের format এ ঠিক ৫টা MCQ প্রশ্ন তৈরি করো। Topics: Technology, Hacking/Cybersecurity, Bangladesh, General Knowledge, Science থেকে মিক্স করো। প্রতিটা প্রশ্নে ৪টা option এবং সঠিক উত্তরের index (0-3)। শুধু JSON array return করো, অন্য কিছু না:\n[{"cat":"💻 Tech","q":"প্রশ্ন","opts":["A","B","C","D"],"ans":0},...]`}]}]})
+        });
+        const d=await res.json();
+        const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||'[]';
+        const clean=raw.replace(/```json|```/g,'').trim();
+        qSet=JSON.parse(clean);
+        showQ();
+    }catch(e){
+        // fallback questions
+        qSet=[
+            {cat:"💻 Tech",q:"HTML এর full form কী?",opts:["HyperText Markup Language","High Tech Modern Language","HyperTransfer Markup Logic","Home Text Markup Language"],ans:0},
+            {cat:"🔐 Cyber",q:"Phishing attack কীভাবে কাজ করে?",opts:["Virus দিয়ে","নকল website দিয়ে তথ্য চুরি","Password crack করে","Network jam করে"],ans:1},
+            {cat:"🇧🇩 BD",q:"বাংলাদেশের মুক্তিযুদ্ধ কত সালে হয়েছিল?",opts:["১৯৬৯","১৯৭০","১৯৭১","১৯৭২"],ans:2},
+            {cat:"🔬 Science",q:"পানির রাসায়নিক সংকেত কী?",opts:["CO2","H2O","NaCl","O2"],ans:1},
+            {cat:"💻 Tech",q:"CSS মানে কী?",opts:["Cascading Style Sheets","Computer Style System","Creative Sheet Software","Custom Style Script"],ans:0}
+        ];
+        showQ();
+    }
+};
+
+function showQ(){
+    if(qIdx>=qSet.length){showResult();return;}
+    qAnswered=false;
+    const q=qSet[qIdx];
+    document.getElementById('q-cat').innerText=q.cat;
+    document.getElementById('q-num').innerText=`প্রশ্ন ${qIdx+1}/${qSet.length}`;
+    document.getElementById('q-prog').style.width=`${((qIdx+1)/qSet.length)*100}%`;
+    document.getElementById('q-txt').innerText=q.q;
+    document.getElementById('q-fb').innerText='';
+    const opts=document.getElementById('q-opts'); opts.innerHTML='';
+    q.opts.forEach((o,i)=>{
+        const b=document.createElement('button');
+        b.className='q-opt'; b.innerText=o;
+        b.onclick=()=>checkQ(i,b,q);
+        opts.appendChild(b);
+    });
+}
+
+function checkQ(i,btn,q){
+    if(qAnswered)return; qAnswered=true;
+    document.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');
+    if(i===q.ans){btn.classList.add('ok');document.getElementById('q-fb').innerHTML='<span style="color:#00c864;">✓ সঠিক উত্তর!</span>';qScore++;}
+    else{btn.classList.add('no');document.querySelectorAll('.q-opt')[q.ans].classList.add('ok');document.getElementById('q-fb').innerHTML='<span style="color:#ff3232;">✗ ভুল হয়েছে</span>';}
+    setTimeout(()=>{qIdx++;showQ();},1300);
+}
+
+function showResult(){
+    document.getElementById('quiz-body').style.display='none';
+    document.getElementById('q-close').style.display='none';
+    document.getElementById('quiz-result').style.display='block';
+    document.getElementById('final-sc').innerText=`${qScore}/${qSet.length}`;
+    const msgs=['আরো practice করো 😊','চেষ্টা ভালো! 💪','ভালো করেছ! 👍','দারুণ! 🌟','পারফেক্ট! তুমি অসাধারণ 🏆'];
+    document.getElementById('sc-msg').innerText=msgs[qScore]||msgs[0];
+    saveScore(qScore);
+}
+
+async function saveScore(s){
+    if(!curUser)return;
+    try{
+        const ref=doc(db,'leaderboard',curUser.uid);
+        const ex=await getDoc(ref);
+        const old=ex.exists()?(ex.data().score||0):0;
+        if(s>old||!ex.exists()) await setDoc(ref,{name:curUser.displayName,score:s,photo:curUser.photoURL},{merge:true});
+    }catch(e){}
+}
+
+// LEADERBOARD
+window.loadLB = async()=>{
+    document.getElementById('lb-list').innerHTML='<div style="color:#888;font-size:13px;padding:14px;">লোড হচ্ছে...</div>';
+    try{
+        const q=query(collection(db,'leaderboard'),orderBy('score','desc'),limit(10));
+        const snap=await getDocs(q);
+        if(snap.empty){document.getElementById('lb-list').innerHTML='<p style="color:#888;font-size:13px;">এখনো কেউ quiz দেয়নি!</p>';return;}
+        const medals=['🥇','🥈','🥉'];
+        let html='';
+        let i=0;
+        snap.forEach(d=>{
+            const dat=d.data();
+            html+=`<div class="lb-row"><span style="font-size:18px;width:28px;">${medals[i]||(i+1)+'.'}</span><span class="lb-nm">${dat.name}</span><span class="lb-sc">${dat.score} pts</span></div>`;
+            i++;
+        });
+        document.getElementById('lb-list').innerHTML=html;
+    }catch(e){document.getElementById('lb-list').innerHTML='<p style="color:red;font-size:13px;">লোড করতে সমস্যা হয়েছে।</p>';}
+};
+
+// ===== IP TRACKER =====
+window.trackIP = async()=>{
+    const ip=document.getElementById('ip-inp').value.trim();
+    const res=document.getElementById('ip-result');
+    res.style.display='block'; res.innerHTML='<i class="fas fa-spinner fa-spin" style="color:var(--pink);"></i> ট্র্যাক করছি...';
+    try{
+        const url=ip?`https://ipapi.co/${ip}/json/`:'https://ipapi.co/json/';
+        const r=await fetch(url);
+        const d=await r.json();
+        if(d.error){res.innerHTML='<span style="color:red;">❌ Invalid IP address</span>';return;}
+        res.innerHTML=`
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">🌍 দেশ:</span> ${d.country_name} ${d.country_code}</div>
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">🏙️ শহর:</span> ${d.city||'N/A'}, ${d.region||'N/A'}</div>
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">📍 IP:</span> ${d.ip}</div>
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">🌐 ISP:</span> ${d.org||'N/A'}</div>
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">🕐 Timezone:</span> ${d.timezone||'N/A'}</div>
+            <div style="margin-bottom:6px;"><span style="color:var(--pink);">📡 Latitude:</span> ${d.latitude||'N/A'}</div>
+            <div><span style="color:var(--pink);">📡 Longitude:</span> ${d.longitude||'N/A'}</div>`;
+    }catch(e){res.innerHTML='<span style="color:red;">❌ Error হয়েছে</span>';}
+};
+
+// ===== PASSWORD CHECKER =====
+window.checkPass = (val)=>{
+    const fill=document.getElementById('str-fill');
+    const label=document.getElementById('str-label');
+    const res=document.getElementById('pass-result');
+    if(!val){fill.style.width='0%';label.innerText='';res.style.display='none';return;}
+    let score=0;
+    const checks={length:val.length>=8,upper:/[A-Z]/.test(val),lower:/[a-z]/.test(val),number:/[0-9]/.test(val),special:/[!@#$%^&*(),.?":{}|<>]/.test(val),long:val.length>=12};
+    Object.values(checks).forEach(c=>c&&score++);
+    const levels=[{t:'খুব দুর্বল 😱',c:'#ff3232',w:'16%'},{t:'দুর্বল 😟',c:'#ff6b35',w:'32%'},{t:'মোটামুটি 😐',c:'#ffa500',w:'50%'},{t:'ভালো 😊',c:'#7ec8e3',w:'70%'},{t:'শক্তিশালী 💪',c:'#00c864',w:'88%'},{t:'অত্যন্ত শক্তিশালী 🔒',c:'#00ff88',w:'100%'}];
+    const lv=levels[Math.min(score,5)];
+    fill.style.width=lv.w; fill.style.background=lv.c; label.innerText=lv.t; label.style.color=lv.c;
+    const crackTime=score<=1?'তাৎক্ষণিক':score<=2?'কয়েক মিনিট':score<=3?'কয়েক ঘণ্টা':score<=4?'কয়েক দিন':score<=5?'কয়েক বছর':'কয়েক শতাব্দী';
+    res.style.display='block';
+    res.innerHTML=`
+        <div style="margin-bottom:5px;">📏 দৈর্ঘ্য: ${val.length} characters ${checks.length?'✅':'❌'}</div>
+        <div style="margin-bottom:5px;">🔠 বড় হাতের অক্ষর: ${checks.upper?'✅':'❌'}</div>
+        <div style="margin-bottom:5px;">🔡 ছোট হাতের অক্ষর: ${checks.lower?'✅':'❌'}</div>
+        <div style="margin-bottom:5px;">🔢 সংখ্যা: ${checks.number?'✅':'❌'}</div>
+        <div style="margin-bottom:5px;">⚡ বিশেষ চিহ্ন: ${checks.special?'✅':'❌'}</div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,77,148,.2);">⏱️ Crack হতে সময়: <b style="color:var(--pink);">${crackTime}</b></div>`;
+};
+
+window.togglePassView = ()=>{
+    const inp=document.getElementById('pass-inp');
+    const btn=document.getElementById('eye-btn');
+    if(inp.type==='password'){inp.type='text';btn.innerHTML='<i class="fas fa-eye-slash"></i>';}
+    else{inp.type='password';btn.innerHTML='<i class="fas fa-eye"></i>';}
+};
+
+// ===== HASH GENERATOR =====
+let hashType='SHA-256';
+window.setHashType=(t,el)=>{
+    hashType=t;
+    document.querySelectorAll('.hash-tab').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+};
+
+window.genHash = async()=>{
+    const txt=document.getElementById('hash-inp').value;
+    const res=document.getElementById('hash-result');
+    if(!txt){alert('কিছু লিখো!');return;}
+    res.style.display='block'; res.innerHTML='হ্যাশ করছি...';
+    try{
+        const enc=new TextEncoder().encode(txt);
+        const buf=await crypto.subtle.digest(hashType,enc);
+        const hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+        res.innerHTML=`<div style="margin-bottom:6px;color:var(--pink);font-weight:600;">${hashType} Hash:</div><div style="word-break:break-all;font-family:monospace;font-size:12px;color:#0f0;">${hex}</div>
+        <button onclick="navigator.clipboard.writeText('${hex}').then(()=>alert('Copied!'))" class="btn" style="margin-top:10px;font-size:12px;padding:8px 16px;">Copy করো 📋</button>`;
+    }catch(e){res.innerHTML='<span style="color:red;">Error হয়েছে</span>';}
+};
+
+// ===== QR GENERATOR =====
+let qrCode=null;
+window.genQR=()=>{
+    const val=document.getElementById('qr-inp').value.trim();
+    if(!val){alert('কিছু লিখো!');return;}
+    const out=document.getElementById('qr-output');
+    out.innerHTML='';
+    try{
+        qrCode=new QRCode(out,{text:val,width:200,height:200,colorDark:'#ff4d94',colorLight:'#000000',correctLevel:QRCode.CorrectLevel.H});
+        document.getElementById('qr-dl').style.display='block';
+    }catch(e){out.innerHTML='<span style="color:red;">QR বানাতে সমস্যা হয়েছে</span>';}
+};
+
+window.dlQR=()=>{
+    const canvas=document.querySelector('#qr-output canvas');
+    if(!canvas)return;
+    const a=document.createElement('a'); a.download='qr-code.png'; a.href=canvas.toDataURL(); a.click();
+};
+
+// ===== TYPING SPEED TEST =====
+const typingTexts=[
+    "The quick brown fox jumps over the lazy dog near the river bank.",
+    "Technology is the backbone of modern civilization and digital age.",
+    "Practice makes perfect when learning new programming languages daily.",
+    "Cybersecurity protects computers networks and data from digital attacks.",
+    "Bangladesh is a beautiful country with rich culture and heritage."
+];
+let typeTimer=null, typeStart=null, typeSeconds=60, typingActive=false;
+
+window.startTyping=()=>{
+    const txt=typingTexts[Math.floor(Math.random()*typingTexts.length)];
+    document.getElementById('type-txt').innerText=txt;
+    document.getElementById('type-inp').value='';
+    document.getElementById('type-inp').style.display='block';
+    document.getElementById('type-inp').disabled=false;
+    document.getElementById('type-inp').focus();
+    document.getElementById('t-wpm').innerText='0';
+    document.getElementById('t-acc').innerText='100%';
+    document.getElementById('t-time').innerText='60';
+    document.getElementById('type-btn').innerText='চলছে... ⏱️';
+    document.getElementById('type-btn').disabled=true;
+    typeSeconds=60; typingActive=true; typeStart=Date.now();
+    clearInterval(typeTimer);
+    typeTimer=setInterval(()=>{
+        typeSeconds--;
+        document.getElementById('t-time').innerText=typeSeconds;
+        if(typeSeconds<=0){
+            clearInterval(typeTimer); typingActive=false;
+            document.getElementById('type-inp').disabled=true;
+            document.getElementById('type-btn').innerText='আবার শুরু করো ▶';
+            document.getElementById('type-btn').disabled=false;
         }
-        setTimeout(() => { currentQ++; showQuestion(); }, 1200);
-    }
+    },1000);
+};
 
-    function showQuizResult() {
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('quiz-close-btn').style.display = 'none';
-        document.getElementById('quiz-result').style.display = 'block';
-        document.getElementById('final-score').innerText = `${score}/${quizSet.length}`;
-        let msg = score === quizSet.length ? "পারফেক্ট! তুমি অসাধারণ 🌟" : score >= 3 ? "ভালো করেছ! আরো practice করো 💪" : "চেষ্টা করতে থাকো, হবে! 😊";
-        document.getElementById('score-msg').innerText = msg;
-        saveScore(score);
-    }
+window.checkTyping=()=>{
+    if(!typingActive)return;
+    const original=document.getElementById('type-txt').innerText;
+    const typed=document.getElementById('type-inp').value;
+    const elapsed=(Date.now()-typeStart)/60000;
+    const words=typed.trim().split(/\s+/).filter(w=>w.length>0).length;
+    const wpm=elapsed>0?Math.round(words/elapsed):0;
+    let correct=0;
+    for(let i=0;i<typed.length;i++) if(typed[i]===original[i]) correct++;
+    const acc=typed.length>0?Math.round((correct/typed.length)*100):100;
+    document.getElementById('t-wpm').innerText=wpm;
+    document.getElementById('t-acc').innerText=acc+'%';
+    if(typed===original){clearInterval(typeTimer);typingActive=false;document.getElementById('type-inp').disabled=true;document.getElementById('type-btn').innerText='আবার শুরু করো ▶';document.getElementById('type-btn').disabled=false;}
+};
 
-    window.restartQuiz = () => { openQuiz(); };
+// ===== VISITOR MAP =====
+window.loadMap=async()=>{
+    const disp=document.getElementById('map-display');
+    const ctry=document.getElementById('visitor-countries');
+    disp.innerHTML='<div style="text-align:center;padding:80px 0;color:#555;font-size:13px;"><i class="fas fa-spinner fa-spin" style="color:var(--pink);font-size:24px;"></i><br>লোড হচ্ছে...</div>';
+    try{
+        const snap=await getDocs(collection(db,'visitors'));
+        const countries={};
+        snap.forEach(d=>{const dat=d.data();if(dat.country) countries[dat.country]=(countries[dat.country]||0)+1;});
+        // Simple world map dots
+        disp.innerHTML=`<svg viewBox="0 0 800 400" style="width:100%;height:100%;">
+            <rect width="800" height="400" fill="#060d1f"/>
+            <text x="400" y="200" text-anchor="middle" fill="#333" font-size="14">🌍 World Visitor Map</text>
+        </svg>`;
+        // Show country list
+        const sorted=Object.entries(countries).sort((a,b)=>b[1]-a[1]);
+        if(sorted.length===0){ctry.innerHTML='<p style="color:#888;font-size:13px;text-align:center;">এখনো visitor data নেই</p>';return;}
+        let html='<div style="font-size:13px;">';
+        sorted.slice(0,8).forEach(([c,n],i)=>{
+            const medals=['🥇','🥈','🥉'];
+            html+=`<div class="lb-row"><span style="font-size:16px;width:28px;">${medals[i]||'🌐'}</span><span class="lb-nm">${c}</span><span class="lb-sc">${n} visitors</span></div>`;
+        });
+        html+='</div>';
+        ctry.innerHTML=html;
+    }catch(e){disp.innerHTML='<p style="color:red;font-size:13px;text-align:center;padding:80px 0;">লোড করতে সমস্যা</p>';}
+};
 
-    // SAVE SCORE TO FIRESTORE
-    async function saveScore(s) {
-        if(!currentUser) return;
-        try {
-            const ref = doc(db, "leaderboard", currentUser.uid);
-            const existing = await getDoc(ref);
-            const oldScore = existing.exists() ? (existing.data().score || 0) : 0;
-            if(s > oldScore || !existing.exists()) {
-                await setDoc(ref, { name: currentUser.displayName, score: s, photo: currentUser.photoURL }, {merge:true});
-            }
-        } catch(e) {}
-    }
-
-    // LEADERBOARD
-    window.openLeaderboard = async () => {
-        document.getElementById('lb-modal').style.display = 'flex';
-        document.getElementById('lb-list').innerHTML = '<div style="color:#888;font-size:14px;padding:20px;">লোড হচ্ছে...</div>';
-        try {
-            const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(10));
-            const snap = await getDocs(q);
-            if(snap.empty) { document.getElementById('lb-list').innerHTML = '<p style="color:#888;font-size:14px;">এখনো কেউ quiz দেয়নি!</p>'; return; }
-            const medals = ['🥇','🥈','🥉'];
-            let html = '';
-            snap.forEach((d, i) => {
-                const data = d.data();
-                html += `<div class="lb-row">
-                    <span class="lb-rank">${medals[i] || (i+1)+'.'}</span>
-                    <span class="lb-name">${data.name}</span>
-                    <span class="lb-score">${data.score} pts</span>
-                </div>`;
-            });
-            document.getElementById('lb-list').innerHTML = html;
-        } catch(e) { document.getElementById('lb-list').innerHTML = '<p style="color:red;font-size:13px;">লোড করতে সমস্যা হয়েছে।</p>'; }
-    };
+// ===== PORTFOLIO =====
+window.makePort=()=>{
+    const name=document.getElementById('p-name').value;
+    const title=document.getElementById('p-title').value;
+    if(!name||!title){alert('নাম ও টাইটেল দিন');return;}
+    const phone=document.getElementById('p-phone').value;
+    const fb=document.getElementById('p-fb').value;
+    const wa=document.getElementById('p-wa').value;
+    document.getElementById('port-area').innerHTML=`
+        <div class="port-card">
+            <div style="font-size:3rem;margin-bottom:10px;">👤</div>
+            <h3 style="color:var(--pink);font-size:20px;">${name}</h3>
+            <p style="color:var(--text2);margin:5px 0 14px;">${title}</p>
+            ${phone?`<p style="font-size:14px;margin:5px 0;"><i class="fas fa-phone" style="color:var(--pink);margin-right:7px;"></i>${phone}</p>`:''}
+            ${fb?`<p style="font-size:14px;margin:5px 0;"><a href="${fb}" target="_blank" style="color:#1877f2;text-decoration:none;"><i class="fab fa-facebook"></i> Facebook</a></p>`:''}
+            ${wa?`<p style="font-size:14px;margin:5px 0;"><a href="https://wa.me/${wa}" target="_blank" style="color:#25d366;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>`:''}
+            <button class="btn" style="margin-top:16px;" onclick="hide('port-modal')">বন্ধ করুন</button>
+        </div>`;
+    hide('p-modal'); show('port-modal');
+};
 </script>
 </body>
 </html>
